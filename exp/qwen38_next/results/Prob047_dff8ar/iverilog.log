@@ -1,0 +1,5 @@
+/workspace/verilog-eval/exp/qwen38_next/results/Prob047_dff8ar/Prob047_dff8ar.sv:10: error: q is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/qwen38_next/results/Prob047_dff8ar/Prob047_dff8ar.sv:5:      : q is declared here as wire.
+/workspace/verilog-eval/exp/qwen38_next/results/Prob047_dff8ar/Prob047_dff8ar.sv:12: error: q is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/qwen38_next/results/Prob047_dff8ar/Prob047_dff8ar.sv:5:      : q is declared here as wire.
+2 error(s) during elaboration.

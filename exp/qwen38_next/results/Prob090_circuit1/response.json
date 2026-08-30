@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-a288a56ea051aed5",
+  "object": "chat.completion",
+  "created": 1788105838,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  logic a,\n    input  logic b,\n    output logic q\n);\n\n    assign q = a & b;\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user's request: implement SystemVerilog module TopModule with ports a,b,q. Need infer from waveforms. Need only syntactically correct SystemVerilog, no explanations. Need final only code.\n\nAnalyze waveform: inputs a,b, output q. Truth table observed:\na b q\n0 0 0\n0 1 0\n1 0 0\n1 1 1\nSo q = a & b. Need module TopModule(input a, input b, output q); assign q = a & b; Could use always_comb. Need one bit unless otherwise specified. Return only code. Ensure no extra text.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 451,
+    "total_tokens": 629,
+    "completion_tokens": 178,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 138
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

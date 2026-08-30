@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-ab1b18494f876707",
+  "object": "chat.completion",
+  "created": 1788105398,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input        clk,\n    input        areset,\n    input  [7:0] d,\n    output [7:0] q\n);\n\n    always_ff @(posedge clk or posedge areset) begin\n        if (areset)\n            q <= 8'b0;\n        else\n            q <= d;\n    end\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user's request: implement SystemVerilog module TopModule with interface. Need final only syntactically correct SystemVerilog, no explanations. Need ensure active high asynchronous reset, 8 DFFs, positive edge clk, output q reset to 0. Inputs: clk, areset, d[7:0], output q[7:0]. Use always_ff @(posedge clk or posedge areset) if (areset) q <= 0; else q <= d; Need maybe declare logic. Return only code. Ensure no extra text. Could use module TopModule (input clk, input areset, input [7:0] d, output [7:0] q); logic [7:0] q; always_ff... But if output declared as logic? In SystemVerilog, output [7:0] q; can assign in always_ff. Good. Need maybe asynchronous reset active high. Done.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 190,
+    "total_tokens": 473,
+    "completion_tokens": 283,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 195
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

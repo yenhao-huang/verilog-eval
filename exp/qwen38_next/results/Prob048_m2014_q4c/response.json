@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-9085466a8f8e6eda",
+  "object": "chat.completion",
+  "created": 1788105414,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  logic clk,\n    input  logic d,\n    input  logic r,\n    output logic q\n);\n\n    always_ff @(posedge clk) begin\n        if (r)\n            q <= 1'b0;\n        else\n            q <= d;\n    end\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user wants SystemVerilog module only. Need produce final only code. Need ensure module TopModule ports: input clk, d, r; output q. Simple D flip flop active high synchronous reset reset output to 0. Synchronous reset means on posedge clk if r then q <= 0 else q <= d. Output likely reg. Need syntactically correct SystemVerilog. Could use always_ff @(posedge clk). If r q <= 1'b0; else q <= d. Need no explanations. Ensure one bit. Could declare output reg q. Use default? Let's craft.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 161,
+    "total_tokens": 362,
+    "completion_tokens": 201,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 126
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

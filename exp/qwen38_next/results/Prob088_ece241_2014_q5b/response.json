@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-9a1903784497d636",
+  "object": "chat.completion",
+  "created": 1788105821,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  logic clk,\n    input  logic areset,\n    input  logic x,\n    output logic z\n);\n\n    localparam logic [1:0] A = 2'b01;\n    localparam logic [1:0] B = 2'b10;\n\n    logic [1:0] state;\n    logic [1:0] next_state;\n\n    always_ff @(posedge clk or posedge areset) begin\n        if (areset) begin\n            state <= A;\n        end else begin\n            state <= next_state;\n        end\n    end\n\n    always_comb begin\n        next_state = state;\n        z = 1'b0;\n\n        case (state)\n            A: begin\n                if (x) begin\n                    z = 1'b1;\n                    next_state = B;\n                end else begin\n                    z = 1'b0;\n                    next_state = A;\n                end\n            end\n\n            B: begin\n                if (x) begin\n                    z = 1'b0;\n                    next_state = B;\n                end else begin\n                    z = 1'b1;\n                    next_state = B;\n                end\n            end\n\n            default: begin\n                z = 1'b0;\n                next_state = A;\n            end\n        endcase\n    end\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user's request: implement SystemVerilog module TopModule with interface clk, areset, x, z. Mealy FSM 2's complementer one-hot encoding, async active-high reset to state A. Need only syntactically correct SystemVerilog, no explanations. Need think through details.\n\nStates A and B. One-hot encoding: maybe localparam A=2'b01, B=2'b10. State reg [1:0] state, next_state. Async reset: always @(posedge clk or posedge areset) if (areset) state <= A; else state <= next_state. Mealy output combinational based on state and x. Transitions:\nA x=0 z=0 next A; A x=1 z=1 next B.\nB x=0 z=1 next B; B x=1 z=0 next B.\nSo in B next always B, z = ~x? In B: x=0 z=1, x=1 z=0 => z = ~x. In A: z=x, next = x ? B : A. Could implement case.\nNeed ensure one-hot encoding. Could use state[0], state[1]. Maybe:\nmodule TopModule (input logic clk, input logic areset, input logic x, output logic z);\n localparam logic [1:0] A = 2'b01;\n localparam logic [1:0] B = 2'b10;\n logic [1:0] state, next_state;\n always_ff @(posedge clk or posedge areset) begin\n   if (areset) state <= A;\n   else state <= next_state;\n end\n always_comb begin\n   z = 1'b0;\n   next_state = state;\n   case (state)\n     A: begin\n       if (x) begin z=1'b1; next_state=B; end\n       else begin z=1'b0; next_state=A; end\n     end\n     B: begin\n       if (x) begin z=1'b0; next_state=B; end\n       else begin z=1'b1; next_state=B; end\n     end\n     default: begin z=1'b0; next_state=A; end\n   endcase\n end\nendmodule\n\nNeed consider reset async active-high. Good.\nCould output z combinational. Need no explanations. Final only code. Ensure SystemVerilog. Maybe use assign z? But case fine.\nPotential issue: one-hot encoding with default if invalid state. Good.\nCould use state[0] and state[1] to avoid case? But case with one-hot constants okay.\nNeed maybe declare ports as input wire? SystemVerilog logic okay.\nNeed ensure no latch: assign defaults. Good.\nNeed maybe use always_comb for next_state and z. Good.\nNeed maybe if areset async active high, state reset to A. Good.\n\nDouble-check 2's complementer Mealy: Usually scans LSB to MSB, output 0 until first 1, then complement. State A before first 1: output x (0->0,1->1) and transition to B on 1. State B after first 1: output ~x. Yes.\n\nNeed final only code. Could include `default_nettype none`? Not necessary. If include, okay. But requested only module. Keep simple.\n\nNeed ensure syntactically correct SystemVerilog. Use localparam logic [1:0]. Some tools? okay. Could use parameter. Use always_ff and always_comb. Good.\n\nPotential hidden tests expect output z maybe registered? Mealy means combinational output. Good.\n\nNeed maybe one-hot encoding: state[0] for A, state[1] for B. Could implement:\nlogic [1:0] state;\nlogic [1:0] next_state;\nalways_ff...\nalways_comb begin\n casez(state)\n 2'b01: ...\n 2'b10: ...\n endcase\nend\nBut case with localparams fine.\n\nNeed maybe reset should also set next_state? Not necessary.\n\nLet's craft final:\nmodule TopModule (\n    input  logic clk,\n    input  logic areset,\n    input  logic x,\n    output logic z\n);\n    localparam logic [1:0] A = 2'b01;\n    localparam logic [1:0] B = 2'b10;\n\n    logic [1:0] state, next_state;\n\n    always_ff @(posedge clk or posedge areset) begin\n        if (areset) begin\n            state <= A;\n        end else begin\n            state <= next_state;\n        end\n    end\n\n    always_comb begin\n        next_state = state;\n        z = 1'b0;\n        case (state)\n            A: begin\n                if (x) begin\n                    z = 1'b1;\n                    next_state = B;\n                end else begin\n                    z = 1'b0;\n                    next_state = A;\n                end\n            end\n            B: begin\n                if (x) begin\n                    z = 1'b0;\n                    next_state = B;\n                end else begin\n                    z = 1'b1;\n                    next_state = B;\n                end\n            end\n            default: begin\n                z = 1'b0;\n                next_state = A;\n            end\n        endcase\n    end\nendmodule\n\nNeed maybe if state invalid one-hot, default to A. Good.\n\nCould there be issue with localparam A = 2'b01 and B = 2'b10, case(state) A: B: okay.\n\nNeed final no markdown? User says return only syntactically correct SystemVerilog. Could output code block? Usually only code. To be safe, plain text code no fences. But final can include code block? \"Return only\" maybe no fences. I'll output raw code.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 256,
+    "total_tokens": 1865,
+    "completion_tokens": 1609,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 1298
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

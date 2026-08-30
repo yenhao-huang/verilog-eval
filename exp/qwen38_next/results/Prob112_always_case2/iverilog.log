@@ -1,0 +1,10 @@
+/workspace/verilog-eval/exp/qwen38_next/results/Prob112_always_case2/Prob112_always_case2.sv:6: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+/workspace/verilog-eval/exp/qwen38_next/results/Prob112_always_case2/Prob112_always_case2.sv:6: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+/workspace/verilog-eval/exp/qwen38_next/results/Prob112_always_case2/Prob112_always_case2.sv:6: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+/workspace/verilog-eval/exp/qwen38_next/results/Prob112_always_case2/Prob112_always_case2.sv:6: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+VCD info: dumpfile wave.vcd opened for output.
+Hint: Output 'pos' has no mismatches.
+Hint: Total mismatched samples is 0 out of 94 samples
+
+Simulation finished at 470 ps
+Mismatches: 0 in 94 samples

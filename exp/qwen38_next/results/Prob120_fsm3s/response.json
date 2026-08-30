@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-a353bde2b0338e88",
+  "object": "chat.completion",
+  "created": 1788106275,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  logic clk,\n    input  logic reset,\n    input  logic in,\n    output logic out\n);\n\n    typedef enum logic [1:0] {\n        A = 2'b00,\n        B = 2'b01,\n        C = 2'b10,\n        D = 2'b11\n    } state_t;\n\n    state_t state, next_state;\n\n    always_ff @(posedge clk) begin\n        if (reset) begin\n            state <= A;\n        end else begin\n            state <= next_state;\n        end\n    end\n\n    always_comb begin\n        case (state)\n            A: next_state = in ? B : A;\n            B: next_state = in ? B : C;\n            C: next_state = in ? D : A;\n            D: next_state = in ? B : C;\n            default: next_state = A;\n        endcase\n    end\n\n    assign out = (state == D);\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user wants SystemVerilog module only. Need produce final only code. Need ensure correct. Let's analyze requirements.\n\nImplement TopModule with clk, reset, in, out. Moore FSM states A,B,C,D. Synchronous active high reset resets to A. Positive edge. Output combinational based on state? Moore output can be registered or combinational from state. Usually output = (state == D). Since Moore output depends only on state. Could implement state register and output assign. Reset synchronous: if reset then state <= A on posedge. Need one-bit ports. Use enum maybe. Need syntactically correct SystemVerilog. Could use localparam [1:0] A=0,B=1,C=2,D=3. state, next_state. always_ff @(posedge clk) if (reset) state <= A; else state <= next_state; always_comb next_state = state; case(state) A: next_state = in ? B : A; B: next_state = in ? B : C; C: next_state = in ? D : A; D: next_state = in ? B : C; endcase. assign out = (state == D);\n\nNeed consider reset synchronous active high. Good. Could use always @* for compatibility. SystemVerilog okay. Return only module. No explanations. Ensure no extra text.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 261,
+    "total_tokens": 775,
+    "completion_tokens": 514,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 281
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

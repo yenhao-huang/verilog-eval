@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-8d8a318130c5ec55",
+  "object": "chat.completion",
+  "created": 1788105520,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  wire       clk,\n    input  wire       reset,\n    input  wire       slowena,\n    output reg  [3:0] q\n);\n\n    always @(posedge clk) begin\n        if (reset) begin\n            q <= 4'd0;\n        end else if (slowena) begin\n            if (q == 4'd9) begin\n                q <= 4'd0;\n            end else begin\n                q <= q + 4'd1;\n            end\n        end\n    end\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user's request: implement SystemVerilog module TopModule. Need return only syntactically correct SystemVerilog, no explanations. Need think through requirements.\n\nModule interface:\ninput clk, reset, slowena; output q [3:0]\nDecade counter 0-9 inclusive period 10. reset active high synchronous, reset counter to 0. slowena high indicates increment. Positive edge clock.\n\nNeed decide if q is reg or wire. Use always @(posedge clk) if (reset) q <= 0; else if (slowena) if (q == 4'd9) q <= 0; else q <= q + 1;\nNeed output q 4 bits. Could declare output reg [3:0] q; or output logic [3:0] q. SystemVerilog. Need only code. Ensure no extra text.\n\nPotential issue: if reset synchronous, no async reset. Good.\n\nCould use if (reset) q <= 4'd0; else if (slowena) q <= (q == 4'd9) ? 4'd0 : q + 4'd1;\n\nNeed maybe initial? Not necessary.\n\nReturn only module.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 241,
+    "total_tokens": 626,
+    "completion_tokens": 385,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 256
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

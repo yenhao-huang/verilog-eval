@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-8af75d425dd4015c",
+  "object": "chat.completion",
+  "created": 1788106029,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  logic a,\n    input  logic b,\n    input  logic c,\n    input  logic d,\n    output logic q\n);\n\n    assign q = b | c;\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user's request: implement SystemVerilog module TopModule with ports a,b,c,d inputs, q output. Need infer from waveform. Need only syntactically correct SystemVerilog, no explanations. Need think.\n\nWe have truth table for 4 inputs a,b,c,d. Let's list:\n0000 q0\n0001 q0\n0010 q1\n0011 q1\n0100 q1\n0101 q1\n0110 q1\n0111 q1\n1000 q0\n1001 q0\n1010 q1\n1011 q1\n1100 q1\n1101 q1\n1110 q1\n1111 q1\n\nLooks q = b OR c? Check: if b=0,c=0 => q=0 for a=0,d=0/1 and a=1,d=0/1. If b=1 or c=1 => q=1. Yes q = b | c. d and a irrelevant. Need implement combinational. Could assign q = b | c;\n\nNeed output only code. Ensure module named TopModule. Use SystemVerilog. Could use logic. Need no explanations. Final:\nmodule TopModule (\n    input logic a,\n    input logic b,\n    input logic c,\n    input logic d,\n    output logic q\n);\n    assign q = b | c;\nendmodule\n\nCheck if all ports one bit. Good. Could use wire. Need syntactically correct. final only code.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 579,
+    "total_tokens": 987,
+    "completion_tokens": 408,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 354
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

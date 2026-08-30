@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-b897e4c5cf11bfd2",
+  "object": "chat.completion",
+  "created": 1788105458,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  wire a,\n    input  wire b,\n    input  wire c,\n    output wire w,\n    output wire x,\n    output wire y,\n    output wire z\n);\n\n    assign w = a;\n    assign x = b;\n    assign y = b;\n    assign z = c;\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user's request: implement SystemVerilog module TopModule with ports a,b,c inputs, w,x,y,z outputs, connections a->w, b->x, b->y, c->z. Need return only syntactically correct SystemVerilog, no explanations. Need final only code. Ensure module named TopModule. Could use assign. All one bit.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 181,
+    "total_tokens": 343,
+    "completion_tokens": 162,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 78
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

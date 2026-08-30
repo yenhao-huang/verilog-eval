@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-8fa26bfa1db1524d",
+  "object": "chat.completion",
+  "created": 1788105290,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  logic [255:0] in,\n    input  logic [7:0]   sel,\n    output logic         out\n);\n\n    assign out = in[sel];\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user's request: implement SystemVerilog module TopModule. Need final only syntactically correct SystemVerilog, no explanations. Need ensure module interface: input [255:0] in, input [7:0] sel, output out. 256-to-1 mux. Could use assign out = in[sel]; In SystemVerilog variable part-select with index sel works? Yes, if sel is integer/reg, in[sel] selects bit. Since sel 8 bits can index 0-255. Need maybe declare output wire out. Could use always_comb. Simple. Need only code. Ensure no extra text.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 217,
+    "total_tokens": 409,
+    "completion_tokens": 192,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 138
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

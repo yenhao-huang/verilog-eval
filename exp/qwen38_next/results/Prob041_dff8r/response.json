@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-997205b38f018203",
+  "object": "chat.completion",
+  "created": 1788105377,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input        clk,\n    input        reset,\n    input  [7:0] d,\n    output [7:0] q\n);\n\n    always @(posedge clk) begin\n        if (reset)\n            q <= 8'b0;\n        else\n            q <= d;\n    end\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user's request: implement SystemVerilog module TopModule. Need final only syntactically correct SystemVerilog, no explanations. Need ensure module TopModule ports: input clk, reset, input [7:0] d, output [7:0] q. 8 DFFs active high synchronous reset to zero, positive edge clk. Could use always @(posedge clk) if (reset) q <= 0; else q <= d; Need output reg [7:0] q. Since all one bit unless specified. Use SystemVerilog. Could use logic. Need only code. Ensure no extra text.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 183,
+    "total_tokens": 394,
+    "completion_tokens": 211,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 131
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

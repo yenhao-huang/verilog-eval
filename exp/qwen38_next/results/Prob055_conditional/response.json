@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-ad8614c9d902ab89",
+  "object": "chat.completion",
+  "created": 1788105448,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  logic [7:0] a,\n    input  logic [7:0] b,\n    input  logic [7:0] c,\n    input  logic [7:0] d,\n    output logic [7:0] min\n);\n\n    logic [7:0] min_ab;\n    logic [7:0] min_cd;\n\n    assign min_ab = (a < b) ? a : b;\n    assign min_cd = (c < d) ? c : d;\n    assign min    = (min_ab < min_cd) ? min_ab : min_cd;\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user wants SystemVerilog module only. Need produce final only code. Need ensure syntactically correct SystemVerilog. Module TopModule ports: input [7:0] a,b,c,d; output [7:0] min. Find min of four unsigned. Could use combinational always_comb with min = a; if (b<min) min=b; etc. Or assign min = (a<b ? a : b) etc. Need one bit unless otherwise specified. Use unsigned? Inputs are logic [7:0]. In SV, comparison unsigned by default for logic? Yes. Could use wire [7:0] min_ab, min_cd; assign min = min_ab < min_cd ? min_ab : min_cd; assign min_ab = a < b ? a : b; assign min_cd = c < d ? c : d; This is simple. Need output min 8 bits. Ensure no explanations. Final code only.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 194,
+    "total_tokens": 534,
+    "completion_tokens": 340,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 196
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

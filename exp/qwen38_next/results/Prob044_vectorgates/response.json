@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-b1410ab0dd525950",
+  "object": "chat.completion",
+  "created": 1788105392,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  [2:0] a,\n    input  [2:0] b,\n    output [2:0] out_or_bitwise,\n    output       out_or_logical,\n    output [5:0] out_not\n);\n\n    assign out_or_bitwise = a | b;\n    assign out_or_logical = (a != 0) || (b != 0);\n    assign out_not        = {~b, ~a};\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user wants SystemVerilog module only. Need produce final only code. Need ensure correct. Module TopModule ports: input [2:0] a, b; output [2:0] out_or_bitwise; output out_or_logical; output [5:0] out_not. Compute bitwise OR: a | b. Logical OR: |a || |b? In Verilog logical OR of vectors: (a != 0) || (b != 0). Could also use |a || |b. out_not = {~b, ~a}. Need one bit output. Use assign. Return only syntactically correct SystemVerilog. No explanations. Could include module ... endmodule. Ensure widths.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 239,
+    "total_tokens": 500,
+    "completion_tokens": 261,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 150
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

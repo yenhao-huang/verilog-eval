@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-aa39ead0105542fd",
+  "object": "chat.completion",
+  "created": 1788105420,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  logic clk,\n    input  logic ar,\n    input  logic d,\n    output logic q\n);\n\n    always_ff @(posedge clk or posedge ar) begin\n        if (ar) begin\n            q <= 1'b0;\n        end else begin\n            q <= d;\n        end\n    end\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user's request: implement SystemVerilog module TopModule with ports clk, ar, d, q. D flip flop positive edge triggered asynchronous reset ar. Need return only syntactically correct SystemVerilog, no explanations. Need final only code. Need consider reset active? \"asynchronous reset ar\" likely active high? Usually ar asynchronous reset, if ar=1 q=0. Could be active low? Name ar maybe asynchronous reset, not n. Use if (ar) q <= 1'b0; else if (posedge clk) q <= d; in always @(posedge clk or posedge ar). Output q reg. Need one bit. Could use logic. SystemVerilog:\nmodule TopModule (\n    input logic clk,\n    input logic ar,\n    input logic d,\n    output logic q\n);\n    always_ff @(posedge clk or posedge ar) begin\n        if (ar) q <= 1'b0;\n        else q <= d;\n    end\nendmodule\nNeed ensure q initialized? Not necessary. Could use reg. Since output one bit. Return only code.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 159,
+    "total_tokens": 482,
+    "completion_tokens": 323,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 238
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-92d1b7ac180aafcb",
+  "object": "chat.completion",
+  "created": 1788105636,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  logic a,\n    input  logic b,\n    input  logic c,\n    input  logic d,\n    output logic out,\n    output logic out_n\n);\n\n    logic w1;\n    logic w2;\n\n    assign w1 = a & b;\n    assign w2 = c & d;\n    assign out = w1 | w2;\n    assign out_n = ~out;\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user wants SystemVerilog module only. Need produce final only code. Need ensure module TopModule ports a,b,c,d inputs, out,out_n outputs. Implement out = (a&b)|(c&d); out_n = ~out. Could use assign. Need syntactically correct SystemVerilog. No explanations. Need maybe declare wires? They said create two intermediate wires named anything. Could do wire w1,w2; assign w1=a&b; assign w2=c&d; assign out=w1|w2; assign out_n=~out; That's fine. Need only module. Ensure one bit. Use logic? SystemVerilog. Could use wire. Final code only.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 310,
+    "total_tokens": 560,
+    "completion_tokens": 250,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 146
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

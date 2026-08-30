@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-9f9c80449937e124",
+  "object": "chat.completion",
+  "created": 1788106079,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  logic        clk,\n    input  logic        load,\n    input  logic [1:0]  ena,\n    input  logic [99:0] data,\n    output logic [99:0] q\n);\n\n    always_ff @(posedge clk) begin\n        if (load) begin\n            q <= data;\n        end else begin\n            case (ena)\n                2'b01: q <= {q[0], q[99:1]};\n                2'b10: q <= {q[98:0], q[99]};\n                default: q <= q;\n            endcase\n        end\n    end\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user wants only syntactically correct SystemVerilog module TopModule. Need produce final only code. Need think through implementation.\n\nModule interface:\ninput clk, load, ena[1:0], data[99:0], output q[99:0]. Synchronous load and rotate. Need one-bit unless specified. Implement 100-bit left/right rotator.\n\nBehavior:\nalways @(posedge clk) begin\n if (load) q <= data;\n else case (ena)\n  2'b01: q <= {q[0], q[99:1]}; // rotate right by one: LSB wraps to MSB, bits shift right. For q[99:0], right shift: q[0] goes to q[99], q[99:1] to q[98:0]? Let's verify: rotate right by one means bit i moves to i-1, bit 0 moves to 99. New q[99]=old q[0], new q[98:0]=old q[99:1]. Concatenation {q[0], q[99:1]} yields 100 bits: MSB q[0], then q[99:1]. Yes.\n  2'b10: q <= {q[98:0], q[99]}; // rotate left: bit i moves to i+1, bit 99 wraps to 0. New q[98:0]=old q[99:1]? Wait left by one: new q[99]=old q[98], new q[98]=old q[97], ..., new q[1]=old q[0], new q[0]=old q[99]. So {q[98:0], q[99]}? Concatenation MSB to LSB: q[98:0] (99 bits) then q[99] (1 bit). New q[99:1]=old q[98:0], new q[0]=old q[99]. Yes.\n  default: q <= q;\n endcase\nend\n\nNeed output q maybe reg [99:0] q; assign? In SystemVerilog can output reg. Use always_ff. Need ensure no latch. Could use if load else if ena==2'b01 etc.\n\nPotential issue: ena[1:0] input declared as input logic [1:0] ena. data input [99:0]. output logic [99:0] q.\n\nReturn only SystemVerilog. No explanations. Could include module TopModule ( ... ); endmodule.\n\nNeed maybe use q as reg. Since output port can be logic. Use always_ff @(posedge clk). If load synchronous active high overrides rotate. If ena 00 or 11 no rotate.\n\nNeed consider reset? Not specified. No reset.\n\nCould implement with casez? No.\n\nNeed ensure syntactically correct. Use:\nmodule TopModule (\n    input  logic        clk,\n    input  logic        load,\n    input  logic [1:0]  ena,\n    input  logic [99:0] data,\n    output logic [99:0] q\n);\n\n    always_ff @(posedge clk) begin\n        if (load) begin\n            q <= data;\n        end else begin\n            case (ena)\n                2'b01: q <= {q[0], q[99:1]};\n                2'b10: q <= {q[98:0], q[99]};\n                default: q <= q;\n            endcase\n        end\n    end\nendmodule\n\nCheck rotate right: Suppose q=1000...0 (bit99=1). Rotate right by one should bit98=1? Wait right shift moves high to low: bit99 -> bit98, bit0 -> bit99. If only bit99=1, after right rotate bit98=1. Our {q[0], q[99:1]}: q[0]=0, q[99:1]=1000...0? q[99:1] is 99 bits with MSB q[99]=1 then zeros. Concatenate 0 then 1 followed zeros => new q[99]=0, q[98]=1. Good.\nLeft rotate: bit0=1 -> bit1=1. {q[98:0], q[99]}: q[98:0] includes q[0]=1 at LSB of that 99-bit segment? Let's index: result bits [99:0] = {q[98:0], q[99]}. result[99]=q[98], result[98]=q[97], ..., result[1]=q[0], result[0]=q[99]. Good.\n\nNeed maybe if ena==2'b11 do not rotate. default covers.\n\nCould use q <= q; in default. Fine.\n\nNeed final only code. Ensure no markdown? User says return only syntactically correct SystemVerilog. Could output code block? Probably no, just raw code. final raw.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 367,
+    "total_tokens": 1698,
+    "completion_tokens": 1331,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 1166
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

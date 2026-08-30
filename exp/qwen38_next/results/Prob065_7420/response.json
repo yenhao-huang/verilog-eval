@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-86842032da603f3d",
+  "object": "chat.completion",
+  "created": 1788105494,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  logic p1a,\n    input  logic p1b,\n    input  logic p1c,\n    input  logic p1d,\n    input  logic p2a,\n    input  logic p2b,\n    input  logic p2c,\n    input  logic p2d,\n    output logic p1y,\n    output logic p2y\n);\n\n    assign p1y = ~(p1a & p1b & p1c & p1d);\n    assign p2y = ~(p2a & p2b & p2c & p2d);\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user's request: implement SystemVerilog module TopModule with ports p1a-d, p2a-d inputs, p1y, p2y outputs. Need only syntactically correct SystemVerilog, no explanations. Need think. 7420 two 4-input NAND gates. Output p1y = ~(p1a & p1b & p1c & p1d), p2y similarly. Need module TopModule. Could use assign. Ensure one bit. Return only code. Need final with code block? User says return only syntactically correct SystemVerilog. Could output plain code no markdown? Usually code block okay? \"Return only\" maybe no explanations, code block acceptable? To be safe output raw SystemVerilog without markdown. Need include module.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 243,
+    "total_tokens": 556,
+    "completion_tokens": 313,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 166
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

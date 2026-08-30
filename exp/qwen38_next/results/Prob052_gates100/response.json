@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-adc071dbb6f93cfb",
+  "object": "chat.completion",
+  "created": 1788105434,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  [99:0] in,\n    output        out_and,\n    output        out_or,\n    output        out_xor\n);\n\n    assign out_and = &in;\n    assign out_or  = |in;\n    assign out_xor = ^in;\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user's request: implement SystemVerilog module TopModule with interface input [99:0] in, outputs out_and, out_or, out_xor. Need return only syntactically correct SystemVerilog, no explanations. Need final only code. Need ensure correct. Could use assign out_and = &in; out_or = |in; out_xor = ^in; module TopModule(input [99:0] in, output out_and, out_or, out_xor);. Need maybe all one bit unless specified. Use SystemVerilog. No extra text. Ensure no comments? Fine.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 230,
+    "total_tokens": 428,
+    "completion_tokens": 198,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 126
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}
