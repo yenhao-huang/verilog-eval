@@ -1,0 +1,2 @@
+/workspace/verilog-eval/exp/qwen38_next/results/Prob115_shift18/Prob115_shift18.sv:18: syntax error
+/workspace/verilog-eval/exp/qwen38_next/results/Prob115_shift18/Prob115_shift18.sv:18: error: Syntax error between internal '}' and closing '}' of repeat concatenation.

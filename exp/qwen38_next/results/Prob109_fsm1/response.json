@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-a2c2dea0fbcbe63f",
+  "object": "chat.completion",
+  "created": 1788106125,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  logic clk,\n    input  logic areset,\n    input  logic in,\n    output logic out\n);\n\n    logic state; // 0 = A, 1 = B\n\n    always_ff @(posedge clk or posedge areset) begin\n        if (areset) begin\n            state <= 1'b1; // Reset to state B\n        end else begin\n            if (in) begin\n                state <= state; // Stay in current state\n            end else begin\n                state <= ~state; // Toggle between A and B\n            end\n        end\n    end\n\n    assign out = state; // Moore output: A=0, B=1\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user wants SystemVerilog module only. Need produce final only code. Need think through design.\n\nProblem: TopModule interface: input clk, areset, in, output out. Moore machine diagram:\nB (1) --0--> A\nB (1) --1--> B\nA (0) --0--> B\nA (0) --1--> A\nAsynchronously reset into state B if reset high.\n\nStates: A output 0, B output 1. Transitions: from A: in=0 -> B, in=1 -> A. From B: in=0 -> A, in=1 -> B. This is actually next_state = in? current? Let's see: if in=1 stay same, if in=0 toggle? A->B, B->A. So next = in ? state : ~state. Output = state if B=1. Could implement state reg. Asynchronous reset areset high -> state B (1). Need output combinational Moore: out = state. Or registered? Moore output usually combinational from state. If reset high, out=1. Use always_ff @(posedge clk or posedge areset). If areset state <= 1'b1; else state <= in ? state : ~state. Output assign out = state. Need ensure one bit. Could use enum. Need syntactically correct SystemVerilog. No explanations.\n\nPotential nuance: asynchronous reset into state B if reset high. areset active high. Use posedge areset. If areset is high, state B. If areset deasserted, normal.\n\nNeed only module. Could include typedef enum. But simple.\n\nCheck if output should be registered? Moore machine output depends only on state. If state is registered, out combinational. If reset high, out=1. Good.\n\nNeed maybe use always_comb for next_state. But simple.\n\nFinal:\nmodule TopModule (\n input logic clk,\n input logic areset,\n input logic in,\n output logic out\n);\n logic state; // 0=A, 1=B\n always_ff @(posedge clk or posedge areset) begin\n   if (areset) state <= 1'b1;\n   else state <= in ? state : ~state;\n end\n assign out = state;\nendmodule\n\nNeed ensure if areset high and clk edge? async. Good.\n\nCould there be issue with reset high continuously: state remains B. Good.\n\nNeed final only code. Ensure no markdown? User says return only syntactically correct SystemVerilog. Could output code block? Probably just code. final with code.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 206,
+    "total_tokens": 925,
+    "completion_tokens": 719,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 560
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

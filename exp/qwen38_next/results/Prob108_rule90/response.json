@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-a761a1558be5ee5d",
+  "object": "chat.completion",
+  "created": 1788106117,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  logic        clk,\n    input  logic        load,\n    input  logic [511:0] data,\n    output logic [511:0] q\n);\n\n    always_ff @(posedge clk) begin\n        if (load) begin\n            q <= data;\n        end else begin\n            q <= ({1'b0, q[511:1]} ^ {q[510:0], 1'b0});\n        end\n    end\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user's request: implement SystemVerilog module TopModule. Need return only syntactically correct SystemVerilog, no explanations. Need think through design.\n\nInterface:\ninput clk, load, data[511:0], output q[511:0]. One bit unless otherwise specified. Rule 90: next state of each cell is XOR of left and right neighbors. Boundaries q[-1] and q[512] zero. Sequential positive edge. load loads data.\n\nNeed implement 512-cell system. On posedge clk: if load q <= data; else q <= next. Need compute next. For i=0: left boundary 0, right q[1], next[0]=0^q[1]=q[1]. For i=511: left q[510], right boundary 0, next[511]=q[510]. For middle: q[i-1]^q[i+1]. Could implement with generate or combinational expression. Need syntactically correct. Could use always_comb? But output q is reg? In SystemVerilog, output logic [511:0] q; always_ff. Need maybe use assign next = {1'b0, q[511:1]} ^ {q[510:0], 1'b0}? Let's verify bit ordering. q[511:0]. For next[i] = q[i-1] ^ q[i+1]. If define left_shift? Let's derive vector expression.\n\nWe want next[0] = q[1] (since left 0). next[511] = q[510]. For i middle.\n\nConsider A = {1'b0, q[511:1]}: bits A[0]=q[1], A[1]=q[2], ..., A[510]=q[511], A[511]=0. This is q shifted right? Actually A[i]=q[i+1] for i<511, A[511]=0.\nB = {q[510:0], 1'b0}: bits B[0]=0, B[1]=q[0], ..., B[511]=q[510]. B[i]=q[i-1] for i>0, B[0]=0.\nA ^ B gives next[i]=q[i+1]^q[i-1] with boundaries zero. Yes.\n\nSo always_ff @(posedge clk) if (load) q <= data; else q <= ({1'b0, q[511:1]} ^ {q[510:0], 1'b0});\n\nNeed ensure data input 512 bits. Module ports:\nmodule TopModule (\n    input clk,\n    input load,\n    input [511:0] data,\n    output logic [511:0] q\n);\n...\nendmodule\n\nCould use always_comb next_q and always_ff. Simpler direct. Need no reset. If load high, load data. Else advance.\n\nPotential issue: q is output logic, can be assigned in always_ff. Good.\n\nNeed only code. Ensure no comments? Fine. Could include `default_nettype none`? Not necessary. Return only syntactically correct SystemVerilog. Need maybe use `always_ff @(posedge clk)` supported. If environment maybe Verilog-2001? User says SystemVerilog. Use logic. Could use reg for compatibility. But requested SystemVerilog. Use `logic`.\n\nNeed consider if load is synchronous. Yes.\n\nCould implement with generate for clarity. But vector expression concise. Need ensure no width mismatch: {1'b0, q[511:1]} width 512, {q[510:0], 1'b0} width 512. Good.\n\nLet's final only code.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 447,
+    "total_tokens": 1421,
+    "completion_tokens": 974,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 854
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

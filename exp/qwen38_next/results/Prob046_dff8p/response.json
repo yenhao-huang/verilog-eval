@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-af93d97d06af2fa6",
+  "object": "chat.completion",
+  "created": 1788105395,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  logic       clk,\n    input  logic       reset,\n    input  logic [7:0] d,\n    output logic [7:0] q\n);\n\n    always @(negedge clk) begin\n        if (reset)\n            q <= 8'h34;\n        else\n            q <= d;\n    end\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user's request: implement SystemVerilog module TopModule with interface: input clk, reset, input d[7:0], output q[7:0]. 8 D flip-flops active high synchronous reset, reset to 0x34, triggered by negative edge clk. Need return only syntactically correct SystemVerilog, no explanations. Need think carefully.\n\nNeed produce code. Requirements: active high synchronous reset means reset sampled on negative edge? Synchronous reset: reset affects only on clock edge. Negative edge clk. On negedge clk, if reset then q <= 8'h34 else q <= d. Need output q maybe reg [7:0]. Use always @(negedge clk) if (reset) q <= 8'h34; else q <= d;\n\nNeed ensure module named TopModule. Could use logic. SystemVerilog. Only code. No comments? Fine.\n\nPotential nuance: D flip-flops with active high synchronous reset. If reset high at negative edge, q becomes 0x34. If reset low, q=d. No async reset. Good.\n\nNeed final only code. Ensure no extra text.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 197,
+    "total_tokens": 529,
+    "completion_tokens": 332,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 245
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

@@ -1,0 +1,157 @@
+problem,status,passed,mismatches,error
+Prob001_zero,pass,1,0,
+Prob002_m2014_q4i,pass,1,0,
+Prob003_step_one,pass,1,0,
+Prob004_vector2,pass,1,0,
+Prob005_notgate,pass,1,0,
+Prob006_vectorr,pass,1,0,
+Prob007_wire,pass,1,0,
+Prob008_m2014_q4h,pass,1,0,
+Prob009_popcount3,pass,1,0,
+Prob010_mt2015_q4a,pass,1,0,
+Prob011_norgate,pass,1,0,
+Prob012_xnorgate,pass,1,0,
+Prob013_m2014_q4e,pass,1,0,
+Prob014_andgate,pass,1,0,
+Prob015_vector1,pass,1,0,
+Prob016_m2014_q4j,pass,1,0,
+Prob017_mux2to1v,pass,1,0,
+Prob018_mux256to1,pass,1,0,
+Prob019_m2014_q4f,pass,1,0,
+Prob020_mt2015_eq2,pass,1,0,
+Prob021_mux256to1v,pass,1,0,
+Prob022_mux2to1,pass,1,0,
+Prob023_vector100r,pass,1,0,
+Prob024_hadd,pass,1,0,
+Prob025_reduction,pass,1,0,
+Prob026_alwaysblock1,pass,1,0,
+Prob027_fadd,pass,1,0,
+Prob028_m2014_q4a,pass,1,0,
+Prob029_m2014_q4g,pass,1,0,
+Prob030_popcount255,pass,1,0,
+Prob031_dff,pass,1,0,
+Prob032_vector0,pass,1,0,
+Prob033_ece241_2014_q1c,pass,1,0,
+Prob034_dff8,compile_error,0,,iverilog exited 1
+Prob035_count1to10,pass,1,0,
+Prob036_ringer,pass,1,0,
+Prob037_review2015_count1k,pass,1,0,
+Prob038_count15,pass,1,0,
+Prob039_always_if,pass,1,0,
+Prob040_count10,pass,1,0,
+Prob041_dff8r,compile_error,0,,iverilog exited 2
+Prob042_vector4,pass,1,0,
+Prob043_vector5,pass,1,0,
+Prob044_vectorgates,pass,1,0,
+Prob045_edgedetect2,pass,1,0,
+Prob046_dff8p,pass,1,0,
+Prob047_dff8ar,compile_error,0,,iverilog exited 2
+Prob048_m2014_q4c,pass,1,0,
+Prob049_m2014_q4b,pass,1,0,
+Prob050_kmap1,pass,1,0,
+Prob051_gates4,pass,1,0,
+Prob052_gates100,pass,1,0,
+Prob053_m2014_q4d,fail,0,1,
+Prob054_edgedetect,pass,1,0,
+Prob055_conditional,pass,1,0,
+Prob056_ece241_2013_q7,pass,1,0,
+Prob057_kmap2,api_error,0,,timed out
+Prob058_alwaysblock2,pass,1,0,
+Prob059_wire4,pass,1,0,
+Prob060_m2014_q4k,pass,1,0,
+Prob061_2014_q4a,pass,1,0,
+Prob062_bugs_mux2,fail,0,111,
+Prob063_review2015_shiftcount,api_error,0,,timed out
+Prob064_vector3,pass,1,0,
+Prob065_7420,pass,1,0,
+Prob066_edgecapture,fail,0,91,
+Prob067_countslow,pass,1,0,
+Prob068_countbcd,api_error,0,,timed out
+Prob069_truthtable1,pass,1,0,
+Prob070_ece241_2013_q2,api_error,0,,timed out
+Prob071_always_casez,pass,1,0,
+Prob072_thermostat,pass,1,0,
+Prob073_dff16e,pass,1,0,
+Prob074_ece241_2014_q4,api_error,0,,timed out
+Prob075_counter_2bc,pass,1,0,
+Prob076_always_case,pass,1,0,
+Prob077_wire_decl,pass,1,0,
+Prob078_dualedge,api_error,0,,timed out
+Prob079_fsm3onehot,api_error,0,,timed out
+Prob080_timer,api_error,0,,timed out
+Prob081_7458,pass,1,0,
+Prob082_lfsr32,api_error,0,,timed out
+Prob083_mt2015_q4b,pass,1,0,
+Prob084_ece241_2013_q12,api_error,0,,timed out
+Prob085_shift4,pass,1,0,
+Prob086_lfsr5,api_error,0,,timed out
+Prob087_gates,pass,1,0,
+Prob088_ece241_2014_q5b,pass,1,0,
+Prob089_ece241_2014_q5a,api_error,0,,timed out
+Prob090_circuit1,pass,1,0,
+Prob091_2012_q2b,pass,1,0,
+Prob092_gatesv100,api_error,0,,timed out
+Prob093_ece241_2014_q3,api_error,0,,timed out
+Prob094_gatesv,api_error,0,,timed out
+Prob095_review2015_fsmshift,api_error,0,,timed out
+Prob096_review2015_fsmseq,api_error,0,,timed out
+Prob097_mux9to1v,pass,1,0,
+Prob098_circuit7,api_error,0,,timed out
+Prob099_m2014_q6c,internal_error,0,,"expected string or bytes-like object, got 'NoneType'"
+Prob100_fsm3comb,pass,1,0,
+Prob101_circuit4,pass,1,0,
+Prob102_circuit3,pass,1,0,
+Prob103_circuit2,pass,1,0,
+Prob104_mt2015_muxdff,api_error,0,,timed out
+Prob105_rotate100,pass,1,0,
+Prob106_always_nolatches,pass,1,0,
+Prob107_fsm1s,api_error,0,,timed out
+Prob108_rule90,pass,1,0,
+Prob109_fsm1,pass,1,0,
+Prob110_fsm2,pass,1,0,
+Prob111_fsm2s,pass,1,0,
+Prob112_always_case2,pass,1,0,
+Prob113_2012_q1g,internal_error,0,,"expected string or bytes-like object, got 'NoneType'"
+Prob114_bugs_case,compile_error,0,,iverilog exited 24
+Prob115_shift18,compile_error,0,,iverilog exited 2
+Prob116_m2014_q3,internal_error,0,,"expected string or bytes-like object, got 'NoneType'"
+Prob117_circuit9,api_error,0,,timed out
+Prob118_history_shift,pass,1,0,
+Prob119_fsm3,pass,1,0,
+Prob120_fsm3s,compile_error,0,,iverilog exited 4
+Prob121_2014_q3bfsm,pass,1,0,
+Prob122_kmap4,pass,1,0,
+Prob123_bugs_addsubz,pass,1,0,
+Prob124_rule110,api_error,0,,timed out
+Prob125_kmap3,api_error,0,,timed out
+Prob126_circuit6,api_error,0,,timed out
+Prob127_lemmings1,api_error,0,,timed out
+Prob128_fsm_ps2,api_error,0,,timed out
+Prob129_ece241_2013_q8,compile_error,0,,iverilog exited 3
+Prob130_circuit5,api_error,0,,timed out
+Prob131_mt2015_q4,api_error,0,,timed out
+Prob132_always_if2,pass,1,0,
+Prob133_2014_q3fsm,api_error,0,,timed out
+Prob134_2014_q3c,api_error,0,,timed out
+Prob135_m2014_q6b,api_error,0,,timed out
+Prob136_m2014_q6,pass,1,0,
+Prob137_fsm_serial,api_error,0,,timed out
+Prob138_2012_q2fsm,pass,1,0,
+Prob139_2013_q2bfsm,api_error,0,,timed out
+Prob140_fsm_hdlc,api_error,0,,timed out
+Prob141_count_clock,api_error,0,,timed out
+Prob142_lemmings2,api_error,0,,timed out
+Prob143_fsm_onehot,api_error,0,,timed out
+Prob144_conwaylife,api_error,0,,timed out
+Prob145_circuit8,api_error,0,,timed out
+Prob146_fsm_serialdata,api_error,0,,timed out
+Prob147_circuit10,api_error,0,,timed out
+Prob148_2013_q2afsm,pass,1,0,
+Prob149_ece241_2013_q4,api_error,0,,timed out
+Prob150_review2015_fsmonehot,api_error,0,,timed out
+Prob151_review2015_fsm,api_error,0,,timed out
+Prob152_lemmings3,api_error,0,,timed out
+Prob153_gshare,internal_error,0,,"expected string or bytes-like object, got 'NoneType'"
+Prob154_fsm_ps2data,internal_error,0,,"expected string or bytes-like object, got 'NoneType'"
+Prob155_lemmings4,internal_error,0,,"expected string or bytes-like object, got 'NoneType'"
+Prob156_review2015_fancytimer,internal_error,0,,"expected string or bytes-like object, got 'NoneType'"

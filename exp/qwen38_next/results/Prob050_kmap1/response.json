@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-9c9677790562f79c",
+  "object": "chat.completion",
+  "created": 1788105423,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  logic a,\n    input  logic b,\n    input  logic c,\n    output logic out\n);\n\n    assign out = a | b | c;\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user's request: implement SystemVerilog module TopModule with inputs a,b,c output out. Need only syntactically correct SystemVerilog, no explanations. Need analyze K-map.\n\nK-map layout: columns a=0,1. rows bc: 00,01,11,10. Values:\nbc=00: a0=0, a1=1\nbc=01: a0=1, a1=1\nbc=11: a0=1, a1=1\nbc=10: a0=1, a1=1\n\nSo out = 1 except when a=0 and bc=00. That is out = a | b | c? Let's check: if a=0,b=0,c=0 => 0. Any other: if a=1 =>1; if b=1 or c=1 =>1. Yes out = a | b | c. Need module TopModule(input a,b,c, output out). Could use assign out = a | b | c;\n\nNeed final only code. Ensure SystemVerilog. Maybe:\nmodule TopModule (\n    input logic a,\n    input logic b,\n    input logic c,\n    output logic out\n);\n    assign out = a | b | c;\nendmodule\n\nNo explanations.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 214,
+    "total_tokens": 553,
+    "completion_tokens": 339,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 290
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

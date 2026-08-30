@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-8ad8159c7c238a97",
+  "object": "chat.completion",
+  "created": 1788105279,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  wire in1,\n    input  wire in2,\n    output wire out\n);\n\n    assign out = ~(in1 | in2);\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user's request: implement SystemVerilog module TopModule with inputs in1 in2 output out, 2-input NOR gate. Need return only syntactically correct SystemVerilog, no explanations. Need final only code. Ensure module TopModule. Could use assign out = ~(in1 | in2); or nor gate. Need one bit ports. Use default net type? Simple.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 146,
+    "total_tokens": 273,
+    "completion_tokens": 127,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 82
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

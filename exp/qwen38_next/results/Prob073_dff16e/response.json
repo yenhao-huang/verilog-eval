@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-91ef8aaf22d775e5",
+  "object": "chat.completion",
+  "created": 1788105590,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input        clk,\n    input        resetn,\n    input  [1:0] byteena,\n    input  [15:0] d,\n    output reg [15:0] q\n);\n\n    always @(posedge clk) begin\n        if (!resetn) begin\n            q <= 16'b0;\n        end else begin\n            if (byteena[1]) begin\n                q[15:8] <= d[15:8];\n            end\n            if (byteena[0]) begin\n                q[7:0] <= d[7:0];\n            end\n        end\n    end\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user wants SystemVerilog module only. Need produce final only code. Need ensure syntactically correct SystemVerilog. Module TopModule ports: input clk, resetn, input [1:0] byteena, input [15:0] d, output [15:0] q. 16 DFFs, synchronous active-low reset. Positive edge clk. byteena[1] upper byte, byteena[0] lower. Need likely q reg. On posedge clk: if (!resetn) q <= 0; else begin if (byteena[1]) q[15:8] <= d[15:8]; if (byteena[0]) q[7:0] <= d[7:0]; end. Could use always @(posedge clk). Need output reg [15:0] q. No explanations. Ensure no extra text. Could include `default_nettype none? Not necessary. Return only module.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 273,
+    "total_tokens": 634,
+    "completion_tokens": 361,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 205
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-968be054ba2c1192",
+  "object": "chat.completion",
+  "created": 1788105338,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  [2:0] vec,\n    output [2:0] outv,\n    output       o2,\n    output       o1,\n    output       o0\n);\n\n    assign outv = vec;\n    assign o0   = vec[0];\n    assign o1   = vec[1];\n    assign o2   = vec[2];\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user's request: implement SystemVerilog module TopModule. Need final only syntactically correct SystemVerilog, no explanations. Need ensure interface: input vec [2:0], output outv [2:0], output o2,o1,o0. Connect o0 to vec[0], o1 vec[1], o2 vec[2], outv=vec. Could use assign. Need maybe module TopModule (input [2:0] vec, output [2:0] outv, output o2,o1,o0); assign outv=vec; assign o0=vec[0]; etc. Return only code. Ensure no extra text.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 205,
+    "total_tokens": 442,
+    "completion_tokens": 237,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 142
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

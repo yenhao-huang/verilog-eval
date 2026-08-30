@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-82d33903186d9423",
+  "object": "chat.completion",
+  "created": 1788105292,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  logic [1:0] A,\n    input  logic [1:0] B,\n    output logic       z\n);\n\n    assign z = (A == B);\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user's request: implement SystemVerilog module TopModule with inputs A[1:0], B[1:0], output z, z=1 if A==B else 0. Need return only syntactically correct SystemVerilog, no explanations. Need final only code. Ensure module named TopModule. Could use assign z = (A == B);. Ports one bit unless otherwise specified, so A,B 2 bits. Use logic or wire? SystemVerilog. Maybe:\nmodule TopModule (\n    input  logic [1:0] A,\n    input  logic [1:0] B,\n    output logic       z\n);\n    assign z = (A == B);\nendmodule\nNeed only code.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 195,
+    "total_tokens": 406,
+    "completion_tokens": 211,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 159
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

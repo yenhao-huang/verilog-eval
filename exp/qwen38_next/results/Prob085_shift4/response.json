@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-82dabedc95c94c2f",
+  "object": "chat.completion",
+  "created": 1788105736,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  logic        clk,\n    input  logic        areset,\n    input  logic        load,\n    input  logic        ena,\n    input  logic [3:0]  data,\n    output logic [3:0]  q\n);\n\n    always_ff @(posedge clk or posedge areset) begin\n        if (areset) begin\n            q <= 4'b0;\n        end else if (load) begin\n            q <= data;\n        end else if (ena) begin\n            q <= {1'b0, q[3:1]};\n        end\n    end\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user's request: implement SystemVerilog module TopModule. Need return only syntactically correct SystemVerilog, no explanations. Need think through requirements.\n\nPorts: input clk, areset, load, ena, input [3:0] data, output [3:0] q. 4-bit shift register right shift, async positive edge triggered areset (areset active high? \"asynchronous positive edge triggered areset\" likely async reset on posedge areset, active high). Synchronous active high load and enable. If load and ena both 1, load priority. Shift right: q[3] becomes zero, q[0] shifted out. So q <= {1'b0, q[3:1]} when ena. Load q <= data. Reset q <= 0.\n\nNeed choose always @(posedge clk or posedge areset). If areset high async reset. In SystemVerilog: always_ff @(posedge clk or posedge areset) begin if (areset) q <= 4'b0; else if (load) q <= data; else if (ena) q <= {1'b0, q[3:1]}; end. Output q reg [3:0]. Could use logic. Need only module. Ensure no extra text.\n\nPotential issue: asynchronous positive edge triggered areset means reset when areset transitions 0->1. Yes.\n\nNeed final only code. Could include `default_nettype none`? Not necessary. Use module TopModule (input logic clk, ...). Since requested all one bit unless specified. Use output logic [3:0] q.\n\nNeed ensure syntactically correct SystemVerilog. Could use always_ff. Some tools? SystemVerilog okay. If want Verilog compatible: always @(posedge clk or posedge areset). But requested SystemVerilog. Use logic.\n\nFinal:\nmodule TopModule (\n    input logic clk,\n    input logic areset,\n    input logic load,\n    input logic ena,\n    input logic [3:0] data,\n    output logic [3:0] q\n);\n    always_ff @(posedge clk or posedge areset) begin\n        if (areset) begin\n            q <= 4'b0;\n        end else if (load) begin\n            q <= data;\n        end else if (ena) begin\n            q <= {1'b0, q[3:1]};\n        end\n    end\nendmodule\n\nNeed no explanation. Ensure only code. Done.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 310,
+    "total_tokens": 1001,
+    "completion_tokens": 691,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 543
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-8fa70959276f1bd8",
+  "object": "chat.completion",
+  "created": 1788106151,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  logic clk,\n    input  logic reset,\n    input  logic j,\n    input  logic k,\n    output logic out\n);\n\n    localparam logic OFF = 1'b0;\n    localparam logic ON  = 1'b1;\n\n    logic state;\n\n    always_ff @(posedge clk) begin\n        if (reset) begin\n            state <= OFF;\n        end else begin\n            case (state)\n                OFF: begin\n                    if (j)\n                        state <= ON;\n                    else\n                        state <= OFF;\n                end\n                ON: begin\n                    if (k)\n                        state <= OFF;\n                    else\n                        state <= ON;\n                end\n                default: state <= OFF;\n            endcase\n        end\n    end\n\n    assign out = state;\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user's request: implement SystemVerilog module TopModule. Need produce final only code. Need ensure syntactically correct SystemVerilog. Module TopModule ports: input clk, reset, j, k; output out. Moore FSM two states OFF out=0, ON out=1. Reset active-high synchronous reset to OFF. Need likely use always @(posedge clk) if reset state <= OFF else transitions. Output combinational from state or registered? Moore output can be combinational from state. Need one bit. Could use enum or localparam. Need no explanations. Ensure output out assigned. Could use reg state; assign out = state; with OFF=0 ON=1. Synchronous reset. Code:\nmodule TopModule (input logic clk, input logic reset, input logic j, input logic k, output logic out);\n localparam OFF=1'b0, ON=1'b1;\n logic state;\n always_ff @(posedge clk) begin\n   if (reset) state <= OFF;\n   else begin\n     case (state)\n       OFF: if (j) state <= ON; else state <= OFF;\n       ON: if (k) state <= OFF; else state <= ON;\n       default: state <= OFF;\n     endcase\n   end\n end\n assign out = state;\nendmodule\nNeed maybe SystemVerilog only. Could use enum: typedef enum logic [0:0] {OFF, ON} state_t; state_t state; But localparam simpler. Need ensure output one bit. final only code.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 238,
+    "total_tokens": 759,
+    "completion_tokens": 521,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 329
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

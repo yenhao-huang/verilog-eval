@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-96cd64799316acb7",
+  "object": "chat.completion",
+  "created": 1788105357,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  logic       clk,\n    input  logic       reset,\n    output logic [9:0] q\n);\n\n    always_ff @(posedge clk) begin\n        if (reset) begin\n            q <= 10'd0;\n        end else if (q == 10'd999) begin\n            q <= 10'd0;\n        end else begin\n            q <= q + 10'd1;\n        end\n    end\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user wants SystemVerilog module only. Need produce final only code. Need ensure syntactically correct SystemVerilog. Module TopModule ports: input clk, reset; output q [9:0]. Counter 0 to 999 inclusive period 1000. reset active high synchronous reset to 0. Sequential posedge clk. Need likely use always @(posedge clk) if (reset) q <= 0; else if (q == 999) q <= 0; else q <= q + 1; q reg [9:0]. Since 999 fits 10 bits. Could use parameter. Need no explanations. Ensure output q maybe reg. Use logic? SystemVerilog. Could be:\nmodule TopModule (\n input logic clk,\n input logic reset,\n output logic [9:0] q\n);\n always_ff @(posedge clk) begin\n   if (reset) q <= 10'd0;\n   else if (q == 10'd999) q <= 10'd0;\n   else q <= q + 10'd1;\n end\nendmodule\nNeed maybe reset synchronous active high. Good.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 203,
+    "total_tokens": 576,
+    "completion_tokens": 373,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 258
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-917018c89b204408",
+  "object": "chat.completion",
+  "created": 1788105317,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  logic in1,\n    input  logic in2,\n    input  logic in3,\n    output logic out\n);\n\n    assign out = ~(in1 ^ in2) ^ in3;\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user's request: implement SystemVerilog module TopModule with ports in1,in2,in3,out. Need only syntactically correct SystemVerilog, no explanations. Need final code only. Need ensure module name TopModule. Logic: out = (in1 ~^ in2) ^ in3. Could use assign out = ~(in1 ^ in2) ^ in3; or assign out = (in1 == in2) ^ in3; Since one-bit. Need maybe use xnor gate? Simpler assign. Need no extra text. Ensure SystemVerilog. Could include module TopModule (input logic in1, input logic in2, input logic in3, output logic out); assign out = ~(in1 ^ in2) ^ in3; endmodule. That's it.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 205,
+    "total_tokens": 430,
+    "completion_tokens": 225,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 168
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

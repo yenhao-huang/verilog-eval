@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-a47b572660f26aea",
+  "object": "chat.completion",
+  "created": 1788105310,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  logic a,\n    input  logic b,\n    input  logic cin,\n    output logic cout,\n    output logic sum\n);\n\n    assign sum  = a ^ b ^ cin;\n    assign cout = (a & b) | (cin & (a ^ b));\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user wants SystemVerilog module only. Need produce final only code. Need ensure syntactically correct SystemVerilog. Module TopModule ports a,b,cin, cout,sum. Full adder. Could use assign sum = a ^ b ^ cin; assign cout = (a & b) | (cin & (a ^ b));. Need no explanations. Ensure one bit. Could use logic. Return only code.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 173,
+    "total_tokens": 337,
+    "completion_tokens": 164,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 89
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

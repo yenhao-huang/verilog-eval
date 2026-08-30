@@ -1,0 +1,5 @@
+/workspace/verilog-eval/exp/qwen38_next/results/Prob120_fsm3s/Prob120_fsm3s.sv:27: error: This assignment requires an explicit cast.
+/workspace/verilog-eval/exp/qwen38_next/results/Prob120_fsm3s/Prob120_fsm3s.sv:28: error: This assignment requires an explicit cast.
+/workspace/verilog-eval/exp/qwen38_next/results/Prob120_fsm3s/Prob120_fsm3s.sv:29: error: This assignment requires an explicit cast.
+/workspace/verilog-eval/exp/qwen38_next/results/Prob120_fsm3s/Prob120_fsm3s.sv:30: error: This assignment requires an explicit cast.
+4 error(s) during elaboration.

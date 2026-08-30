@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-b69976cccb4af56c",
+  "object": "chat.completion",
+  "created": 1788105309,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  [7:0] in,\n    output       parity\n);\n\n    assign parity = ^in;\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user wants SystemVerilog module only. Need produce final only code. Need ensure syntactically correct SystemVerilog. Module TopModule input [7:0] in output parity. parity = ^in. Could use assign parity = ^in; Need no explanations.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 209,
+    "total_tokens": 303,
+    "completion_tokens": 94,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 58
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-9c5caf6f4fbeac40",
+  "object": "chat.completion",
+  "created": 1788106188,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  [7:0] code,\n    output [3:0] out,\n    output       valid\n);\n\n    always_comb begin\n        out   = 4'b0000;\n        valid = 1'b0;\n\n        case (code)\n            8'h45: begin out = 4'd0; valid = 1'b1; end\n            8'h16: begin out = 4'd1; valid = 1'b1; end\n            8'h1e: begin out = 4'd2; valid = 1'b1; end\n            8'h26: begin out = 4'd3; valid = 1'b1; end\n            8'h25: begin out = 4'd4; valid = 1'b1; end\n            8'h2e: begin out = 4'd5; valid = 1'b1; end\n            8'h36: begin out = 4'd6; valid = 1'b1; end\n            8'h3d: begin out = 4'd7; valid = 1'b1; end\n            8'h3e: begin out = 4'd8; valid = 1'b1; end\n            8'h46: begin out = 4'd9; valid = 1'b1; end\n            default: begin out = 4'd0; valid = 1'b0; end\n        endcase\n    end\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user wants SystemVerilog module only. Need produce final only code. Need ensure syntactically correct SystemVerilog. Module TopModule input [7:0] code output [3:0] out output valid. Recognize scancodes mapping. If no match out=0 valid=0. Could use always_comb or assign. Need one module. No explanations. Need maybe use case. Ensure default. Let's craft.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 329,
+    "total_tokens": 758,
+    "completion_tokens": 429,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 91
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

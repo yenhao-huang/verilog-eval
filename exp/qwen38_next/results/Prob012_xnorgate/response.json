@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-a898a770996e3f0a",
+  "object": "chat.completion",
+  "created": 1788105278,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  logic a,\n    input  logic b,\n    output logic out\n);\n\n    assign out = ~(a ^ b);\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user's request: implement SystemVerilog module TopModule with input a,b output out, XNOR gate. Need final only syntactically correct SystemVerilog, no explanations. Need ensure module name TopModule. Could use assign out = ~(a ^ b); or assign out = a ~^ b; or a xnor b. Since one bit. Return only code. Need maybe include module/endmodule. No timescale needed. Ensure SystemVerilog.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 143,
+    "total_tokens": 282,
+    "completion_tokens": 139,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 98
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

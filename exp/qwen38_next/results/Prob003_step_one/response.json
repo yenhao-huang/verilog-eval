@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-b7a416a20fcea563",
+  "object": "chat.completion",
+  "created": 1788105267,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    output logic one\n);\n\nassign one = 1'b1;\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user's request: implement SystemVerilog module TopModule with output one, always drive 1. Need return only syntactically correct SystemVerilog, no explanations. Need final only code. Need ensure module named TopModule, output one. Could be:\nmodule TopModule (\n    output logic one\n);\nassign one = 1'b1;\nendmodule\nOr output wire one; assign. Since all ports one bit unless specified. Good.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 135,
+    "total_tokens": 259,
+    "completion_tokens": 124,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 98
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

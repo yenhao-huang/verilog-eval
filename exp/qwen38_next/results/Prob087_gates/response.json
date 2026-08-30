@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-ae6bbfc5e94ea6b2",
+  "object": "chat.completion",
+  "created": 1788105784,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  logic a,\n    input  logic b,\n    output logic out_and,\n    output logic out_or,\n    output logic out_xor,\n    output logic out_nand,\n    output logic out_nor,\n    output logic out_xnor,\n    output logic out_anotb\n);\n\n    assign out_and   = a & b;\n    assign out_or    = a | b;\n    assign out_xor   = a ^ b;\n    assign out_nand  = ~(a & b);\n    assign out_nor   = ~(a | b);\n    assign out_xnor  = ~(a ^ b);\n    assign out_anotb = a & ~b;\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user's request: implement SystemVerilog module TopModule. Need final only syntactically correct SystemVerilog, no explanations. Need ensure module name TopModule, ports one bit. Could use assign statements. Need maybe include module/endmodule. No extra text.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 285,
+    "total_tokens": 506,
+    "completion_tokens": 221,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 57
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}

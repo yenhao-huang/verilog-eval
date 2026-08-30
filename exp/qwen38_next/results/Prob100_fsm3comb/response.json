@@ -1,0 +1,42 @@
+{
+  "id": "chatcmpl-a43b74e58b1103ca",
+  "object": "chat.completion",
+  "created": 1788106006,
+  "model": "qwen3.8-flash-next",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "\n\nmodule TopModule (\n    input  logic       in,\n    input  logic [1:0] state,\n    output logic [1:0] next_state,\n    output logic       out\n);\n\n    always_comb begin\n        case (state)\n            2'b00: begin\n                next_state = in ? 2'b01 : 2'b00;\n                out = 1'b0;\n            end\n            2'b01: begin\n                next_state = in ? 2'b01 : 2'b10;\n                out = 1'b0;\n            end\n            2'b10: begin\n                next_state = in ? 2'b11 : 2'b00;\n                out = 1'b0;\n            end\n            2'b11: begin\n                next_state = in ? 2'b01 : 2'b10;\n                out = 1'b1;\n            end\n            default: begin\n                next_state = 2'b00;\n                out = 1'b0;\n            end\n        endcase\n    end\n\nendmodule",
+        "refusal": null,
+        "annotations": null,
+        "audio": null,
+        "function_call": null,
+        "reasoning": "We need answer user wants only SystemVerilog module. Need produce final only code. Need ensure correct. Let's analyze requirements.\n\nModule TopModule:\ninput in;\ninput [1:0] state;\noutput [1:0] next_state;\noutput out;\n\nMoore state machine combinational logic. State encoding A=00 B=01 C=10 D=11.\nTable:\nA: in0->A, in1->B, out0\nB: in0->C, in1->B, out0\nC: in0->A, in1->D, out0\nD: in0->C, in1->B, out1\n\nImplement combinational. Could use always_comb case. Need syntactically correct SystemVerilog. No explanations.\n\nPotential issue port named in is reserved? In Verilog, `in` is not reserved? It is not a keyword? I think `in` is not reserved in Verilog/SystemVerilog? It might be allowed. But to be safe? Interface specified input in. Use `input wire in`. It's okay. Could use `input logic in`.\n\nNeed output out. Use assign or always_comb.\n\nCode:\nmodule TopModule (\n    input logic in,\n    input logic [1:0] state,\n    output logic [1:0] next_state,\n    output logic out\n);\n    always_comb begin\n        case (state)\n            2'b00: begin\n                next_state = in ? 2'b01 : 2'b00;\n                out = 1'b0;\n            end\n            2'b01: begin\n                next_state = in ? 2'b01 : 2'b10;\n                out = 1'b0;\n            end\n            2'b10: begin\n                next_state = in ? 2'b11 : 2'b00;\n                out = 1'b0;\n            end\n            2'b11: begin\n                next_state = in ? 2'b01 : 2'b10;\n                out = 1'b1;\n            end\n            default: begin\n                next_state = 2'b00;\n                out = 1'b0;\n            end\n        endcase\n    end\nendmodule\n\nCould also use assign:\nassign out = (state == 2'b11);\nassign next_state = (state == 2'b00) ? (in ? 2'b01 : 2'b00) : ...\nBut case fine.\n\nNeed only code. Ensure no comments? okay. final with code block? User says return only syntactically correct SystemVerilog. Could include code block? Usually okay but maybe only raw code. To be safe raw code no markdown. But final can be code block? \"Return only\" maybe no explanations, code block is okay? I'll output raw code. Need no trailing explanation.\n"
+      },
+      "logprobs": null,
+      "finish_reason": "stop",
+      "stop_reason": null,
+      "token_ids": null,
+      "routed_experts": null
+    }
+  ],
+  "service_tier": null,
+  "system_fingerprint": "vllm-0.1.dev20073+g8e685d198-6ca56d15",
+  "usage": {
+    "prompt_tokens": 323,
+    "total_tokens": 1225,
+    "completion_tokens": 902,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+      "reasoning_tokens": 646
+    }
+  },
+  "prompt_logprobs": null,
+  "prompt_token_ids": null,
+  "prompt_text": null,
+  "kv_transfer_params": null,
+  "ec_transfer_params": null,
+  "metrics": null
+}
