@@ -108,10 +108,11 @@ def cost_table(cells: dict) -> str:
         model, config = key
         s = cells[key]
         solved = s["passed"] or 1
+        problem_seconds = sum(r["wall_seconds"] for r in s["results"])
         rows.append([
             model,
             CONFIG_LABEL.get(config, config),
-            f"{s['wall_seconds_total'] / 60:.1f}",
+            f"{problem_seconds / 3600:.2f}",
             f"{s['wall_seconds_mean']:.1f}",
             f"{s['llm_calls'] / s['total']:.2f}" if s["total"] else "-",
             f"{s['prompt_tokens']:,}",
@@ -123,7 +124,8 @@ def cost_table(cells: dict) -> str:
         ])
     return md_table(
         [
-            "model", "configuration", "wall (min)", "s/problem", "LLM calls/problem",
+            "model", "configuration", "compute (problem-hours)", "s/problem",
+            "LLM calls/problem",
             "prompt tok", "completion tok", "of which reasoning", "total tok",
             "tok/problem", "tok/solved",
         ],
