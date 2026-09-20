@@ -1,0 +1,7 @@
+/workspace/verilog-eval/exp/rtl_fix/results_repair/gemma4_26b_a4b/fix_react_compiler/problems/rule110_2/TopModule.sv:10: warning: @* found no sensitivities so it will never trigger.
+VCD info: dumpfile wave.vcd opened for output.
+Hint: Output 'q' has 6282 mismatches. First mismatch occurred at time 10.
+Hint: Total mismatched samples is 6282 out of 6283 samples
+
+Simulation finished at 31416 ps
+Mismatches: 6282 in 6283 samples

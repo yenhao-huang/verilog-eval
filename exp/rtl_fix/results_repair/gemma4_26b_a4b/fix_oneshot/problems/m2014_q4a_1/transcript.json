@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated.\n\nCorrect the syntax error in the code.\n\nReply with the complete corrected module in a ```verilog code block."
+  },
+  {
+    "role": "user",
+    "content": "Problem Description:\nImplement a D latch using an always block.\n\nmodule top_module (\n\tinput d,\n\tinput ena,\n\toutput logic q\n);\n\nErroneous Implementation:\n\nalways_ff @(posedge clk or posedge reset)\nbegin\n\tif (reset)\n\t\tq <= 1'b0;\n\telse if (ena)\n\t\tq <= d;\nend\n\nendmodule\n\nFeedback:\nm2014_q4a.sv:129: error: Unable to bind wire/reg/memory `reset' in `tb.top_module1'\nm2014_q4a.sv:129: error: Unable to elaborate condition expression.\n2 error(s) during elaboration.\n"
+  },
+  {
+    "role": "assistant",
+    "content": "```verilog\nmodule top_module (\n\tinput d,\n\tinput ena,\n\toutput logic q\n);\n\n// A D latch is level-sensitive, not edge-triggered.\n// In SystemVerilog, 'always_latch' is used to explicitly describe latch logic.\n// When 'ena' is high, the output 'q' follows the input 'd'.\n// When 'ena' is low, 'q' retains its previous value.\nalways_latch begin\n\tif (ena)\n\t\tq <= d;\nend\n\nendmodule\n```"
+  }
+]

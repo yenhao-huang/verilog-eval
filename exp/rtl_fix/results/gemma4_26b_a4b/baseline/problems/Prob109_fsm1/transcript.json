@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  areset\n - input  in\n - output out\n\nThe module should implement a Moore machine with the diagram described\nbelow:\n\n  B (1) --0--> A\n  B (1) --1--> B\n  A (0) --0--> B\n  A (0) --1--> A\n\nIt should asynchronously reset into state B if reset if high.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "```verilog\nmodule TopModule (\n    input clk,\n    input areset,\n    input in,\n    output out\n);\n\n    // State encoding based on the description:\n    // State B is represented by 1\n    // State A is represented by 0\n    reg state;\n    localparam STATE_A = 1'b0;\n    localparam STATE_B = 1'b1;\n\n    // Moore machine implementation\n    // The output depends only on the current state.\n    // Based on the diagram, State B outputs 1 and State A outputs 0.\n    always @(posedge clk or posedge areset) begin\n        if (areset) begin\n            // Asynchronously reset into state B if areset is high\n            state <= STATE_B;\n        end else begin\n            case (state)\n                STATE_B: begin\n                    if (in == 1'b0) begin\n                        // B (1) --0--> A\n                        state <= STATE_A;\n                    end else begin\n                        // B (1) --1--> B\n                        state <= STATE_B;\n                    end\n                end\n                STATE_A: begin\n                    if (in == 1'b0) begin\n                        // A (0) --0--> B\n                        state <= STATE_B;\n                    end else begin\n                        // A (0) --1--> A\n                        state <= STATE_A;\n                    end\n                end\n                default: begin\n                    state <= STATE_B;\n                end\n            endcase\n        end\n    end\n\n    // Assign the output based on the current state (Moore machine property)\n    assign out = state;\n\nendmodule\n\n```"
+  }
+]

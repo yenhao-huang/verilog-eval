@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  in    (8 bits)\n - output pedge (8 bits)\n\nThe module should examine each bit in an 8-bit vector and detect when the\ninput signal changes from 0 in one clock cycle to 1 the next (similar to\npositive edge detection). The output bit should be set the cycle after a\n0 to 1 transition occurs.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "\n\n```verilog\nmodule TopModule (\n    input clk,\n    input [7:0] in,\n    output reg [7:0] pedge\n);\n\n    reg [7:0] in_prev;\n\n    always @(posedge clk) begin\n        in_prev <= in;\n        pedge   <= in & ~in_prev;\n    end\n\nendmodule\n```"
+  }
+]

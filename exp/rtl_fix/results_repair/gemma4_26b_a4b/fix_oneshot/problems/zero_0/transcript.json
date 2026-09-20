@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated.\n\nCorrect the syntax error in the code.\n\nReply with the complete corrected module in a ```verilog code block."
+  },
+  {
+    "role": "user",
+    "content": "Problem Description:\nBuild a circuit that always outputs a LOW.\n\nmodule top_module(\n\toutput zero);\n\nErroneous Implementation:\n\nalways @(posedge clk) begin\n    zero <= 0;\nend\n\nendmodule\n\nFeedback:\nzero.sv:126: error: zero is not a valid l-value in tb.top_module1.\nzero.sv:123:      : zero is declared here as wire.\n1 error(s) during elaboration.\n"
+  },
+  {
+    "role": "assistant",
+    "content": "```verilog\nmodule top_module(\n    output zero\n);\n\n    assign zero = 1'b0;\n\nendmodule\n```"
+  }
+]

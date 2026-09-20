@@ -1,0 +1,3 @@
+/workspace/verilog-eval/exp/rtl_fix/results/qwen38_next/react_compiler_rag/problems/Prob054_edgedetect/TopModule.sv:11: error: pedge is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results/qwen38_next/react_compiler_rag/problems/Prob054_edgedetect/TopModule.sv:4:      : pedge is declared here as wire.
+1 error(s) during elaboration.

@@ -1,0 +1,8 @@
+/workspace/verilog-eval/exp/rtl_fix/results_repair/gemma4_26b_a4b/fix_oneshot/problems/always_if_2/test.sv:120: warning: Instantiating module top_module with dangling input port 1 (clk) floating.
+VCD info: dumpfile wave.vcd opened for output.
+Hint: Output 'out_assign' has no mismatches.
+Hint: Output 'out_always' has 114 mismatches. First mismatch occurred at time 5.
+Hint: Total mismatched samples is 114 out of 114 samples
+
+Simulation finished at 570 ps
+Mismatches: 114 in 114 samples

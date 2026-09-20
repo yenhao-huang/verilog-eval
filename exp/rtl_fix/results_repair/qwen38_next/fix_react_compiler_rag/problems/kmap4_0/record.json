@@ -1,0 +1,28 @@
+{
+  "problem": "kmap4#0",
+  "topic": "kmap_logic",
+  "outcome": "pass",
+  "passed": 1,
+  "compiled": 1,
+  "error_kind": "",
+  "original_error_kind": "undeclared_identifier",
+  "mismatches": 0,
+  "samples": 232,
+  "iterations": 2,
+  "finished": 1,
+  "tool_calls": 2,
+  "code_from_tool": 0,
+  "agent_error": "",
+  "wall_seconds": 161.979,
+  "compile_calls": 1,
+  "rag_calls": 1,
+  "rag_entries_hit": [
+    "unable-to-bind"
+  ],
+  "llm_calls": 2,
+  "prompt_tokens": 2022,
+  "completion_tokens": 1577,
+  "reasoning_tokens": 1256,
+  "total_tokens": 3599,
+  "truncated_calls": 0
+}

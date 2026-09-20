@@ -1,0 +1,28 @@
+{
+  "problem": "review2015_fsmshift#0",
+  "topic": "fsm",
+  "outcome": "pass",
+  "passed": 1,
+  "compiled": 1,
+  "error_kind": "",
+  "original_error_kind": "module_instantiation",
+  "mismatches": 0,
+  "samples": 200,
+  "iterations": 3,
+  "finished": 1,
+  "tool_calls": 2,
+  "code_from_tool": 0,
+  "agent_error": "",
+  "wall_seconds": 213.272,
+  "compile_calls": 1,
+  "rag_calls": 1,
+  "rag_entries_hit": [
+    "invalid-module-instantiation"
+  ],
+  "llm_calls": 3,
+  "prompt_tokens": 4071,
+  "completion_tokens": 1971,
+  "reasoning_tokens": 1123,
+  "total_tokens": 6042,
+  "truncated_calls": 0
+}

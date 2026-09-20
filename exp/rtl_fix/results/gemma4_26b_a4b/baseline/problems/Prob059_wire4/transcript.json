@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  a\n - input  b\n - input  c\n - output w\n - output x\n - output y\n - output z\n\nThe module should behave like wires that makes these connections:\n\n  a -> w\n  b -> x\n  b -> y\n  c -> z\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "```verilog\nmodule TopModule (\n    input  a,\n    input  b,\n    input  c,\n    output w,\n    output x,\n    output y,\n    output z\n);\n\n    // Continuous assignments to act as wires connecting the inputs to the outputs\n    assign w = a;\n    assign x = b;\n    assign y = b;\n    assign z = c;\n\nendmodule\n```"
+  }
+]

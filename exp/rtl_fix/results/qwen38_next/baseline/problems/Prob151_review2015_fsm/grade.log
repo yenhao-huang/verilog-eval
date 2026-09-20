@@ -1,0 +1,8 @@
+/workspace/verilog-eval/dataset_spec-to-rtl/Prob151_review2015_fsm_ref.sv:21: sorry: This cast operation is not yet supported.
+/workspace/verilog-eval/dataset_spec-to-rtl/Prob151_review2015_fsm_ref.sv:22: sorry: This cast operation is not yet supported.
+/workspace/verilog-eval/dataset_spec-to-rtl/Prob151_review2015_fsm_ref.sv:23: sorry: This cast operation is not yet supported.
+/workspace/verilog-eval/dataset_spec-to-rtl/Prob151_review2015_fsm_ref.sv:24: sorry: This cast operation is not yet supported.
+/workspace/verilog-eval/dataset_spec-to-rtl/Prob151_review2015_fsm_ref.sv:29: sorry: This cast operation is not yet supported.
+/workspace/verilog-eval/dataset_spec-to-rtl/Prob151_review2015_fsm_ref.sv:30: sorry: This cast operation is not yet supported.
+/workspace/verilog-eval/dataset_spec-to-rtl/Prob151_review2015_fsm_ref.sv:31: sorry: This cast operation is not yet supported.
+7 error(s) during elaboration.

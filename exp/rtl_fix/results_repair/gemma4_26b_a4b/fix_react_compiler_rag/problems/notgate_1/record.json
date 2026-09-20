@@ -1,0 +1,28 @@
+{
+  "problem": "notgate#1",
+  "topic": "combinational",
+  "outcome": "pass",
+  "passed": 1,
+  "compiled": 1,
+  "error_kind": "",
+  "original_error_kind": "invalid_lvalue",
+  "mismatches": 0,
+  "samples": 239,
+  "iterations": 4,
+  "finished": 1,
+  "tool_calls": 3,
+  "code_from_tool": 0,
+  "agent_error": "",
+  "wall_seconds": 114.806,
+  "compile_calls": 2,
+  "rag_calls": 1,
+  "rag_entries_hit": [
+    "not-a-valid-l-value"
+  ],
+  "llm_calls": 4,
+  "prompt_tokens": 2804,
+  "completion_tokens": 1826,
+  "reasoning_tokens": 0,
+  "total_tokens": 4630,
+  "truncated_calls": 0
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  reset\n - input  in    (32 bits)\n - output out   (32 bits)\n\nThe module should examine each bit in the 32-bit input vector, and\ncapture when the input signal changes from 1 in one clock cycle to 0 the\nnext. \"Capture\" means that the output will remain 1 until the register is\nreset (active high synchronous reset). Assume all sequential logic is\ntriggered on the positive edge of the clock.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "\n\n```verilog\nmodule TopModule (\n    input  wire        clk,\n    input  wire        reset,\n    input  wire [31:0] in,\n    output reg  [31:0] out\n);\n\n    reg [31:0] in_prev = 32'd0;\n\n    always @(posedge clk) begin\n        if (reset) begin\n            out <= 32'd0;\n        end else begin\n            // Sticky set: set bits where previous input was 1 and current input is 0\n            out <= out | (in_prev & ~in);\n        end\n\n        // Track previous sampled input value\n        in_prev <= in;\n    end\n\nendmodule\n```"
+  }
+]

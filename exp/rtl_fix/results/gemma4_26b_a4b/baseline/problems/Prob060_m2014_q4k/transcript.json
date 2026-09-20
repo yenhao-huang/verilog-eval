@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  resetn\n - input  in\n - output out\n\nThe module should implement a shift register with four D flops. Assume\nall sequential logic is triggered on the positive edge of the clock.\nReset is active-low synchronous resettable.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "```verilog\nmodule TopModule (\n    input clk,\n    input resetn,\n    input in,\n    output out\n);\n\n    // Internal register to hold the state of the four D flip-flops\n    reg [3:0] shift_reg;\n\n    // Sequential logic block\n    // Triggered on the positive edge of the clock\n    always @(posedge clk) begin\n        if (!resetn) begin\n            // Synchronous active-low reset: clear all flip-flops\n            shift_reg <= 4'b0000;\n        end else begin\n            // Shift logic:\n            // The new input 'in' enters the first stage (LSB),\n            // and existing bits shift towards the MSB.\n            // shift_reg[0] <= in;\n            // shift_reg[1] <= shift_reg[0];\n            // shift_reg[2] <= shift_reg[1];\n            // shift_reg[3] <= shift_reg[2];\n            shift_reg <= {shift_reg[2:0], in};\n        end\n    end\n\n    // The output is the value of the fourth D flip-flop\n    assign out = shift_reg[3];\n\nendmodule\n```"
+  }
+]

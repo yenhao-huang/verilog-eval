@@ -1,0 +1,7 @@
+/workspace/verilog-eval/exp/rtl_fix/results/qwen38_next/baseline/problems/Prob088_ece241_2014_q5b/TopModule.sv:26: error: next_state is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results/qwen38_next/baseline/problems/Prob088_ece241_2014_q5b/TopModule.sv:13:      : next_state is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results/qwen38_next/baseline/problems/Prob088_ece241_2014_q5b/TopModule.sv:27: error: next_state is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results/qwen38_next/baseline/problems/Prob088_ece241_2014_q5b/TopModule.sv:13:      : next_state is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results/qwen38_next/baseline/problems/Prob088_ece241_2014_q5b/TopModule.sv:28: error: next_state is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results/qwen38_next/baseline/problems/Prob088_ece241_2014_q5b/TopModule.sv:13:      : next_state is declared here as wire.
+3 error(s) during elaboration.

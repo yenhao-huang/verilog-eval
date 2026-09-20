@@ -1,69 +1,59 @@
 # Did RAG actually cause the RAG configuration's gain?
 
 A configuration that wins by a few problems at temperature 0.4 has not
-necessarily won because of the thing it adds. This check attributes the gain of
-`fix_react_compiler_rag` over `fix_react_compiler` on the repair task
-(qwen3.8-next, 158 problems).
+necessarily won because of the thing it adds. This check attributes the
+difference between `fix_react_compiler_rag` and `fix_react_compiler` on
+VerilogEval-syntax (158 problems), for both models.
 
 ## Headline numbers
 
-| configuration | fix rate | functional pass |
-| --- | --- | --- |
-| ReAct + compiler | 97.5% | 140/158 (88.6%) |
-| ReAct + compiler + RAG | 98.1% | 144/158 (91.1%) |
-
-Net +4 problems, which looks like a RAG effect.
-
-## Where the +4 actually came from
-
-The RAG tool fired on **11 of 158** problems. On all 11, the compiler-only
-configuration had **already passed** — so RAG cannot have rescued any of them.
-
-Every problem that changed verdict between the two configurations had
-`rag_calls == 0`:
-
-| problem | direction | rag_calls | compiler-only outcome |
+| model | ReAct + compiler | ReAct + compiler + RAG | Δ fix rate |
 | --- | --- | --- | --- |
-| `2013_q2bfsm#0` | gained | 0 | functional_mismatch |
-| `always_nolatches#2` | gained | 0 | compile_error |
-| `edgecapture#1` | gained | 0 | functional_mismatch |
-| `lfsr5#0` | gained | 0 | truncated |
-| `mt2015_eq2#0` | gained | 0 | compile_error |
-| `rule110#2` | gained | 0 | functional_mismatch |
-| `2012_q2b#1` | lost | 0 | pass |
-| `always_case2#2` | lost | 0 | pass |
+| qwen3.8-next | 97.5% | 98.1% | **+0.6** |
+| gemma-4-26B-A4B | 87.3% | 83.5% | **-3.8** |
 
-6 gained, 2 lost, net +4 — **none of them touched the RAG tool.**
+RAG helps one model slightly and hurts the other. Neither is a RAG effect.
+
+## Attribution
+
+| | qwen3.8-next | gemma-4-26B-A4B |
+| --- | --- | --- |
+| problems where the RAG tool fired | 11 | 26 |
+| of those, compiler-only had **already passed** | 11 (all) | 22 of 26 |
+| problems gained vs compiler-only | 6 | 6 |
+| of those gained, RAG had fired | **0** | 2 |
+| problems lost vs compiler-only | 2 | 14 |
+| of those lost, RAG had fired | **0** | 1 |
+
+For qwen, **every single problem that changed verdict had `rag_calls == 0`**.
+The +0.6pp cannot be a RAG effect; it is resampling noise.
+
+For gemma, 3 of the 20 changed problems had touched RAG — and the configuration
+came out 8 problems *behind*. Its losses are truncations (17 → 23), caused by
+the extra tool definition and tool round-trips lengthening the context, not by
+the guidance being wrong.
+
+## Which entries fired
+
+| entry | qwen | gemma |
+| --- | --- | --- |
+| `unable-to-bind` | 6 | 11 |
+| `not-a-valid-l-value` | 1 | 8 |
+| `invalid-module-instantiation` | 2 | 0 |
+| `undeclared-identifier` | 1 | 1 |
+
+The retriever is working. Offline it matches 128 of the 158 starting compiler
+logs, and when the agent calls it, it returns guidance.
 
 ## Conclusion
 
-The +0.6pp fix rate and +2.5pp functional pass attributed to RAG in the headline
-table are **sampling noise**, not a RAG effect. In this setup RAG contributed
-nothing measurable.
+**RAG contributed nothing measurable on either model.** The paper's +18.6pp is
+not reproduced, and the reason is visible in
+[`what_the_gain_is_made_of.md`](what_the_gain_is_made_of.md): these models
+already repair the seeded syntax error on the first attempt at ~99%, in every
+configuration, including one with no tools at all. There is no residue of
+unfixable syntax errors for expert guidance to act on.
 
-## Why, and what it means for the paper's claim
-
-The paper reports RAG lifting the ReAct fix rate from 79.9% to 98.5% (+18.6pp)
-with GPT-3.5 and Quartus. That gain has no room to appear here for two reasons:
-
-1. **The compiler-only configuration is already at 97.5%.** There are only 4
-   unfixed problems left for RAG to win, so even a perfect retriever could add
-   at most 2.5pp.
-2. **The model rarely needs a second opinion.** It calls the compiler once per
-   problem on average (1.06 calls) and usually fixes the error from the raw
-   iverilog message alone, so the retriever is seldom consulted at all.
-
-Which entries did fire, when they fired:
-
-| entry | times hit |
-| --- | --- |
-| `unable-to-bind` | 6 |
-| `invalid-module-instantiation` | 2 |
-| `undeclared-identifier` | 1 |
-| `not-a-valid-l-value` | 1 |
-
-The retriever works — `knowledge/iverilog_guidance.json` matches 128 of the 158
-starting compiler logs offline, and the tool returns guidance when called. It is
-simply not the binding constraint for this model. The paper anticipates exactly
-this: with GPT-4 it observed ReAct adding only ~1% over one-shot, and concluded
-that its methods "narrow the gap between weaker LLMs and stronger ones".
+The paper anticipates this. With GPT-4 it observed ReAct adding only ~1% over
+one-shot and concluded that its methods "narrow the gap between weaker LLMs and
+stronger ones". Both models tested here are on the strong side of that gap.

@@ -1,0 +1,15 @@
+/workspace/verilog-eval/exp/rtl_fix/results/qwen38_next/baseline/problems/Prob076_always_case/TopModule.sv:14: error: out is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results/qwen38_next/baseline/problems/Prob076_always_case/TopModule.sv:9:      : out is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results/qwen38_next/baseline/problems/Prob076_always_case/TopModule.sv:15: error: out is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results/qwen38_next/baseline/problems/Prob076_always_case/TopModule.sv:9:      : out is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results/qwen38_next/baseline/problems/Prob076_always_case/TopModule.sv:16: error: out is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results/qwen38_next/baseline/problems/Prob076_always_case/TopModule.sv:9:      : out is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results/qwen38_next/baseline/problems/Prob076_always_case/TopModule.sv:17: error: out is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results/qwen38_next/baseline/problems/Prob076_always_case/TopModule.sv:9:      : out is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results/qwen38_next/baseline/problems/Prob076_always_case/TopModule.sv:18: error: out is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results/qwen38_next/baseline/problems/Prob076_always_case/TopModule.sv:9:      : out is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results/qwen38_next/baseline/problems/Prob076_always_case/TopModule.sv:19: error: out is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results/qwen38_next/baseline/problems/Prob076_always_case/TopModule.sv:9:      : out is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results/qwen38_next/baseline/problems/Prob076_always_case/TopModule.sv:20: error: out is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results/qwen38_next/baseline/problems/Prob076_always_case/TopModule.sv:9:      : out is declared here as wire.
+7 error(s) during elaboration.

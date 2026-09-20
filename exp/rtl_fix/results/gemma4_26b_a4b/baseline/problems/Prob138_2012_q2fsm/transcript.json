@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  reset\n - input  w\n - output z\n\nThe module should implement the state machine shown below:\n\n  A (0) --1--> B\n  A (0) --0--> A\n  B (0) --1--> C\n  B (0) --0--> D\n  C (0) --1--> E\n  C (0) --0--> D\n  D (0) --1--> F\n  D (0) --0--> A\n  E (1) --1--> E\n  E (1) --0--> D\n  F (1) --1--> C\n  F (1) --0--> D\n\nReset resets into state A and is synchronous active-high. Assume all\nsequential logic is triggered on the positive edge of the clock.\n\nUse separate always blocks for the state table and the state flip-flops.\nDescribe the FSM output, which is called _z_, using either continuous\nassignment statement(s) or an always block (at your discretion). Assign\nany state codes that you wish to use.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "```verilog\nmodule TopModule (\n    input clk,\n    input reset,\n    input w,\n    output z\n);\n\n    // State encoding using localparam\n    // We have 6 states, so 3 bits are required.\n    localparam A = 3'b000;\n    localparam B = 3'b001;\n    localparam C = 3'b010;\n    localparam D = 3'b011;\n    localparam E = 3'b100;\n    localparam F = 3'b101;\n\n    reg [2:0] state;\n    reg [2:0] next_state;\n\n    // State flip-flops: Sequential logic triggered on the positive edge of the clock.\n    // Reset is synchronous and active-high, resetting the machine to state A.\n    always @(posedge clk) begin\n        if (reset) begin\n            state <= A;\n        end else begin\n            state <= next_state;\n        end\n    end\n\n    // State table: Combinational logic to determine the next state based on current state and input w.\n    always @(*) begin\n        case (state)\n            A: next_state = w ? B : A;\n            B: next_state = w ? C : D;\n            C: next_state = w ? E : D;\n            D: next_state = w ? F : A;\n            E: next_state = w ? E : D;\n            F: next_state = w ? C : D;\n            default: next_state = A;\n        endcase\n    end\n\n    // FSM output logic: \n    // Based on the provided state machine notation:\n    // States A, B, C, D have output z = 0.\n    // States E, F have output z = 1.\n    assign z = (state == E || state == F);\n\nendmodule\n```"
+  }
+]

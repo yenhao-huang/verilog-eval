@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  x\n - input  y (3 bits)\n - output Y0\n - output z\n\nThe module should implement the output logic and next state logic for an\nFSM using the table shown below. Note that the output Y0 is Y[0] of the\nnext state signal.\n\n   Present state input y[2:0] | Next state Y[2:0] when x=0, Next state Y[2:0] when x=1 | Output z\n   000 | 000, 001 | 0\n   001 | 001, 100 | 0\n   010 | 010, 001 | 0\n   011 | 001, 010 | 1\n   100 | 011, 100 | 1\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": ""
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  x   (4 bits)\n - input  y   (4 bits)\n - output sum (5 bits)\n\nImplement a 4-bit adder with full adders. The output sum should include\nthe overflow bit.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "\n\n```verilog\nmodule TopModule (\n    input  [3:0] x,\n    input  [3:0] y,\n    output [4:0] sum\n);\n\n    wire [3:0] s;\n    wire [4:0] carry;\n\n    // Carry-in for the least significant bit\n    assign carry[0] = 1'b0;\n\n    genvar i;\n    generate\n        // Four full adders, one for each bit\n        for (i = 0; i < 4; i = i + 1) begin : full_adder\n            assign s[i] = x[i] ^ y[i] ^ carry[i];\n            assign carry[i + 1] = (x[i] & y[i]) | (carry[i] & (x[i] ^ y[i]));\n        end\n    endgenerate\n\n    // Overflow bit is the final carry-out\n    assign sum = {carry[4], s};\n\nendmodule\n```"
+  }
+]

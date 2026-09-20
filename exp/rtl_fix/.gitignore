@@ -1,7 +1,14 @@
-# Simulation scratch produced during grading; the logs we keep are grade.log
-# and iverilog.log, not the binaries or waveforms.
-results/**/sim.out
-results/**/*.vcd
+# Simulation scratch produced during grading. The evidence we keep is the
+# transcript, the graded module, and the logs — not waveforms or binaries.
+results*/**/*.vcd
+results*/**/sim.out
+
+# Copies of the benchmark's own testbench, written next to each repair problem
+# so iverilog can link it. The originals live in the fetched dataset.
+results_repair/**/test.sv
+
+# Fetched from NVlabs/RTLFixer by scripts/fetch_syntax_dataset.sh
+data/
+
 __pycache__/
 *.pyc
-data/

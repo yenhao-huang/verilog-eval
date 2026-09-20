@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  areset\n - input  in\n - output out\n\nThe module should implement a Moore state machine with the following\nstate transition table with one input, one output, and four states.\nImplement this state machine. Include a positive edge triggered\nasynchronous reset that resets the FSM to state A. Assume all sequential\nlogic is triggered on the positive edge of the clock.\n\n  state | next state in=0, next state in=1 | output\n  A     | A, B                             | 0\n  B     | C, B                             | 0\n  C     | A, D                             | 0\n  D     | C, B                             | 1\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "\n\n```verilog\nmodule TopModule (\n    input  clk,\n    input  areset,\n    input  in,\n    output out\n);\n\n    localparam [1:0] A = 2'd0;\n    localparam [1:0] B = 2'd1;\n    localparam [1:0] C = 2'd2;\n    localparam [1:0] D = 2'd3;\n\n    reg [1:0] state;\n    reg [1:0] next_state;\n\n    // State register with asynchronous active-high reset\n    always @(posedge clk or posedge areset) begin\n        if (areset)\n            state <= A;\n        else\n            state <= next_state;\n    end\n\n    // Next-state logic\n    always @(*) begin\n        case (state)\n            A: next_state = in ? B : A;\n            B: next_state = in ? B : C;\n            C: next_state = in ? D : A;\n            D: next_state = in ? B : C;\n            default: next_state = A;\n        endcase\n    end\n\n    // Moore output logic\n    assign out = (state == D);\n\nendmodule\n```"
+  }
+]

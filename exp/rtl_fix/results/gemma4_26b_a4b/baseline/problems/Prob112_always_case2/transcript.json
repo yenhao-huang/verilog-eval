@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in  (4 bits)\n - output pos (2 bits)\n\nThe module should implement a priority encoder. A priority encoder is a\ncombinational circuit that, when given an input bit vector, outputs the\nposition of the first 1 bit in the vector. For example, a 8-bit priority\nencoder given the input 8'b10010000 would output 3'd4, because bit[4] is\nfirst bit that is high. Build a 4-bit priority encoder. For this problem,\nif none of the input bits are high (i.e., input is zero), output zero.\nNote that a 4-bit number has 16 possible combinations.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "```verilog\nmodule TopModule (\n    input [3:0] in,\n    output reg [1:0] pos\n);\n\n    /**\n     * A priority encoder is a combinational circuit that outputs the position \n     * of the first '1' bit encountered in the input vector.\n     * \n     * Based on the provided example (8'b10010000 -> 4), the \"first\" bit is \n     * the one with the lowest index (LSB priority).\n     * \n     * Requirement: If no bits are high (input is zero), output zero.\n     * \n     * Truth Table for 4-bit priority encoder:\n     * in[3:0] | pos[1:0]\n     * --------|---------\n     * 0000    | 00 (Special case: input is zero)\n     * 0001    | 00 (Bit 0 is high)\n     * 001x    | 01 (Bit 1 is high)\n     * 01xx    | 10 (Bit 2 is high)\n     * 1xxx    | 11 (Bit 3 is high)\n     */\n\n    always @(*) begin\n        if (in[0]) begin\n            // Bit 0 is the highest priority\n            pos = 2'b00;\n        end else if (in[1]) begin\n            // Bit 1 is the next priority\n            pos = 2'b01;\n        end else if (in[2]) begin\n            // Bit 2 is the next priority\n            pos = 2'b10;\n        end else if (in[3]) begin\n            // Bit 3 is the lowest priority\n            pos = 2'b11;\n        end else begin\n            // If no bits are high (input is 0), output zero as per instructions\n            pos = 2'b00;\n        end\n    end\n\nendmodule\n```"
+  }
+]

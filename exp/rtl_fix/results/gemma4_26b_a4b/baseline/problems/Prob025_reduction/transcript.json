@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in     (8 bits)\n - output parity\n\nParity checking is often used as a simple method of detecting errors when\ntransmitting data through an imperfect channel. The module should compute\na parity bit for an 8-bit byte (which will add a 9th bit to the byte). We\nwill use \"even\" parity, where the parity bit is just the XOR of all 8\ndata bits.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "```verilog\nmodule TopModule (\n    input [7:0] in,\n    output parity\n);\n\n    // Even parity is calculated by XORing all the bits of the input.\n    // The reduction XOR operator '^' in Verilog performs this operation \n    // across all bits of the vector.\n    assign parity = ^in;\n\nendmodule\n```"
+  }
+]

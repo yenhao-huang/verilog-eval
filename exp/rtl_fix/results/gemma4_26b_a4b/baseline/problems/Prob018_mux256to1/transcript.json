@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in  (256 bits)\n - input  sel (  8 bits)\n - output out\n\nThe module should implement a 1-bit wide, 256-to-1 multiplexer. The 256\ninputs are all packed into a single 256-bit input vector. sel=0 should\nselect in[0], sel=1 selects bits in[1], sel=2 selects bits in[2], etc.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "```verilog\nmodule TopModule (\n    input  [255:0] in,\n    input  [7:0]   sel,\n    output         out\n);\n\n    // The module implements a 256-to-1 multiplexer.\n    // Since the input 'in' is a 256-bit vector and 'sel' is an 8-bit \n    // signal (providing 256 unique indices), we can use the index \n    // operator to select the specific bit.\n    assign out = in[sel];\n\nendmodule\n```"
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  reset\n - output q (32 bits)\n\nA linear feedback shift register is a shift register usually with a few\nXOR gates to produce the next state of the shift register. A Galois LFSR\nis one particular arrangement that shifts right, where a bit position with\na \"tap\" is XORed with the LSB output bit (q[0]) to produce its next value,\nwhile bit positions without a tap shift right unchanged. \n\nThe module should implement a 32-bit Galois LFSR with taps at bit\npositions 32, 22, 2, and 1. Reset should be active high synchronous, and\nshould reset the output q to 32'h1. Assume all sequential logic is\ntriggered on the positive edge of the clock.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": ""
+  }
+]

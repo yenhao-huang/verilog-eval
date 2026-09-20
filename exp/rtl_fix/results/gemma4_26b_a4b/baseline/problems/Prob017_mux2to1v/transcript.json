@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  a   (100 bits)\n - input  b   (100 bits)\n - input  sel\n - output out (100 bits)\n\nThe module should implement a 2-1 multiplexer. When sel=0, choose a. When\nsel=1, choose b.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "```verilog\nmodule TopModule (\n    input  [99:0] a,\n    input  [99:0] b,\n    input         sel,\n    output [99:0] out\n);\n\n    // Implement a 2-1 multiplexer using a conditional assignment.\n    // When sel is 1, out gets the value of b.\n    // When sel is 0, out gets the value of a.\n    assign out = sel ? b : a;\n\nendmodule\n```"
+  }
+]

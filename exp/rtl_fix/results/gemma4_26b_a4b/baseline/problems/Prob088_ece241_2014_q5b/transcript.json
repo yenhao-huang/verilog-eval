@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  areset\n - input  x\n - output z\n\nThe module should implement the following Mealy finite-state machine\nwhich is an implementation of the 2's complementer. Implement using a\none-hot encoding. Resets into state A and reset is asynchronous\nactive-high.\n\n  A --x=0 (z=0)--> A\n  A --x=1 (z=1)--> B\n  B --x=0 (z=1)--> B\n  B --x=1 (z=0)--> B\n\nAssume all sequential logic is triggered on the positive edge of the\nclock.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "```verilog\nmodule TopModule (\n    input clk,\n    input areset,\n    input x,\n    output reg z\n);\n\n    // One-hot encoding for states A and B\n    // In one-hot encoding, each state is represented by a single bit being high.\n    localparam STATE_A = 2'b01;\n    localparam STATE_B = 2'b10;\n\n    reg [1:0] state;\n\n    // Sequential logic for state transitions\n    // The reset is asynchronous and active-high as per the requirements.\n    always @(posedge clk or posedge areset) begin\n        if (areset) begin\n            // Reset into state A\n            state <= STATE_A;\n        end else begin\n            case (state)\n                STATE_A: begin\n                    if (x == 1'b1) begin\n                        // A --x=1 (z=1)--> B\n                        state <= STATE_B;\n                    end else begin\n                        // A --x=0 (z=0)--> A\n                        state <= STATE_A;\n                    end\n                end\n                STATE_B: begin\n                    // B --x=0 (z=1)--> B\n                    // B --x=1 (z=0)--> B\n                    // In both cases, the next state is B.\n                    state <= STATE_B;\n                end\n                default: begin\n                    // Safety fallback to state A\n                    state <= STATE_A;\n                end\n            endcase\n        end\n    end\n\n    // Combinational logic for Mealy output\n    // In a Mealy machine, the output depends on both the current state and the input.\n    always @(*) begin\n        case (state)\n            STATE_A: begin\n                // A --x=0 (z=0)--> A\n                // A --x=1 (z=1)--> B\n                z = x;\n            end\n            STATE_B: begin\n                // B --x=0 (z=1)--> B\n                // B --x=1 (z=0)--> B\n                z = ~x;\n            end\n            default: begin\n                z = 1'b0;\n            end\n        endcase\n    end\n\nendmodule\n```"
+  }
+]

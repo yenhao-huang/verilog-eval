@@ -11,7 +11,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 EXP_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 MODEL_LABEL="${MODEL_LABEL:-gemma4_26b_a4b}"
 PORT="${PORT:-18400}"
-JOBS="${JOBS:-8}"
+JOBS="${JOBS:-8}"   # keep in step with PARALLEL in serve_gemma4_26b.sh
 SMOKE_DIR="${SMOKE_DIR:-/tmp/rtlfix-gemma-smoke}"
 
 echo "=== waiting for any running qwen sweep ==="

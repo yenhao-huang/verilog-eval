@@ -1,0 +1,4 @@
+TopModule.sv:10: syntax error
+TopModule.sv:10: error: Syntax error between internal '}' and closing '}' of repeat concatenation.
+TopModule.sv:10: syntax error
+TopModule.sv:10: error: syntax error in continuous assignment

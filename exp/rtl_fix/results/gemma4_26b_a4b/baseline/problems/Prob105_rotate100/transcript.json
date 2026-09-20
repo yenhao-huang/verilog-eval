@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  load\n - input  ena  (  2 bits)\n - input  data (100 bits)\n - output q    (100 bits)\n\nThe module should implement a 100-bit left/right rotator, with\nsynchronous load and left/right enable. A rotator shifts-in the\nshifted-out bit from the other end of the register, unlike a shifter that\ndiscards the shifted-out bit and shifts in a zero. If enabled, a rotator\nrotates the bits around and does not modify/discard them.\n\n  (1) load: Loads shift register with data[99:0] instead of rotating.\n      Synchronous active high.\n\n  (2) ena[1:0]: Synchronous. Chooses whether and which direction to\n      rotate:\n      (a) 2'b01 rotates right by one bit,\n      (b) 2'b10 rotates left by one bit,\n      (c) 2'b00 and 2'b11 do not rotate.\n\n  (3) q: The contents of the rotator.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "```verilog\nmodule TopModule (\n    input clk,\n    input load,\n    input [1:0] ena,\n    input [99:0] data,\n    output [99:0] q\n);\n\n    // Internal register to hold the state of the rotator\n    reg [99:0] q_reg;\n\n    // Synchronous logic triggered on the rising edge of the clock\n    always @(posedge clk) begin\n        if (load) begin\n            // (1) Synchronous load: Load the register with the input data\n            q_reg <= data;\n        end else begin\n            // (2) Synchronous enable/direction control\n            case (ena)\n                2'b01: begin\n                    // (a) Rotate right by one bit:\n                    // The bit at index 0 moves to index 99, \n                    // and bits 99 down to 1 shift down to 98 down to 0.\n                    q_reg <= {q_reg[0], q_reg[99:1]};\n                end\n                2'b10: begin\n                    // (b) Rotate left by one bit:\n                    // The bit at index 99 moves to index 0,\n                    // and bits 98 down to 0 shift up to 99 down to 1.\n                    q_reg <= {q_reg[98:0], q_reg[99]};\n                end\n                // (c) 2'b00 and 2'b11: Do not rotate (hold current value)\n                default: begin\n                    q_reg <= q_reg;\n                end\n            endcase\n        end\n    end\n\n    // Assign the internal register to the output port\n    assign q = q_reg;\n\nendmodule\n\n```"
+  }
+]

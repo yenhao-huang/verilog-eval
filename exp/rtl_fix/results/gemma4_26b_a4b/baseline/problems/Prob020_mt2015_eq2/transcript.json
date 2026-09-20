@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  A (2 bits)\n - input  B (2 bits)\n - output z\n\nThe module should implement a circuit that has two 2-bit inputs A[1:0]\nand B[1:0], and produces an output z. The value of z should be 1 if A =\nB, otherwise z should be 0.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "```verilog\nmodule TopModule (\n    input [1:0] A,\n    input [1:0] B,\n    output z\n);\n\n    // The output z is 1 if A is equal to B, otherwise it is 0.\n    assign z = (A == B);\n\nendmodule\n```"
+  }
+]
