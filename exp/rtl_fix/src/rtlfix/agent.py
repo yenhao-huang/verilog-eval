@@ -86,6 +86,7 @@ def run_baseline(client: ChatClient, prompt: str) -> AgentResult:
             elapsed_seconds=time.monotonic() - started, error=str(exc),
         )
     content = message.get("content") or ""
+    finish_reason = message.get("_finish_reason", "")
     messages.append({"role": "assistant", "content": content})
     return AgentResult(
         code=extract_verilog(content),
@@ -96,6 +97,7 @@ def run_baseline(client: ChatClient, prompt: str) -> AgentResult:
         usage=client.usage.as_dict(),
         elapsed_seconds=time.monotonic() - started,
         final_message=content,
+        error="response truncated at max_tokens" if finish_reason == "length" else "",
     )
 
 
@@ -131,6 +133,7 @@ def run_react(
             break
 
         tool_calls = message.get("tool_calls") or []
+        finish_reason = message.get("_finish_reason", "")
         assistant: dict[str, Any] = {
             "role": "assistant",
             "content": message.get("content") or "",
@@ -141,7 +144,9 @@ def run_react(
 
         if not tool_calls:
             final_message = assistant["content"]
-            finished = True
+            finished = finish_reason != "length"
+            if not finished:
+                error = "response truncated at max_tokens"
             break
 
         tool_calls_seen += len(tool_calls)

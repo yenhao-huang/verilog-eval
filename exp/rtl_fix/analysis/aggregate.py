@@ -28,6 +28,7 @@ OUTCOME_ORDER = [
     "simulation_timeout",
     "runtime_error",
     "no_code",
+    "truncated",
     "api_error",
 ]
 
@@ -101,6 +102,7 @@ def cost_table(cells: dict) -> str:
             f"{s['llm_calls'] / s['total']:.2f}" if s["total"] else "-",
             f"{s['prompt_tokens']:,}",
             f"{s['completion_tokens']:,}",
+            f"{s.get('reasoning_tokens', 0):,}",
             f"{s['total_tokens']:,}",
             f"{s['total_tokens'] / s['total']:,.0f}" if s["total"] else "-",
             f"{s['total_tokens'] / solved:,.0f}",
@@ -108,7 +110,8 @@ def cost_table(cells: dict) -> str:
     return md_table(
         [
             "model", "configuration", "wall (min)", "s/problem", "LLM calls/problem",
-            "prompt tok", "completion tok", "total tok", "tok/problem", "tok/solved",
+            "prompt tok", "completion tok", "of which reasoning", "total tok",
+            "tok/problem", "tok/solved",
         ],
         rows,
     )

@@ -39,7 +39,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                         help="RTLFixer uses at most 10 Thought-Action-Observation steps")
     parser.add_argument("--temperature", type=float, default=0.4,
                         help="RTLFixer sets the sampling temperature to 0.4")
-    parser.add_argument("--max-tokens", type=int, default=2048)
+    parser.add_argument("--max-tokens", type=int, default=8192,
+                        help="raised above RTLFixer's 2048 because both models emit "
+                             "reasoning tokens from the same budget")
     parser.add_argument("--timeout", type=int, default=900)
     parser.add_argument("--resume", action="store_true",
                         help="skip problems that already have a record")
@@ -154,6 +156,8 @@ def summarise(records: list[dict], meta: dict, elapsed: float) -> dict:
         "wall_seconds_mean": round(
             sum(r["wall_seconds"] for r in records) / total, 3
         ) if total else 0.0,
+        "truncated_problems": sum(1 for r in records if r.get("truncated_calls")),
+        "reasoning_tokens": sum(r.get("reasoning_tokens", 0) for r in records),
         "prompt_tokens": sum(r["prompt_tokens"] for r in records),
         "completion_tokens": sum(r["completion_tokens"] for r in records),
         "total_tokens": sum(r["total_tokens"] for r in records),
@@ -220,7 +224,7 @@ def main(argv: list[str] | None = None) -> int:
                         "code_from_tool": 0, "agent_error": repr(exc), "wall_seconds": 0.0,
                         "compile_calls": 0, "rag_calls": 0, "rag_entries_hit": [],
                         "llm_calls": 0, "prompt_tokens": 0, "completion_tokens": 0,
-                        "total_tokens": 0,
+                        "reasoning_tokens": 0, "total_tokens": 0, "truncated_calls": 0,
                     }
                 with lock:
                     done[name] = record

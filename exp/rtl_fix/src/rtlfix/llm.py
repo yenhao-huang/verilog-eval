@@ -22,7 +22,9 @@ class LLMError(RuntimeError):
 class Usage:
     prompt_tokens: int = 0
     completion_tokens: int = 0
+    reasoning_tokens: int = 0
     calls: int = 0
+    truncated_calls: int = 0
 
     @property
     def total_tokens(self) -> int:
@@ -34,13 +36,17 @@ class Usage:
             return
         self.prompt_tokens += int(raw.get("prompt_tokens") or 0)
         self.completion_tokens += int(raw.get("completion_tokens") or 0)
+        details = raw.get("completion_tokens_details") or {}
+        self.reasoning_tokens += int(details.get("reasoning_tokens") or 0)
 
     def as_dict(self) -> dict[str, int]:
         return {
             "llm_calls": self.calls,
             "prompt_tokens": self.prompt_tokens,
             "completion_tokens": self.completion_tokens,
+            "reasoning_tokens": self.reasoning_tokens,
             "total_tokens": self.total_tokens,
+            "truncated_calls": self.truncated_calls,
         }
 
 
@@ -49,7 +55,7 @@ class ChatClient:
     base_url: str
     model: str
     temperature: float = 0.4
-    max_tokens: int = 2048
+    max_tokens: int = 8192
     timeout: int = 600
     retries: int = 3
     retry_backoff: float = 5.0
@@ -101,7 +107,13 @@ class ChatClient:
 
         self.usage.add(result.get("usage"))
         try:
-            message = result["choices"][0]["message"]
+            choice = result["choices"][0]
+            message = choice["message"]
         except (KeyError, IndexError) as exc:
             raise LLMError(f"malformed response: {json.dumps(result)[:500]}") from exc
+        finish_reason = choice.get("finish_reason") or ""
+        if finish_reason == "length":
+            self.usage.truncated_calls += 1
+        message = dict(message)
+        message["_finish_reason"] = finish_reason
         return message

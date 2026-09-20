@@ -200,7 +200,7 @@ results/<model>/<config>/
 | --- | --- | --- |
 | temperature | 0.4 | RTLFixer §4.1: "we set the sampling temperature to 0.4" |
 | max ReAct iterations | 10 | RTLFixer §4.1: "a maximum of 10 iterations of Thought-Action-Observation" |
-| max tokens per call | 2048 | matches RTLFixer's `ChatOpenAI(max_tokens=2048)` |
+| max tokens per call | 8192 | **deviation.** RTLFixer used 2048 with GPT-3.5, which has no reasoning tokens. Both models here spend part of that budget on reasoning, and at 2048 qwen returned an empty `content` (`finish_reason: "length"`) on ~10% of problems — a truncation artefact that would have been scored as a model failure. `summary.json` reports `truncated_problems` so the remaining truncation is visible. |
 | top_p | 1.0 | matches RTLFixer's `ChatOpenAI(top_p=1.0)` |
 | samples per problem | 1 | pass@1 |
 | benchmark | VerilogEval `dataset_spec-to-rtl`, 156 problems | the repo's own dataset |

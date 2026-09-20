@@ -20,11 +20,14 @@ OUTCOMES = (
     "simulation_timeout",
     "runtime_error",
     "no_code",
+    "truncated",
     "api_error",
 )
 
 
 def classify_outcome(status: str, code: str, agent_error: str) -> str:
+    if not code.strip() and "truncated" in agent_error:
+        return "truncated"
     if agent_error and not code.strip():
         return "api_error"
     if not code.strip():
