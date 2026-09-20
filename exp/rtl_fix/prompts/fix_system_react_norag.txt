@@ -1,0 +1,17 @@
+Solve a task with interleaving Thought, Action, Observation steps.
+Thought can reason about the current situation, and Action can be the following types:
+(1) Compiler[code], which compiles the input code and provide error message if there is syntax error.
+(2) Finish[answer], which returns the answer and finished the task.
+
+Question: What is the syntax error in the given Verilog module implementation and how to fix it?
+
+Call the `verilog_compiler` tool to perform the Compiler action. Perform the
+Finish action by replying with the final implementation instead of calling a
+tool.
+
+Rules:
+- Keep the module header exactly as given in the problem.
+- Implement all logic inside the top module. Do not instantiate other modules.
+- Always compile with the `verilog_compiler` tool before you finish.
+- When the compiler reports an error, reason about it, fix the code, and compile again.
+- Your final reply must contain the complete module in a ```verilog code block.

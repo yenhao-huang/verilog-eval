@@ -33,7 +33,30 @@ CONFIGS: dict[str, dict[str, Any]] = {
         "rag": True,
         "description": "ReAct with the compiler tool and the RAG expert-guidance tool",
     },
+    # --- repair task (RTLFixer's VerilogEval-syntax, the paper's Table 1) ---
+    "fix_oneshot": {
+        "system_prompt": "fix_system_oneshot.txt",
+        "tools": False,
+        "rag": False,
+        "description": "One-shot repair with a single round of compiler feedback "
+                       "(RTLFixer Figure 2(a))",
+    },
+    "fix_react_compiler": {
+        "system_prompt": "fix_system_react_norag.txt",
+        "tools": True,
+        "rag": False,
+        "description": "ReAct repair with the compiler tool only",
+    },
+    "fix_react_compiler_rag": {
+        "system_prompt": "fix_system_react.txt",
+        "tools": True,
+        "rag": True,
+        "description": "ReAct repair with the compiler tool and the RAG "
+                       "expert-guidance tool",
+    },
 }
+
+REPAIR_CONFIGS = ("fix_oneshot", "fix_react_compiler", "fix_react_compiler_rag")
 
 
 def load_system_prompt(config: str) -> str:
@@ -69,9 +92,9 @@ def _parse_arguments(raw: Any) -> dict:
     return parsed if isinstance(parsed, dict) else {"code_completion": str(parsed)}
 
 
-def run_baseline(client: ChatClient, prompt: str) -> AgentResult:
+def run_baseline(client: ChatClient, prompt: str, config: str = "baseline") -> AgentResult:
     started = time.monotonic()
-    system = load_system_prompt("baseline")
+    system = load_system_prompt(config)
     messages = [
         {"role": "system", "content": system},
         {"role": "user", "content": prompt},
@@ -192,6 +215,6 @@ def run_react(
 def run_agent(
     client: ChatClient, prompt: str, config: str, workdir: Path, max_iters: int = 10
 ) -> AgentResult:
-    if config == "baseline":
-        return run_baseline(client, prompt)
+    if not CONFIGS[config]["tools"]:
+        return run_baseline(client, prompt, config)
     return run_react(client, prompt, config, workdir, max_iters)

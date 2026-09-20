@@ -65,8 +65,22 @@ def syntax_check(code: str, workdir: Path | None = None) -> CompileResult:
     return CompileResult(completed.returncode == 0, log)
 
 
+def simulate_with_test(code: str, test_path: Path, workdir: Path) -> SimulationResult:
+    """Grade against a self-contained testbench that carries its own reference.
+
+    RTLFixer's VerilogEval-syntax rows bundle `reference_module`, `stimulus_gen`
+    and `tb` in one file, so there is no separate reference to link.
+    """
+    return _run_simulation(code, [test_path], workdir, top="tb")
+
+
 def simulate(code: str, test_path: Path, ref_path: Path, workdir: Path) -> SimulationResult:
     """Grade ``code`` against the VerilogEval testbench and reference."""
+    return _run_simulation(code, [test_path, ref_path], workdir, top="tb")
+
+
+def _run_simulation(code: str, extra_sources: list[Path], workdir: Path,
+                    top: str) -> SimulationResult:
     workdir.mkdir(parents=True, exist_ok=True)
     source = workdir / "TopModule.sv"
     source.write_text(code if code.endswith("\n") else code + "\n")
@@ -74,8 +88,8 @@ def simulate(code: str, test_path: Path, ref_path: Path, workdir: Path) -> Simul
 
     compile_result = subprocess.run(
         [
-            "iverilog", *IVERILOG_FLAGS, "-s", "tb", "-o", str(binary),
-            str(source), str(test_path), str(ref_path),
+            "iverilog", *IVERILOG_FLAGS, "-s", top, "-o", str(binary),
+            str(source), *(str(path) for path in extra_sources),
         ],
         text=True,
         capture_output=True,

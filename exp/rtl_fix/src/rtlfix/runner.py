@@ -17,8 +17,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from rtlfix import classify, compiler, dataset  # noqa: E402
-from rtlfix.agent import CONFIGS, run_agent  # noqa: E402
+from rtlfix import classify, compiler, dataset, syntax_dataset  # noqa: E402
+from rtlfix.agent import CONFIGS, REPAIR_CONFIGS, run_agent  # noqa: E402
 from rtlfix.llm import ChatClient  # noqa: E402
 
 
@@ -31,6 +31,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                         help="short name used in the report tables, e.g. qwen38_next")
     parser.add_argument("--base-url", default=os.environ.get("BASE_URL", ""))
     parser.add_argument("--model-name", default=os.environ.get("MODEL_NAME", ""))
+    parser.add_argument("--task", choices=("generate", "repair"), default="generate",
+                        help="generate = VerilogEval spec-to-rtl; repair = "
+                             "RTLFixer's VerilogEval-syntax erroneous implementations")
     parser.add_argument("--problems", nargs="*", default=None,
                         help="explicit problem names (default: the full set)")
     parser.add_argument("--limit", type=int, default=0, help="only the first N problems")
@@ -42,12 +45,21 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--max-tokens", type=int, default=8192,
                         help="raised above RTLFixer's 2048 because both models emit "
                              "reasoning tokens from the same budget")
-    parser.add_argument("--timeout", type=int, default=900)
+    parser.add_argument("--timeout", type=int, default=3600,
+                        help="per-request HTTP timeout; long-reasoning problems "
+                             "need well over the 900s that a lightly loaded "
+                             "server suggests once the batch is full")
     parser.add_argument("--resume", action="store_true",
                         help="skip problems that already have a record")
+    parser.add_argument("--redo-outcomes", nargs="*", default=["api_error"],
+                        help="on --resume, re-run problems recorded with these "
+                             "outcomes (infrastructure failures, not model failures)")
     args = parser.parse_args(argv)
     if not args.base_url or not args.model_name:
         parser.error("--base-url and --model-name (or BASE_URL/MODEL_NAME) are required")
+    is_repair_config = args.config in REPAIR_CONFIGS
+    if is_repair_config != (args.task == "repair"):
+        parser.error(f"--config {args.config} does not belong to --task {args.task}")
     return args
 
 
@@ -105,6 +117,69 @@ def run_problem(problem_name: str, args: argparse.Namespace) -> dict:
     return record
 
 
+def run_repair_problem(problem_name: str, args: argparse.Namespace,
+                       problems: dict) -> dict:
+    problem = problems[problem_name]
+    problem_dir = args.out_dir / "problems" / problem_name.replace("#", "_")
+    problem_dir.mkdir(parents=True, exist_ok=True)
+
+    client = ChatClient(
+        base_url=args.base_url, model=args.model_name, temperature=args.temperature,
+        max_tokens=args.max_tokens, timeout=args.timeout,
+    )
+
+    wall_start = time.monotonic()
+    result = run_agent(
+        client, problem.user_prompt(), args.config, problem_dir, args.max_iters
+    )
+
+    (problem_dir / "transcript.json").write_text(
+        json.dumps(result.transcript, indent=2, ensure_ascii=False) + "\n"
+    )
+    (problem_dir / "repaired.sv").write_text(result.code or "")
+
+    # The paper's headline metric: does the repaired code compile at all?
+    syntax = compiler.syntax_check(result.code) if result.code.strip() else None
+    syntax_ok = bool(syntax and syntax.ok)
+    (problem_dir / "syntax.log").write_text(syntax.log if syntax else "no code produced")
+
+    # Secondary: does it also simulate correctly against the bundled testbench?
+    if syntax_ok:
+        test_path = problem_dir / "test.sv"
+        test_path.write_text(problem.test)
+        sim = compiler.simulate_with_test(result.code, test_path, problem_dir)
+    else:
+        sim = compiler.SimulationResult("compile_error", syntax.log if syntax else "no code")
+    (problem_dir / "grade.log").write_text(sim.log)
+
+    outcome = classify.classify_outcome(sim.status, result.code, result.error)
+    record = {
+        "problem": problem_name,
+        "topic": classify.classify_topic(problem.task_id, problem.description),
+        "outcome": outcome,
+        "passed": int(outcome == "pass"),
+        "compiled": int(syntax_ok),
+        "error_kind": (
+            classify.classify_compile_error(syntax.log) if syntax and not syntax.ok else ""
+        ),
+        "original_error_kind": classify.classify_compile_error(problem.compiler_error),
+        "mismatches": sim.mismatches,
+        "samples": sim.samples,
+        "iterations": result.iterations,
+        "finished": int(result.finished),
+        "tool_calls": result.tool_calls_seen,
+        "code_from_tool": int(result.code_from_tool),
+        "agent_error": result.error,
+        "wall_seconds": round(time.monotonic() - wall_start, 3),
+        **result.tool_stats,
+        **result.usage,
+    }
+    (problem_dir / "record.json").write_text(
+        json.dumps(record, indent=2, ensure_ascii=False) + "\n"
+    )
+    return record
+
+
 def environment_info(args: argparse.Namespace) -> dict:
     def _run(cmd: list[str]) -> str:
         try:
@@ -123,6 +198,7 @@ def environment_info(args: argparse.Namespace) -> dict:
         "model_name": args.model_name,
         "model_label": args.model_label,
         "config": args.config,
+        "task": args.task,
         "config_description": CONFIGS[args.config]["description"],
         "temperature": args.temperature,
         "max_tokens": args.max_tokens,
@@ -178,7 +254,22 @@ def main(argv: list[str] | None = None) -> int:
         print(f"error: missing required tool(s): {', '.join(missing)}", file=sys.stderr)
         return 2
 
-    problems = args.problems or dataset.list_problems(args.repo_root)
+    if args.task == "repair":
+        index = syntax_dataset.load_index()
+        # Only the rows that genuinely fail to compile under this iverilog have
+        # something to repair; the rest carry a Quartus-only error.
+        compilable = {
+            name for name, problem in index.items()
+            if compiler.syntax_check(problem.broken_module).ok
+        }
+        available = [name for name in index if name not in compilable]
+        print(f"repair set: {len(available)} of {len(index)} rows fail to compile "
+              f"under this iverilog ({len(compilable)} skipped)")
+        problems = args.problems or available
+        run_one = lambda name: run_repair_problem(name, args, index)  # noqa: E731
+    else:
+        problems = args.problems or dataset.list_problems(args.repo_root)
+        run_one = lambda name: run_problem(name, args)  # noqa: E731
     if args.limit:
         problems = problems[: args.limit]
 
@@ -189,7 +280,14 @@ def main(argv: list[str] | None = None) -> int:
     if args.resume and summary_path.is_file():
         previous = json.loads(summary_path.read_text())
         done = {r["problem"]: r for r in previous.get("results", [])}
-        print(f"resuming: {len(done)} problem(s) already recorded")
+        redo = {
+            name for name, record in done.items()
+            if record.get("outcome") in set(args.redo_outcomes)
+        }
+        for name in redo:
+            del done[name]
+        print(f"resuming: {len(done)} problem(s) already recorded"
+              + (f", {len(redo)} re-run after an infrastructure failure" if redo else ""))
 
     pending = [p for p in problems if p not in done]
     meta = environment_info(args)
@@ -211,7 +309,7 @@ def main(argv: list[str] | None = None) -> int:
 
     if pending:
         with ThreadPoolExecutor(max_workers=max(1, min(args.jobs, len(pending)))) as pool:
-            futures = {pool.submit(run_problem, name, args): name for name in pending}
+            futures = {pool.submit(run_one, name): name for name in pending}
             for index, future in enumerate(as_completed(futures), start=1):
                 name = futures[future]
                 try:
@@ -221,7 +319,8 @@ def main(argv: list[str] | None = None) -> int:
                         "problem": name, "topic": "other", "outcome": "api_error",
                         "passed": 0, "compiled": 0, "error_kind": "", "mismatches": None,
                         "samples": None, "iterations": 0, "finished": 0, "tool_calls": 0,
-                        "code_from_tool": 0, "agent_error": repr(exc), "wall_seconds": 0.0,
+                        "code_from_tool": 0, "agent_error": repr(exc),
+                        "original_error_kind": "", "wall_seconds": 0.0,
                         "compile_calls": 0, "rag_calls": 0, "rag_entries_hit": [],
                         "llm_calls": 0, "prompt_tokens": 0, "completion_tokens": 0,
                         "reasoning_tokens": 0, "total_tokens": 0, "truncated_calls": 0,
