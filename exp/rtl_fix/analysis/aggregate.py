@@ -15,11 +15,24 @@ import json
 from pathlib import Path
 
 EXP_DIR = Path(__file__).resolve().parents[1]
-CONFIG_ORDER = ["baseline", "react_compiler", "react_compiler_rag"]
+CONFIG_ORDER = [
+    "baseline", "react_compiler", "react_compiler_rag",
+    "fix_oneshot", "fix_react_compiler", "fix_react_compiler_rag",
+]
 CONFIG_LABEL = {
     "baseline": "baseline (no tools)",
     "react_compiler": "ReAct + compiler",
     "react_compiler_rag": "ReAct + compiler + RAG",
+    "fix_oneshot": "one-shot fix (compiler feedback)",
+    "fix_react_compiler": "ReAct + compiler",
+    "fix_react_compiler_rag": "ReAct + compiler + RAG",
+}
+# Which configuration each family is measured against.
+REFERENCE_OF = {
+    "react_compiler": "baseline",
+    "react_compiler_rag": "baseline",
+    "fix_react_compiler": "fix_oneshot",
+    "fix_react_compiler_rag": "fix_oneshot",
 }
 OUTCOME_ORDER = [
     "pass",
@@ -71,7 +84,8 @@ def headline_table(cells: dict) -> str:
     for key in sorted(cells, key=sort_key):
         model, config = key
         summary = cells[key]
-        base = cells.get((model, "baseline")) if config != "baseline" else None
+        reference = REFERENCE_OF.get(config)
+        base = cells.get((model, reference)) if reference else None
         base_pass = base["pass_rate"] if base else None
         base_compile = base["compile_rate"] if base else None
         rows.append([
@@ -199,11 +213,12 @@ def flip_table(cells: dict) -> str:
     rows = []
     models = sorted({m for m, _ in cells})
     for model in models:
-        base = cells.get((model, "baseline"))
+        base = cells.get((model, "baseline")) or cells.get((model, "fix_oneshot"))
         if not base:
             continue
+        base_name = base["meta"]["config"]
         base_pass = {r["problem"]: r["passed"] for r in base["results"]}
-        for config in CONFIG_ORDER[1:]:
+        for config in [c for c, ref in REFERENCE_OF.items() if ref == base_name]:
             cell = cells.get((model, config))
             if not cell:
                 continue
@@ -226,11 +241,12 @@ def flip_detail(cells: dict) -> str:
     lines = []
     models = sorted({m for m, _ in cells})
     for model in models:
-        base = cells.get((model, "baseline"))
+        base = cells.get((model, "baseline")) or cells.get((model, "fix_oneshot"))
         if not base:
             continue
+        base_name = base["meta"]["config"]
         base_pass = {r["problem"]: r["passed"] for r in base["results"]}
-        for config in CONFIG_ORDER[1:]:
+        for config in [c for c, ref in REFERENCE_OF.items() if ref == base_name]:
             cell = cells.get((model, config))
             if not cell:
                 continue
