@@ -9,6 +9,7 @@ import platform
 import shutil
 import subprocess
 import sys
+import traceback
 import threading
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -255,21 +256,25 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     if args.task == "repair":
-        index = syntax_dataset.load_index()
+        syntax_index = syntax_dataset.load_index()
         # Only the rows that genuinely fail to compile under this iverilog have
         # something to repair; the rest carry a Quartus-only error.
         compilable = {
-            name for name, problem in index.items()
+            name for name, problem in syntax_index.items()
             if compiler.syntax_check(problem.broken_module).ok
         }
-        available = [name for name in index if name not in compilable]
-        print(f"repair set: {len(available)} of {len(index)} rows fail to compile "
-              f"under this iverilog ({len(compilable)} skipped)")
+        available = [name for name in syntax_index if name not in compilable]
+        print(f"repair set: {len(available)} of {len(syntax_index)} rows fail to "
+              f"compile under this iverilog ({len(compilable)} skipped)")
         problems = args.problems or available
-        run_one = lambda name: run_repair_problem(name, args, index)  # noqa: E731
+
+        def run_one(name: str, _index=syntax_index) -> dict:
+            return run_repair_problem(name, args, _index)
     else:
         problems = args.problems or dataset.list_problems(args.repo_root)
-        run_one = lambda name: run_problem(name, args)  # noqa: E731
+
+        def run_one(name: str) -> dict:
+            return run_problem(name, args)
     if args.limit:
         problems = problems[: args.limit]
 
@@ -310,7 +315,7 @@ def main(argv: list[str] | None = None) -> int:
     if pending:
         with ThreadPoolExecutor(max_workers=max(1, min(args.jobs, len(pending)))) as pool:
             futures = {pool.submit(run_one, name): name for name in pending}
-            for index, future in enumerate(as_completed(futures), start=1):
+            for completed, future in enumerate(as_completed(futures), start=1):
                 name = futures[future]
                 try:
                     record = future.result()
@@ -319,7 +324,8 @@ def main(argv: list[str] | None = None) -> int:
                         "problem": name, "topic": "other", "outcome": "api_error",
                         "passed": 0, "compiled": 0, "error_kind": "", "mismatches": None,
                         "samples": None, "iterations": 0, "finished": 0, "tool_calls": 0,
-                        "code_from_tool": 0, "agent_error": repr(exc),
+                        "code_from_tool": 0,
+                        "agent_error": f"{exc!r}\n{traceback.format_exc()}",
                         "original_error_kind": "", "wall_seconds": 0.0,
                         "compile_calls": 0, "rag_calls": 0, "rag_entries_hit": [],
                         "llm_calls": 0, "prompt_tokens": 0, "completion_tokens": 0,
@@ -329,7 +335,7 @@ def main(argv: list[str] | None = None) -> int:
                     done[name] = record
                     flush()
                 print(
-                    f"[{index}/{len(pending)}] {name}: {record['outcome']} "
+                    f"[{completed}/{len(pending)}] {name}: {record['outcome']} "
                     f"({record['wall_seconds']:.1f}s, {record['total_tokens']} tok)",
                     flush=True,
                 )
