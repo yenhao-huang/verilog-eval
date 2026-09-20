@@ -1,0 +1,63 @@
+{
+  "compiler": "iverilog",
+  "retriever": "exact substring match on the compiler log (the paper uses exact match to error tags for simplicity)",
+  "sources": [
+    "RTLFixer, arXiv:2311.16543, Figure 3 (human expert guidance examples)",
+    "NVlabs/RTLFixer, src/generators/agents/langchain_tools.py, RAGTool._run(compiler='iverilog')"
+  ],
+  "fallback": "I should explain what the compile error is about. Then correct the code syntax in TopModule and run compile again.",
+  "entries": [
+    {
+      "id": "unable-to-bind",
+      "match": ["Unable to bind wire/reg/memory"],
+      "guidance": "replace 'posedge clk' with '*'",
+      "source": "NVlabs/RTLFixer langchain_tools.py"
+    },
+    {
+      "id": "dangling-clk-posedge",
+      "match": ["dangling input port", "(clk) floating", "posedge clk"],
+      "guidance": "replace 'posedge clk' with '*'",
+      "source": "NVlabs/RTLFixer langchain_tools.py"
+    },
+    {
+      "id": "dangling-clk",
+      "match": ["dangling input port", "(clk) floating"],
+      "not_match": ["posedge clk"],
+      "guidance": "remove clk from input",
+      "source": "NVlabs/RTLFixer langchain_tools.py"
+    },
+    {
+      "id": "not-a-valid-l-value",
+      "match": ["not a valid l-value"],
+      "guidance": "next_state is defined as a wire not reg, it is not a valid l-value. Use assign statements instead of always block if possible.",
+      "source": "NVlabs/RTLFixer langchain_tools.py; RTLFixer Figure 2(c)"
+    },
+    {
+      "id": "invalid-module-instantiation",
+      "match": ["invalid module instantiation"],
+      "case_insensitive": true,
+      "guidance": "Implement all logic inside TopModule. Do not instantiation module inside TopModule. Please correct the code and run compile again.",
+      "source": "NVlabs/RTLFixer langchain_tools.py"
+    },
+    {
+      "id": "extra-digits-sized-binary-constant",
+      "match": ["Extra digits given for sized binary constant."],
+      "guidance": "Please make sure that your binary numbers have exactly digits, consisting of 0s and 1s, as specified in the declaration (e.g., 9'b0000000001). Extra digits are not allowed.",
+      "source": "NVlabs/RTLFixer langchain_tools.py"
+    },
+    {
+      "id": "undeclared-identifier",
+      "match": ["Unable to elaborate r-value", "error: Unknown module type"],
+      "any_of": true,
+      "guidance": "Check if the object name is correct. If the name is correct, declare the object. If 'clk' is used but is not an input of the module, replace 'posedge clk' with '*'.",
+      "source": "RTLFixer Figure 3 (Quartus 'Object clk is not declared' guidance, ported to iverilog wording)"
+    },
+    {
+      "id": "index-out-of-range",
+      "match": ["out of range", "cannot be outside the declared range"],
+      "any_of": true,
+      "guidance": "Carefully examine the index values to prevent encountering 'index out of bound' errors in your code. When utilizing parameters for indexing, try to use binary strings for performing the indexing operation instead.",
+      "source": "RTLFixer Figure 3"
+    }
+  ]
+}

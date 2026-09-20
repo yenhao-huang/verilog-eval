@@ -1,0 +1,6 @@
+# Simulation scratch produced during grading; the logs we keep are grade.log
+# and iverilog.log, not the binaries or waveforms.
+results/**/sim.out
+results/**/*.vcd
+__pycache__/
+*.pyc

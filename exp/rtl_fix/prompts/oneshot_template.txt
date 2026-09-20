@@ -1,0 +1,23 @@
+System Prompt:
+Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated.
+Problem Description:
+Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated.
+Given an 8-bit input vector [7:0], reverse its bit ordering.
+
+module top_module (
+
+input [7:0] in,
+
+output [7:0] out
+
+);
+
+Erroneous Implementation:
+
+assign {out[0],out[1],out[2],out[3],out[4],out[5],out[6],out[8]} = in;
+
+endmodule
+
+Feedback:
+main.v:5: error: Index out[8] is out of range.
+1 error(s) during elaboration.

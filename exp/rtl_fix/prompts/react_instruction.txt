@@ -1,0 +1,5 @@
+Solve a task with interleaving Thought, Action, Observation steps.
+Thought can reason about the current situation, and Action can be the following types:
+(1) Compiler[code], which compiles the input code and provide error message if there is syntax error.
+(2) Finish[answer], which returns the answer and finished the task.
+(3) RAG[logs], input the compiler log and retrieve expert solutions to fix the syntax error.

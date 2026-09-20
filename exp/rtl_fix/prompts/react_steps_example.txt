@@ -1,0 +1,22 @@
+Question:
+What is the syntax error in the given Verilog module implementation and how to fix it?
+Thought 1:
+Implement a finite state machine that searches for message boundaries in a byte stream.
+Action 1: Compiler
+
+    always @ (state or in) begin
+
+    case (state)
+
+     4'b0001: begin
+
+Observation 1:
+main.v:15: error: out is not a valid l-value in top_module.
+
+Thought 2:
+The code has a syntax error because the "out" signal was declared as a wire instead of a register. I need to correct this and run the compilation.
+Action 2: RAG[..not a valid l-value..]
+Use assign statements instead of always block if possible.
+...
+Action n: Finish
+The revised code is as follow: ...
