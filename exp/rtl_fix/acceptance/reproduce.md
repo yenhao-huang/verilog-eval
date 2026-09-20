@@ -86,7 +86,7 @@ emitting tool calls and every ReAct cell will silently degrade to the baseline.
 
 ---
 
-## 3. Run the qwen cells
+## 3. Run the qwen cells (VerilogEval-v2, spec-to-rtl)
 
 ```bash
 scripts/run_model_sweep.sh qwen38_next --jobs 4
@@ -203,7 +203,8 @@ results/<model>/<config>/
 | max tokens per call | 8192 | **deviation.** RTLFixer used 2048 with GPT-3.5, which has no reasoning tokens. Both models here spend part of that budget on reasoning, and at 2048 qwen returned an empty `content` (`finish_reason: "length"`) on ~10% of problems — a truncation artefact that would have been scored as a model failure. `summary.json` reports `truncated_problems` so the remaining truncation is visible. |
 | top_p | 1.0 | matches RTLFixer's `ChatOpenAI(top_p=1.0)` |
 | samples per problem | 1 | pass@1 |
-| benchmark | VerilogEval `dataset_spec-to-rtl`, 156 problems | the repo's own dataset |
+| generation benchmark | **VerilogEval-v2 (spec-to-rtl)**, `dataset_spec-to-rtl`, 156 problems | the repo's own dataset |
+| repair benchmark | **VerilogEval-syntax**, 158 of RTLFixer's 174 rows (derived from VerilogEval-v1 code-completion) | the set the paper's Table 1 is measured on |
 
 Because the runs are single-sample at temperature 0.4, small differences
 between configurations are within sampling noise. Treat differences of a

@@ -5,9 +5,18 @@ A local replication of the two ideas in
 prompting with a compiler in the loop, and RAG over a curated
 compiler-error → expert-guidance database.
 
-The question this experiment answers: **on the VerilogEval `spec-to-rtl`
-benchmark, how much does each of those two additions actually buy, for two
-locally served open models?**
+The question this experiment answers: **how much does each of those two
+additions actually buy, for two locally served open models?**
+
+Two benchmarks are used:
+
+| task | benchmark | rows | what the model is asked to do |
+| --- | --- | --- | --- |
+| generation | **VerilogEval-v2 (spec-to-rtl)** — `dataset_spec-to-rtl` | 156 | write a module from a natural-language specification |
+| repair | **VerilogEval-syntax** — RTLFixer's set, derived from VerilogEval-v1 (code-completion) | 158 | fix an implementation that does not compile |
+
+VerilogEval-syntax is where the paper's headline number lives (Table 1), and
+it is the only task in which the RAG tool is exercised at all.
 
 ## Layout
 
