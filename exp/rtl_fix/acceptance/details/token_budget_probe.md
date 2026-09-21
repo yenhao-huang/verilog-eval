@@ -21,16 +21,20 @@ problem:            Prob153_gshare
 config:             baseline (one-shot, no tools)
 max_tokens:         32768
 finish_reason:      stop           # completed naturally
-elapsed:            3085 s
 completion_tokens:  30751
   of which reasoning: 30136
 final answer:       2369 characters
+elapsed:            3085 s         # under load — see below
 ```
 
-So the model genuinely needs **~30k reasoning tokens and ~51 minutes** on this
-problem when it has no tool to anchor it. A budget large enough to remove
-truncation entirely would be ~32k, costing roughly 50 minutes per hard problem
-— several hours per configuration, with no change to what is being measured.
+So the model genuinely needs **~30k reasoning tokens** on this problem when it
+has no tool to anchor it. That token count is a property of the problem.
+
+**The 3085 s is not.** The probe ran while the 12-worker sweep was using the
+same GPU, so it got 30751 / 3085 = **10.0 tok/s**, not the ~31 tok/s a single
+request gets on an idle server. On an idle server the same generation would take
+about **16 minutes**, and in a batched run it is throughput, not latency, that
+sets the cost.
 
 ## Decision
 

@@ -115,8 +115,8 @@ Compile errors: 2–5 per 156. Truncations: 14–30. The failure mode RTLFixer w
 built to solve has become the *rarest* one; the one it never saw is now the
 largest. RTLFixer used GPT-3.5/GPT-4 at `max_tokens=2048`, neither of which
 emitted reasoning tokens, so "thinks so long it never answers" did not exist as
-a category. A probe on one truncated problem needed **30,136 reasoning tokens
-and 51 minutes** to terminate naturally.
+a category. A probe on one truncated problem needed **30,136 reasoning tokens** to terminate
+naturally — nearly four times the budget every cell was given.
 Detail: [`details/token_budget_probe.md`](details/token_budget_probe.md).
 
 ---
@@ -253,7 +253,11 @@ masked it. The clean test is to remove truncation and look again: re-run
 paper's mechanism operates here, ReAct should still win. On the evidence above it
 should not — the one-shot fix rate given output is already 99.2%.
 
-That run costs roughly 50 minutes per hard problem and was not attempted.
+Costed from the probe — 28 truncated problems at ~30.7k tokens plus 130 others
+at their 1.4k median, about 1.05M completion tokens — that is roughly **2 hours**
+of wall clock at this server's sustained 150 tok/s. It was not attempted here,
+but it is cheap, and it is the experiment that would settle the central
+question.
 
 ---
 
