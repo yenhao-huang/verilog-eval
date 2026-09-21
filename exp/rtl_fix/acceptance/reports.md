@@ -1,5 +1,33 @@
 # RTLFixer's ReAct + RAG, measured locally
 
+> ## ⚠️ Superseded in part — read this first
+>
+> A later ablation ([`details/budget_ablation.md`](details/budget_ablation.md))
+> shows that **ReAct's advantage on the generation benchmark is an artefact of
+> the shared 8192-token budget**, not of the compiler tool.
+>
+> Every cell below ran at `max_tokens=8192`, where 17–22% of problems hit the
+> cap and produced nothing. ReAct's turn structure hands the model a fresh 8192
+> tokens on each of up to ten iterations; the baseline gets one. Re-running the
+> baseline at `max_tokens=30000` on qwen3.8-next:
+>
+> | configuration | pass@1 | syntax OK | compute |
+> | --- | --- | --- | --- |
+> | baseline @8192 | 75.6% | 79.5% | 15.74 h |
+> | ReAct + compiler @8192 | 84.0% | 89.1% | 10.87 h |
+> | **baseline @30000 (no tools)** | **86.5%** | **92.3%** | 21.03 h |
+>
+> The plain baseline, with no tools and no iteration, **beats every ReAct
+> configuration** once it is allowed to finish. What survives is an efficiency
+> result: ReAct lands within 2.5pp of the big-budget baseline for half the
+> compute. That is not the capability claim the paper makes.
+>
+> Sections 1–3 below still describe the 8192-budget comparison faithfully, and
+> §2.2 (RAG contributes nothing) and §2.3 (truncation dominates) are unaffected.
+> Read every "ReAct helps" figure as *at a fixed 8192 budget*. The repair half
+> of the ablation is still running; this banner will be folded into a rewritten
+> §1–§3 when it lands.
+
 **Question.** RTLFixer ([arXiv:2311.16543](https://arxiv.org/abs/2311.16543))
 claims two things lift Verilog syntax success: ReAct prompting with a compiler
 in the loop, and RAG over a curated compiler-error → expert-guidance database.
