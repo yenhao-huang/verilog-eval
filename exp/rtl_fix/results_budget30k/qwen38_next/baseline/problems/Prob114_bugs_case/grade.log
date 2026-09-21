@@ -1,0 +1,49 @@
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:9: error: out is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:3:      : out is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:10: error: valid is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:4:      : valid is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:13: error: out is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:3:      : out is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:13: error: valid is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:4:      : valid is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:14: error: out is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:3:      : out is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:14: error: valid is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:4:      : valid is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:15: error: out is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:3:      : out is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:15: error: valid is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:4:      : valid is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:16: error: out is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:3:      : out is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:16: error: valid is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:4:      : valid is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:17: error: out is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:3:      : out is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:17: error: valid is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:4:      : valid is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:18: error: out is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:3:      : out is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:18: error: valid is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:4:      : valid is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:19: error: out is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:3:      : out is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:19: error: valid is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:4:      : valid is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:20: error: out is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:3:      : out is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:20: error: valid is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:4:      : valid is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:21: error: out is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:3:      : out is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:21: error: valid is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:4:      : valid is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:22: error: out is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:3:      : out is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:22: error: valid is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:4:      : valid is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:24: error: out is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:3:      : out is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:25: error: valid is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob114_bugs_case/TopModule.sv:4:      : valid is declared here as wire.
+24 error(s) during elaboration.

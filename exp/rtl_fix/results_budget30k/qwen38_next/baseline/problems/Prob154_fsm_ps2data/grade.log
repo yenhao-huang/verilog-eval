@@ -1,0 +1,7 @@
+VCD info: dumpfile wave.vcd opened for output.
+Hint: Output 'out_bytes' has no mismatches.
+Hint: Output 'done' has 978 mismatches. First mismatch occurred at time 210.
+Hint: Total mismatched samples is 978 out of 1619 samples
+
+Simulation finished at 8096 ps
+Mismatches: 978 in 1619 samples

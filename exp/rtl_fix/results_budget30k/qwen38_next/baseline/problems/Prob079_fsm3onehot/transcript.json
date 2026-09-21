@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in\n - input  state (4 bits)\n - output next_state (4 bits)\n - output out\n\nThe module should implement the state transition table for a Moore state\nmachine with one input, one output, and four states. Use the following\none-hot state encoding: A=4'b0001, B=4'b0010, C=4'b0100, D=4'b1000.\nDerive state transition and output logic equations by inspection assuming\na one-hot encoding. Implement only the state transition logic and output\nlogic (the combinational logic portion) for this state machine.\n\n  State | Next state in=0, Next state in=1 | Output\n  A     | A, B                             | 0\n  B     | C, B                             | 0\n  C     | A, D                             | 0\n  D     | C, B                             | 1\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "\n\n```verilog\nmodule TopModule (\n    input        in,\n    input  [3:0] state,\n    output [3:0] next_state,\n    output       out\n);\n\n    // One-hot encoding:\n    // A = state[0], B = state[1], C = state[2], D = state[3]\n\n    assign next_state[0] = (~in & (state[0] | state[2]));\n    assign next_state[1] = ( in & (state[0] | state[1] | state[3]));\n    assign next_state[2] = (~in & (state[1] | state[3]));\n    assign next_state[3] = ( in & state[2]);\n\n    assign out = state[3];\n\nendmodule\n```"
+  }
+]

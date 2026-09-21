@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  a\n - input  b\n - input  c\n - input  d\n - output out\n\nThe module should implement the Karnaugh map below. d is don't-care,\nwhich means you may choose to output whatever value is convenient.\n\n              ab\n   cd   01  00  10  11\n   00 | d | 0 | 1 | 1 |\n   01 | 0 | 0 | d | d |\n   11 | 0 | 1 | 1 | 1 |\n   10 | 0 | 1 | 1 | 1 |\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "\n\n```verilog\nmodule TopModule (\n    input  a,\n    input  b,\n    input  c,\n    input  d,\n    output out\n);\n    // d is a don't-care. Choosing don't-cares to group all a=1 cells gives:\n    // out = a OR (c AND NOT b)\n    assign out = a | (c & ~b);\nendmodule\n```"
+  }
+]

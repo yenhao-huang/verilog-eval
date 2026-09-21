@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  d\n - output q\n\nA dual-edge triggered flip-flop is triggered on both edges of the clock.\nHowever, FPGAs don't have dual-edge triggered flip-flops, and using an\nalways @(posedge clk or negedge clk) is not accepted as a legal\nsensitivity list. Build a circuit that functionally behaves like a\ndual-edge triggered flip-flop.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "\n\n```verilog\nmodule TopModule (\n    input  wire clk,\n    input  wire d,\n    output wire q\n);\n\n    reg pff = 1'b0;  // captures d on rising edge\n    reg nff = 1'b0;  // captures d on falling edge\n\n    always @(posedge clk) begin\n        pff <= d;\n    end\n\n    always @(negedge clk) begin\n        nff <= d;\n    end\n\n    // Select the value captured on the most recent clock edge.\n    assign q = clk ? pff : nff;\n\nendmodule\n```"
+  }
+]

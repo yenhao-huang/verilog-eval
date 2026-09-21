@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  reset\n - output ena (3 bits)\n - output q   (16 bits)\n\nThe module should implement a 4-digit BCD (binary-coded decimal) counter.\nEach decimal digit is encoded using 4 bits: q[3:0] is the ones digit,\nq[7:4] is the tens digit, etc. For digits [3:1], also output an enable\nsignal indicating when each of the upper three digits should be\nincremented. Include a synchronous active-high reset. Assume all\nsequential logic is triggered on the positive edge of the clock.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "\n\n```verilog\nmodule TopModule (\n    input  wire        clk,\n    input  wire        reset,\n    output wire [2:0]  ena,\n    output wire [15:0] q\n);\n\n    reg [3:0] ones;\n    reg [3:0] tens;\n    reg [3:0] hundreds;\n    reg [3:0] thousands;\n\n    // q[3:0]   = ones\n    // q[7:4]   = tens\n    // q[11:8]  = hundreds\n    // q[15:12] = thousands\n    assign q = {thousands, hundreds, tens, ones};\n\n    // ena[0] enables tens digit\n    // ena[1] enables hundreds digit\n    // ena[2] enables thousands digit\n    assign ena[0] = (ones == 4'd9);\n    assign ena[1] = (tens == 4'd9) && ena[0];\n    assign ena[2] = (hundreds == 4'd9) && ena[1];\n\n    always @(posedge clk) begin\n        if (reset) begin\n            ones      <= 4'd0;\n            tens      <= 4'd0;\n            hundreds  <= 4'd0;\n            thousands <= 4'd0;\n        end else begin\n            ones <= (ones == 4'd9) ? 4'd0 : ones + 4'd1;\n\n            if (ena[0])\n                tens <= (tens == 4'd9) ? 4'd0 : tens + 4'd1;\n\n            if (ena[1])\n                hundreds <= (hundreds == 4'd9) ? 4'd0 : hundreds + 4'd1;\n\n            if (ena[2])\n                thousands <= (thousands == 4'd9) ? 4'd0 : thousands + 4'd1;\n        end\n    end\n\nendmodule\n```"
+  }
+]

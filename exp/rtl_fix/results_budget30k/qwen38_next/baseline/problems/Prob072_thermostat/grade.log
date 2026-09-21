@@ -1,0 +1,8 @@
+VCD info: dumpfile wave.vcd opened for output.
+Hint: Output 'heater' has no mismatches.
+Hint: Output 'aircon' has no mismatches.
+Hint: Output 'fan' has no mismatches.
+Hint: Total mismatched samples is 0 out of 248 samples
+
+Simulation finished at 1241 ps
+Mismatches: 0 in 248 samples

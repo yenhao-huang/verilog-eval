@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  reset\n - output q (4 bits)\n\nThe module should implement a 4-bit binary counter that counts from 0\nthrough 15, inclusive, with a period of 16. Assume all sequential logic\nis triggered on the positive edge of the clock. The reset input is active\nhigh synchronous, and should reset the counter to 0.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "\n\n```verilog\nmodule TopModule (\n    input  clk,\n    input  reset,\n    output reg [3:0] q\n);\n\n    always @(posedge clk) begin\n        if (reset)\n            q <= 4'b0000;\n        else\n            q <= q + 1;\n    end\n\nendmodule\n```"
+  }
+]

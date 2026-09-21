@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  areset\n - input  in\n - output out\n\nThe module should implement a Moore machine with the diagram described\nbelow:\n\n  B (1) --0--> A\n  B (1) --1--> B\n  A (0) --0--> B\n  A (0) --1--> A\n\nIt should asynchronously reset into state B if reset if high.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "\n\n```verilog\nmodule TopModule (\n    input  clk,\n    input  areset,\n    input  in,\n    output out\n);\n\n    // State encoding:\n    // A = 0, output 0\n    // B = 1, output 1\n    localparam A = 1'b0;\n    localparam B = 1'b1;\n\n    reg state;\n\n    always @(posedge clk or posedge areset) begin\n        if (areset) begin\n            state <= B;\n        end else begin\n            case (state)\n                A: state <= in ? A : B;\n                B: state <= in ? B : A;\n                default: state <= B;\n            endcase\n        end\n    end\n\n    // Moore output depends only on current state\n    assign out = state;\n\nendmodule\n```"
+  }
+]

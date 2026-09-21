@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  reset\n - output shift_ena\n\nThis module is a part of the FSM for controlling a shift register, we\nwant the ability to enable the shift register for exactly 4 clock cycles\nwhenever the proper bit pattern is detected. Whenever the FSM is reset,\nassert shift_ena for 4 cycles, then 0 forever (until reset). Reset should\nbe active high synchronous.\n\nAssume all sequential logic is triggered on the positive edge of the\nclock.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "\n\n```verilog\nmodule TopModule (\n    input  wire clk,\n    input  wire reset,\n    output wire shift_ena\n);\n\n    localparam [2:0] S0 = 3'd0,\n                     S1 = 3'd1,\n                     S2 = 3'd2,\n                     S3 = 3'd3,\n                     S4 = 3'd4;\n\n    reg [2:0] state;\n\n    initial begin\n        state = S4;\n    end\n\n    always @(posedge clk) begin\n        if (reset) begin\n            state <= S0;\n        end else begin\n            case (state)\n                S0:      state <= S1;\n                S1:      state <= S2;\n                S2:      state <= S3;\n                S3:      state <= S4;\n                S4:      state <= S4;\n                default: state <= S4;\n            endcase\n        end\n    end\n\n    assign shift_ena = (state == S0) ||\n                       (state == S1) ||\n                       (state == S2) ||\n                       (state == S3);\n\nendmodule\n```"
+  }
+]

@@ -12,3 +12,6 @@ data/
 
 __pycache__/
 *.pyc
+results_budget30k/**/*.vcd
+results_budget30k/**/sim.out
+results_budget30k/**/test.sv
