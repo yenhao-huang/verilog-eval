@@ -183,8 +183,8 @@ reasoning outweigh the tokens it adds in tool round-trips.
 | | |
 | --- | --- |
 | hardware | 1 × NVIDIA GB10 (128 GB unified), one model resident at a time |
-| qwen3.8-next | `Inferact-Qwen3.8-Flash-Next-NVFP4` on vLLM 0.19, MTP speculative decoding, 24 sequence slots |
-| gemma-4-26B-A4B | `unsloth/gemma-4-26B-A4B-it` Q4_K_XL GGUF on a CUDA llama.cpp built for sm_121, 8 slots |
+| qwen3.8-next | `Inferact-Qwen3.8-Flash-Next-NVFP4` on vLLM 0.19, `--speculative-config {"method":"mtp","num_speculative_tokens":2}`, 24 sequence slots, `--gpu-memory-utilization 0.85` |
+| gemma-4-26B-A4B | `unsloth/gemma-4-26B-A4B-it` Q4_K_XL GGUF on a CUDA llama.cpp built for sm_121, 8 slots, no speculative decoding |
 | generation benchmark | VerilogEval-v2, `dataset_spec-to-rtl`, 156 problems |
 | repair benchmark | VerilogEval-syntax (RTLFixer), 158 of 174 rows — the 16 that compile cleanly under this iverilog are skipped |
 | compiler | Icarus Verilog, `-Wall -Winfloop -Wno-timescale -g2012` |
@@ -229,8 +229,14 @@ the reference implementation) is documented in `prompts/SOURCES.md`.
 5. **`reasoning_tokens` is unavailable for gemma.** llama.cpp does not report it,
    so the "of which reasoning" column is 0 for gemma — that means *not measured*,
    not *no reasoning*.
-6. **The two serving stacks differ** (vLLM+NVFP4 vs llama.cpp+Q4_K_XL, 24 vs 8
-   slots). Cross-model *accuracy* is comparable; cross-model *throughput* is not.
+6. **The two serving stacks differ**, including speculative decoding. qwen ran
+   on vLLM with NVFP4 weights, 24 sequence slots and **MTP speculative decoding
+   at `num_speculative_tokens=2`** (measured draft acceptance 68–93%, mean
+   acceptance length 2.4–2.9). gemma ran on llama.cpp with a Q4_K_XL GGUF, 8
+   slots and **no speculative decoding**. Rejection sampling preserves the
+   target distribution, so this does not affect accuracy — but every qwen
+   throughput and wall-clock figure carries an MTP speedup that gemma's does
+   not. Cross-model *accuracy* is comparable; cross-model *speed* is not.
 7. **The repair benchmark is filtered by our own toolchain.** 16 of RTLFixer's
    174 rows compile cleanly under this iverilog (they carry Quartus-only errors)
    and are excluded, so our 158-row fix rates are not directly comparable to the
