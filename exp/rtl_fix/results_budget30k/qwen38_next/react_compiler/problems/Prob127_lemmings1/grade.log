@@ -1,0 +1,7 @@
+VCD info: dumpfile wave.vcd opened for output.
+Hint: Output 'walk_left' has no mismatches.
+Hint: Output 'walk_right' has no mismatches.
+Hint: Total mismatched samples is 0 out of 229 samples
+
+Simulation finished at 1146 ps
+Mismatches: 0 in 229 samples

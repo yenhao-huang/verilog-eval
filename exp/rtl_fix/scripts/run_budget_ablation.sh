@@ -30,7 +30,13 @@ JOBS="${JOBS:-12}"
 TIMEOUT="${TIMEOUT:-7200}"
 OUT_ROOT="${OUT_ROOT:-$EXP_DIR/results_budget30k}"
 
-for spec in "generate:baseline" "repair:fix_oneshot"; do
+# All four qwen cells that the budget question touches. The ReAct cells matter
+# as much as the single-call ones: comparing ReAct@8192 against baseline@30000
+# is not like-for-like, so both arms have to be measured at the same budget
+# before the comparison means anything.
+CELLS="${CELLS:-generate:baseline repair:fix_oneshot generate:react_compiler repair:fix_react_compiler}"
+
+for spec in $CELLS; do
   task="${spec%%:*}"
   config="${spec##*:}"
   echo "=== $MODEL_LABEL / $config @ max_tokens=$MAX_TOKENS ==="

@@ -1,0 +1,10 @@
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/react_compiler_rag/problems/Prob141_count_clock/TopModule.sv:19: error: Concatenation operand "((hour_val)/('sd10))&(4'd15)" has indefinite width.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/react_compiler_rag/problems/Prob141_count_clock/TopModule.sv:19: error: Concatenation operand "(hour_val)%('sd10)" has indefinite width.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/react_compiler_rag/problems/Prob141_count_clock/TopModule.sv:19: error: Unable to elaborate r-value: {((hour_val)/('sd10))&(4'd15), (hour_val)%('sd10)}
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/react_compiler_rag/problems/Prob141_count_clock/TopModule.sv:20: error: Concatenation operand "((minute)/('sd10))&(4'd15)" has indefinite width.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/react_compiler_rag/problems/Prob141_count_clock/TopModule.sv:20: error: Concatenation operand "(minute)%('sd10)" has indefinite width.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/react_compiler_rag/problems/Prob141_count_clock/TopModule.sv:20: error: Unable to elaborate r-value: {((minute)/('sd10))&(4'd15), (minute)%('sd10)}
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/react_compiler_rag/problems/Prob141_count_clock/TopModule.sv:21: error: Concatenation operand "((second)/('sd10))&(4'd15)" has indefinite width.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/react_compiler_rag/problems/Prob141_count_clock/TopModule.sv:21: error: Concatenation operand "(second)%('sd10)" has indefinite width.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/react_compiler_rag/problems/Prob141_count_clock/TopModule.sv:21: error: Unable to elaborate r-value: {((second)/('sd10))&(4'd15), (second)%('sd10)}
+9 error(s) during elaboration.

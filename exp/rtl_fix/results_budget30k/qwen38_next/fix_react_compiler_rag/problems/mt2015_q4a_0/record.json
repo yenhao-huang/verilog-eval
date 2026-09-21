@@ -1,0 +1,28 @@
+{
+  "problem": "mt2015_q4a#0",
+  "topic": "other",
+  "outcome": "pass",
+  "passed": 1,
+  "compiled": 1,
+  "error_kind": "",
+  "original_error_kind": "invalid_lvalue",
+  "mismatches": 0,
+  "samples": 202,
+  "iterations": 2,
+  "finished": 1,
+  "tool_calls": 2,
+  "code_from_tool": 0,
+  "agent_error": "",
+  "wall_seconds": 102.842,
+  "compile_calls": 1,
+  "rag_calls": 1,
+  "rag_entries_hit": [
+    "not-a-valid-l-value"
+  ],
+  "llm_calls": 2,
+  "prompt_tokens": 1831,
+  "completion_tokens": 941,
+  "reasoning_tokens": 648,
+  "total_tokens": 2772,
+  "truncated_calls": 0
+}
