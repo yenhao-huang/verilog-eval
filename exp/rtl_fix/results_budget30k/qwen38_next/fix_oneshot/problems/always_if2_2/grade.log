@@ -1,0 +1,7 @@
+VCD info: dumpfile wave.vcd opened for output.
+Hint: Output 'shut_off_computer' has no mismatches.
+Hint: Output 'keep_driving' has no mismatches.
+Hint: Total mismatched samples is 0 out of 121 samples
+
+Simulation finished at 605 ps
+Mismatches: 0 in 121 samples

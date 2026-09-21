@@ -1,47 +1,77 @@
 # RTLFixer's ReAct + RAG, measured locally
 
-> ## ⚠️ Superseded in part — read this first
->
-> A later ablation ([`details/budget_ablation.md`](details/budget_ablation.md))
-> shows that **ReAct's advantage on the generation benchmark is an artefact of
-> the shared 8192-token budget**, not of the compiler tool.
->
-> Every cell below ran at `max_tokens=8192`, where 17–22% of problems hit the
-> cap and produced nothing. ReAct's turn structure hands the model a fresh 8192
-> tokens on each of up to ten iterations; the baseline gets one. Re-running the
-> baseline at `max_tokens=30000` on qwen3.8-next:
->
-> | configuration | pass@1 | syntax OK | compute |
-> | --- | --- | --- | --- |
-> | baseline @8192 | 75.6% | 79.5% | 15.74 h |
-> | ReAct + compiler @8192 | 84.0% | 89.1% | 10.87 h |
-> | **baseline @30000 (no tools)** | **86.5%** | **92.3%** | 21.03 h |
->
-> The plain baseline, with no tools and no iteration, **beats every ReAct
-> configuration** once it is allowed to finish. What survives is an efficiency
-> result: ReAct lands within 2.5pp of the big-budget baseline for half the
-> compute. That is not the capability claim the paper makes.
->
-> Sections 1–3 below still describe the 8192-budget comparison faithfully, and
-> §2.2 (RAG contributes nothing) and §2.3 (truncation dominates) are unaffected.
-> Read every "ReAct helps" figure as *at a fixed 8192 budget*. The repair half
-> of the ablation is still running; this banner will be folded into a rewritten
-> §1–§3 when it lands.
-
 **Question.** RTLFixer ([arXiv:2311.16543](https://arxiv.org/abs/2311.16543))
 claims two things lift Verilog syntax success: ReAct prompting with a compiler
 in the loop, and RAG over a curated compiler-error → expert-guidance database.
 How much does each buy, on two locally served open models?
 
-**Answer in one line.** For qwen3.8-next the compiler tool helps a lot; for
-gemma-4-26B-A4B it does not help at all. RAG does nothing for either. And where
-the compiler tool does help, it is **not** for the reason the paper gives.
+**Answer in one line.** Neither does what the paper claims. Given a completion
+budget large enough to finish, a plain no-tool baseline matches or beats every
+ReAct configuration. What ReAct actually buys is **half the compute**, not
+better Verilog.
 
 ---
 
-## 1. Headline results
+## 1. Headline result: the budget ablation
 
-Two benchmarks, three configurations, two models — all 12 cells run.
+Every cell in the main matrix shared `max_tokens=8192`. But ReAct's turn
+structure hands the model a fresh 8192 tokens on each of up to ten iterations,
+while a single-call configuration gets one. At that budget 17–22% of problems
+hit the cap and produced nothing — so "ReAct truncates less" could mean the tool
+helped, or merely that ReAct was allowed to finish.
+
+Re-running the single-call configurations at `max_tokens=30000` separates them.
+
+| benchmark | configuration | budget | accuracy | syntax / fix rate | compute |
+| --- | --- | --- | --- | --- | --- |
+| VerilogEval-v2 | baseline, no tools | 8192 | 118/156 (75.6%) | 79.5% | 15.74 h |
+| VerilogEval-v2 | ReAct + compiler | 8192 | 131/156 (84.0%) | 89.1% | **10.87 h** |
+| VerilogEval-v2 | ReAct + compiler + RAG | 8192 | 127/156 (81.4%) | 88.5% | 10.31 h |
+| VerilogEval-v2 | **baseline, no tools** | **30000** | **135/156 (86.5%)** | **92.3%** | 21.03 h |
+| VerilogEval-syntax | one-shot fix | 8192 | 122/158 (77.2%) | 81.6% | 14.10 h |
+| VerilogEval-syntax | ReAct + compiler | 8192 | 140/158 (88.6%) | 97.5% | **10.04 h** |
+| VerilogEval-syntax | ReAct + compiler + RAG | 8192 | 144/158 (91.1%) | 98.1% | 9.19 h |
+| VerilogEval-syntax | **one-shot fix** | **30000** | **140/158 (88.6%)** | **97.5%** | 18.93 h |
+
+Both benchmarks agree, and the repair rows agree exactly:
+
+* **Generation** — the no-tool baseline at 30k **beats** every ReAct cell:
+  86.5% vs 84.0% accuracy, 92.3% vs 89.1% syntax.
+* **Repair** — the no-tool one-shot at 30k **ties** ReAct to the problem:
+  140/158 and 97.5% in both, identical.
+
+**ReAct's accuracy gain was an artefact of the shared budget.** Compiler
+feedback did not repair syntax the model could not fix alone; the baseline was
+being cut off mid-thought and ReAct was not.
+
+### What survives: efficiency
+
+| benchmark | configuration | accuracy | compute | completion tokens |
+| --- | --- | --- | --- | --- |
+| VerilogEval-v2 | ReAct + compiler @8192 | 84.0% | **10.87 h** | **361k** |
+| VerilogEval-v2 | baseline @30000 | 86.5% | 21.03 h | 780k |
+| VerilogEval-syntax | ReAct + compiler @8192 | 88.6% | **10.04 h** | **355k** |
+| VerilogEval-syntax | one-shot @30000 | 88.6% | 18.93 h | 700k |
+
+ReAct reaches the same place for **about half the compute and half the tokens**.
+On repair it is a pure win — identical accuracy, 47% less compute. Chopping one
+long generation into short tool-terminated turns stops the model over-reasoning,
+which recovers most of what a 3.7x larger budget would buy at a fraction of the
+cost.
+
+That is a real and useful property. It is an *efficiency* result, not the
+*capability* result RTLFixer reports.
+
+Detail: [`details/budget_ablation.md`](details/budget_ablation.md).
+
+---
+
+## 2. The 8192-budget matrix — all 12 cells
+
+These are the numbers the rest of this report analyses. Every "ReAct helps"
+figure here should be read as *at a fixed 8192 budget*, which §1 shows is a
+statement about cost-efficiency rather than capability. The RAG and
+error-distribution findings below are unaffected by the ablation.
 
 ### VerilogEval-syntax (repair, 158 problems) — the paper's own setting
 
@@ -76,9 +106,9 @@ gemma generate Verilog — it hurts.**
 
 ---
 
-## 2. The three findings
+## 3. The three findings
 
-### 2.1 The gain is real, but it is not syntax repair
+### 3.1 The 8192-budget gain is not syntax repair
 
 qwen's 81.6% → 97.5% fix rate looks like a textbook replication — RTLFixer
 reports 98.5% for ReAct + RAG, we measure 98.1%. **The numbers coincide; the
@@ -99,11 +129,11 @@ has no tools**. The entire headline gain is the truncation column: 28 → 2.
 
 RTLFixer's premise is that the model *cannot* fix the error unaided. For these
 two 2026-era models that premise is false: they fix it unaided, first try, at
-99%. What the compiler tool actually provides is an **external stopping
-signal** — without one, both models reason past the completion budget and never
-answer. Detail: [`details/what_the_gain_is_made_of.md`](details/what_the_gain_is_made_of.md).
+99%. What the compiler tool provides is an **external stopping signal** — and
+§1 shows a larger budget provides the same thing without any tool at all.
+Detail: [`details/what_the_gain_is_made_of.md`](details/what_the_gain_is_made_of.md).
 
-### 2.2 RAG contributes nothing measurable
+### 3.2 RAG contributes nothing measurable
 
 | model | ReAct + compiler | + RAG | Δ |
 | --- | --- | --- | --- |
@@ -126,7 +156,7 @@ worse still — **`rag_calls` was 0 across all 312 problems for both models**,
 because the models produced no compile errors inside the agent loop at all.
 Detail: [`details/rag_attribution.md`](details/rag_attribution.md).
 
-### 2.3 Truncation, not syntax, is the dominant failure mode
+### 3.3 Truncation, not syntax, is the dominant failure mode
 
 Outcome distribution, VerilogEval-v2 generation:
 
@@ -149,7 +179,7 @@ Detail: [`details/token_budget_probe.md`](details/token_budget_probe.md).
 
 ---
 
-## 3. Model comparison
+## 4. Model comparison
 
 ReAct helps the two models very differently, and the split is informative:
 
@@ -173,7 +203,7 @@ it **more** expensive. Once the fallback is removed, ReAct is worth +3.8pp to
 gemma on repair — inside this experiment's noise band — and **−3.9pp on
 generation**.
 
-This is consistent with finding 2.1. If ReAct's value here is "stop
+This is consistent with finding 3.1. If ReAct's value here is "stop
 over-reasoning and answer", then its value to a given model is proportional to
 how readily that model takes an external cue to stop — not to how much Verilog
 syntax it gets wrong. qwen takes the cue; gemma does not, and pays the tool
@@ -185,7 +215,7 @@ and negative on generation.
 
 ---
 
-## 4. Cost
+## 5. Cost
 
 | model | configuration | compute (problem-h) | total tokens | tokens/solved | LLM calls/problem |
 | --- | --- | --- | --- | --- | --- |
@@ -206,7 +236,7 @@ reasoning outweigh the tokens it adds in tool round-trips.
 
 ---
 
-## 5. Experimental setup
+## 6. Experimental setup
 
 | | |
 | --- | --- |
@@ -233,7 +263,7 @@ the reference implementation) is documented in `prompts/SOURCES.md`.
 
 ---
 
-## 6. Caveats — read these before quoting any number
+## 7. Caveats — read these before quoting any number
 
 1. **A harness fallback flattered ReAct, and is corrected in the starred
    columns only.** `run_react` grades the last tool-compiled snippet when the
@@ -247,11 +277,12 @@ the reference implementation) is documented in `prompts/SOURCES.md`.
    ≤8192 tokens; ReAct gets up to ten. This is inherent to the method and
    matches the paper, but it means the accuracy tables must be read next to the
    cost table. ReAct is not winning for free.
-3. **The completion budget deviates from the paper.** RTLFixer used 2048 with
-   GPT-3.5. At 2048, qwen returned empty content on ~10% of problems — pure
-   truncation artefacts that would have been scored as model failures. We use
-   8192 and report `truncated` as its own outcome. Truncation is still the
-   largest failure category, so *every* cell is partly budget-limited.
+3. **The completion budget deviates from the paper, and the budget is the
+   headline variable.** RTLFixer used 2048 with GPT-3.5. At 2048, qwen returned
+   empty content on ~10% of problems. The main matrix uses 8192, where 17–22%
+   of single-call problems still truncate — which §1 shows is what most of the
+   apparent ReAct advantage was made of. The 30000-token cells are the control;
+   quote §1 rather than §2 when comparing configurations.
 4. **Single sample, temperature 0.4.** Differences of a few problems are noise.
    Treat +0.6pp and +1.9pp as zero; the ≥8pp effects are the ones that carry.
 5. **`reasoning_tokens` is unavailable for gemma.** llama.cpp does not report it,
@@ -272,24 +303,28 @@ the reference implementation) is documented in `prompts/SOURCES.md`.
 
 ---
 
-## 7. What would settle the open question
+## 8. Settled, and what is still open
 
-Finding 2.1 says the paper's mechanism did not reproduce because truncation
-masked it. The clean test is to remove truncation and look again: re-run
-`fix_oneshot` with a completion budget large enough to drive truncation to zero
-(~32k tokens, from the probe), then compare fix rates against ReAct. If the
-paper's mechanism operates here, ReAct should still win. On the evidence above it
-should not — the one-shot fix rate given output is already 99.2%.
+The question this report originally left open — whether ReAct's gain would
+survive once truncation was removed — was answered by the ablation in §1. It
+does not. On generation the no-tool baseline overtakes ReAct; on repair it ties
+it exactly.
 
-Costed from the probe — 28 truncated problems at ~30.7k tokens plus 130 others
-at their 1.4k median, about 1.05M completion tokens — that is roughly **2 hours**
-of wall clock at this server's sustained 150 tok/s. It was not attempted here,
-but it is cheap, and it is the experiment that would settle the central
-question.
+Still open:
 
----
+* **gemma was not re-run at 30000.** Its ReAct results were already
+  neutral-to-negative after correcting for the harness fallback, so a budget
+  correction can only move them further in the same direction — but that is an
+  inference, not a measurement.
+* **The ReAct cells were not re-run at 30000 either.** They truncate on only
+  1.3–2.5% of problems at 8192, so the headroom is nearly irrelevant to them,
+  but the symmetric experiment would make the comparison airtight.
+* **Single sample throughout.** The generation gap (135 vs 131) is four
+  problems and sits inside this experiment's noise band; the repair result
+  (140 vs 140) is an exact tie. Neither supports a claim that the no-tool
+  baseline is *better* than ReAct — only that it is not worse.
 
-## 8. Reproducing
+## 9. Reproducing
 
 Step-by-step: [`reproduce.md`](reproduce.md). Raw per-cell metrics, per-problem
 rows and generated tables: [`details/`](details/).

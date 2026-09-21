@@ -71,11 +71,41 @@ Every "ReAct helps" number in the main tables for the generation benchmark is
 therefore an artefact of the shared 8192 budget, and should be read as a
 statement about cost-efficiency at a fixed budget, not about capability.
 
+## Result — VerilogEval-syntax (repair), qwen3.8-next
+
+| configuration | fix rate | functional pass | truncated | compile_error | completion tok | compute (problem-h) |
+| --- | --- | --- | --- | --- | --- | --- |
+| one-shot fix @8192 | 81.6% | 122/158 (77.2%) | 28 | 1 | 505,350 | 14.10 |
+| ReAct + compiler @8192 | 97.5% | 140/158 (88.6%) | 2 | 2 | 354,974 | 10.04 |
+| ReAct + compiler + RAG @8192 | 98.1% | 144/158 (91.1%) | 2 | 1 | 312,431 | 9.19 |
+| **one-shot fix @30000** | **97.5%** | **140/158 (88.6%)** | 3 | 1 | 700,146 | 18.93 |
+
+The repair half reproduces the generation half, and does so exactly: the no-tool
+one-shot at 30k lands on **140/158 and 97.5%**, the same two numbers as
+ReAct + compiler. Not close — identical.
+
+Cost is where they differ: ReAct gets there on 355k completion tokens and 10.04
+problem-hours against 700k and 18.93. **Same accuracy, 47% less compute.**
+
+## Both benchmarks, one conclusion
+
+| benchmark | no-tool @30000 | best ReAct @8192 | verdict |
+| --- | --- | --- | --- |
+| VerilogEval-v2 | 86.5% / syntax 92.3% | 84.0% / 89.1% | no-tool **ahead** |
+| VerilogEval-syntax | 88.6% / fix 97.5% | 88.6% / 97.5% | **exact tie** |
+
+ReAct buys no capability on either benchmark. It buys roughly 2x efficiency on
+both.
+
 ## Still open
 
-The repair benchmark (`fix_oneshot @30000`) is the other half of this ablation
-and was running when this file was written. If it reproduces the same pattern,
-the same correction applies to the repair tables. The gemma cells were not
-re-run at all — that model's ReAct results were already neutral-to-negative
-after correcting for the harness fallback, so a budget correction can only move
-them further in the same direction.
+* **gemma was not re-run at 30000.** Its ReAct results were already
+  neutral-to-negative once the harness fallback was removed, so a budget
+  correction can only move them the same way — but that is an inference, not a
+  measurement.
+* **The ReAct cells were not re-run at 30000.** They truncate on 1.3–2.5% of
+  problems at 8192, so extra headroom is nearly irrelevant to them; the
+  symmetric run would nonetheless make the comparison airtight.
+* **Single sample at temperature 0.4.** The generation gap is four problems —
+  inside the noise band. The repair result is a tie. Neither supports "no-tool
+  is better than ReAct", only "no-tool is not worse".

@@ -1,0 +1,8 @@
+VCD info: dumpfile wave.vcd opened for output.
+Hint: Output 'out_both' has no mismatches.
+Hint: Output 'out_any' has no mismatches.
+Hint: Output 'out_different' has no mismatches.
+Hint: Total mismatched samples is 0 out of 201 samples
+
+Simulation finished at 1006 ps
+Mismatches: 0 in 201 samples

@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated.\n\nCorrect the syntax error in the code.\n\nReply with the complete corrected module in a ```verilog code block."
+  },
+  {
+    "role": "user",
+    "content": "Problem Description:\nBuild a priority encoder for 8-bit inputs. Given an 8-bit vector, the output should report the first (least significant) bit in the vector that is 1. Report zero if the input vector has no bits that are high. For example, the input 8'b10010000 should output 3'd4, because bit[4] is first bit that is high.\n\nmodule top_module (\n\tinput [7:0] in,\n\toutput reg [2:0] pos\n);\n\nErroneous Implementation:\n\nalways @(posedge clk or posedge reset) begin\n\tif (reset) begin\n\t\tpos <= 3'h0;\n\tend else begin\n\t\tcasez (in)\n\t\t\t8'b1??????? : pos <= 3'h0;\n\t\t\t8'bz1?????? : pos <= 3'h6;\n\t\t\t8'bzz1????? : pos <= 3'h5;\n\t\t\t8'bzzz1???? : pos <= 3'h4;\n\t\t\t8'bzzzz1??? : pos <= 3'h3;\n\t\t\t8'bzzzzz1?? : pos <= 3'h2;\n\t\t\t8'bzzzzzz1? : pos <= 3'h1;\n\t\t\tdefault     : pos <= 3'h0;\n\t\tendcase\n\tend\nend\n\nendmodule\n\nFeedback:\nalways_casez.sv:156: error: Unable to bind wire/reg/memory `reset' in `tb.top_module1'\nalways_casez.sv:156: error: Unable to elaborate condition expression.\n2 error(s) during elaboration.\n"
+  },
+  {
+    "role": "assistant",
+    "content": "\n\n```verilog\nmodule top_module (\n    input [7:0] in,\n    output reg [2:0] pos\n);\n\n    always @(*) begin\n        casez (in)\n            8'bzzzzzzz1 : pos = 3'd0;\n            8'bzzzzzz1z : pos = 3'd1;\n            8'bzzzzz1zz : pos = 3'd2;\n            8'bzzzz1zzz : pos = 3'd3;\n            8'bzzz1zzzz : pos = 3'd4;\n            8'bzz1zzzzz : pos = 3'd5;\n            8'bz1zzzzzz : pos = 3'd6;\n            8'b1zzzzzzz : pos = 3'd7;\n            default     : pos = 3'd0;\n        endcase\n    end\n\nendmodule\n```"
+  }
+]
