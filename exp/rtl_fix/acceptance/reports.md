@@ -5,8 +5,9 @@ claims two things lift Verilog syntax success: ReAct prompting with a compiler
 in the loop, and RAG over a curated compiler-error → expert-guidance database.
 How much does each buy, on two locally served open models?
 
-**Answer in one line.** The compiler tool helps a lot; RAG does nothing. But the
-compiler tool does **not** help for the reason the paper gives.
+**Answer in one line.** For qwen3.8-next the compiler tool helps a lot; for
+gemma-4-26B-A4B it does not help at all. RAG does nothing for either. And where
+the compiler tool does help, it is **not** for the reason the paper gives.
 
 ---
 
@@ -16,25 +17,34 @@ Two benchmarks, three configurations, two models — all 12 cells run.
 
 ### VerilogEval-syntax (repair, 158 problems) — the paper's own setting
 
-| model | configuration | fix rate | Δpp | functional pass | compute (problem-h) |
-| --- | --- | --- | --- | --- | --- |
-| qwen3.8-next | one-shot fix | 81.6% | — | 122/158 (77.2%) | 14.10 |
-| qwen3.8-next | ReAct + compiler | 97.5% | **+15.8** | 140/158 (88.6%) | 10.04 |
-| qwen3.8-next | ReAct + compiler + RAG | 98.1% | +16.5 | 144/158 (91.1%) | 9.19 |
-| gemma-4-26B-A4B | one-shot fix | 77.8% | — | 112/158 (70.9%) | 11.25 |
-| gemma-4-26B-A4B | ReAct + compiler | 87.3% | **+9.5** | 126/158 (79.7%) | 10.80 |
-| gemma-4-26B-A4B | ReAct + compiler + RAG | 83.5% | +5.7 | 118/158 (74.7%) | 13.16 |
+| model | configuration | fix rate | fix rate* | Δpp* | functional pass | compute (problem-h) |
+| --- | --- | --- | --- | --- | --- | --- |
+| qwen3.8-next | one-shot fix | 81.6% | 81.6% | — | 122/158 (77.2%) | 14.10 |
+| qwen3.8-next | ReAct + compiler | 97.5% | 96.2% | **+14.6** | 140/158 (88.6%) | 10.04 |
+| qwen3.8-next | ReAct + compiler + RAG | 98.1% | 98.1% | +16.5 | 144/158 (91.1%) | 9.19 |
+| gemma-4-26B-A4B | one-shot fix | 77.8% | 77.8% | — | 112/158 (70.9%) | 11.25 |
+| gemma-4-26B-A4B | ReAct + compiler | 87.3% | 81.6% | **+3.8** | 126/158 (79.7%) | 10.80 |
+| gemma-4-26B-A4B | ReAct + compiler + RAG | 83.5% | 77.8% | **±0.0** | 118/158 (74.7%) | 13.16 |
+
+\* A harness fallback grades the last tool-compiled snippet when the agent's
+closing message has no code. Only ReAct configurations can use it, so it
+flatters them. The starred columns remove it. It costs qwen almost nothing and
+gemma a great deal — see
+[`details/harness_fallback_bias.md`](details/harness_fallback_bias.md).
 
 ### VerilogEval-v2 (spec-to-rtl generation, 156 problems)
 
-| model | configuration | pass@1 | Δpp | syntax OK | Δpp | compute (problem-h) |
-| --- | --- | --- | --- | --- | --- | --- |
-| qwen3.8-next | baseline (no tools) | 75.6% | — | 79.5% | — | 15.74 |
-| qwen3.8-next | ReAct + compiler | **84.0%** | **+8.3** | 89.1% | +9.6 | 10.87 |
-| qwen3.8-next | ReAct + compiler + RAG | 81.4% | +5.8 | 88.5% | +9.0 | 10.31 |
-| gemma-4-26B-A4B | baseline (no tools) | 73.7% | — | 79.5% | — | 9.29 |
-| gemma-4-26B-A4B | ReAct + compiler | 75.6% | +1.9 | 82.1% | +2.6 | 11.72 |
-| gemma-4-26B-A4B | ReAct + compiler + RAG | 75.0% | +1.3 | 81.4% | +1.9 | 11.87 |
+| model | configuration | pass@1 | Δpp | syntax OK | syntax OK* | Δpp* | compute (problem-h) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| qwen3.8-next | baseline (no tools) | 75.6% | — | 79.5% | 79.5% | — | 15.74 |
+| qwen3.8-next | ReAct + compiler | **84.0%** | **+8.3** | 89.1% | 89.1% | **+9.6** | 10.87 |
+| qwen3.8-next | ReAct + compiler + RAG | 81.4% | +5.8 | 88.5% | 88.5% | +9.0 | 10.31 |
+| gemma-4-26B-A4B | baseline (no tools) | 73.7% | — | 79.5% | 79.5% | — | 9.29 |
+| gemma-4-26B-A4B | ReAct + compiler | 75.6% | +1.9 | 82.1% | 75.6% | **−3.9** | 11.72 |
+| gemma-4-26B-A4B | ReAct + compiler + RAG | 75.0% | +1.3 | 81.4% | 73.1% | **−6.4** | 11.87 |
+
+\* Same correction as above. **With the fallback removed, ReAct does not help
+gemma generate Verilog — it hurts.**
 
 ---
 
@@ -117,21 +127,33 @@ ReAct helps the two models very differently, and the split is informative:
 
 | | qwen3.8-next | gemma-4-26B-A4B |
 | --- | --- | --- |
-| ReAct Δ on generation (syntax OK) | **+9.6pp** | +2.6pp |
-| ReAct Δ on repair (fix rate) | **+15.8pp** | +9.5pp |
+| ReAct Δ on generation (syntax OK, fallback removed) | **+9.6pp** | **−3.9pp** |
+| ReAct Δ on repair (fix rate, fallback removed) | **+14.6pp** | **+3.8pp** |
 | truncations cut by ReAct (generation) | 27 → 14 | 30 → 23 |
-| truncations cut by ReAct (repair) | 28 → 2 | 34 → 17 |
+| truncations cut by ReAct (repair) | 28 → **2** | 34 → 17 |
+| relied on the harness fallback | 0–2 problems | 9–13 problems |
 | compute change from ReAct (generation) | 15.74 → **10.87** h | 9.29 → **11.72** h |
 
-qwen responds strongly to the stopping signal — truncation on the repair task
-collapses from 28 to 2, and its compute cost *drops* 31% despite ReAct issuing
-about twice as many LLM calls. gemma responds weakly: truncation only halves,
-and ReAct makes it **more** expensive, not less.
+The two models split cleanly. qwen takes the stopping signal: truncation on the
+repair task collapses from 28 to 2, it never needs the fallback because it
+repeats the module in its closing message, and its compute cost *drops* 31%
+despite ReAct issuing about twice as many LLM calls.
+
+gemma does not. Truncation only halves, it ends turns with prose instead of code
+often enough that the fallback was carrying 4–8 of its passes, and ReAct makes
+it **more** expensive. Once the fallback is removed, ReAct is worth +3.8pp to
+gemma on repair — inside this experiment's noise band — and **−3.9pp on
+generation**.
 
 This is consistent with finding 2.1. If ReAct's value here is "stop
 over-reasoning and answer", then its value to a given model is proportional to
-how much that model over-reasons, and how readily it takes an external cue to
-stop. It is not proportional to how much Verilog syntax the model gets wrong.
+how readily that model takes an external cue to stop — not to how much Verilog
+syntax it gets wrong. qwen takes the cue; gemma does not, and pays the tool
+round-trips for nothing.
+
+**So the paper's method does not generalise across these two models.** On
+qwen3.8-next it is a large, cheap win. On gemma-4-26B-A4B it is neutral at best
+and negative on generation.
 
 ---
 
@@ -185,23 +207,31 @@ the reference implementation) is documented in `prompts/SOURCES.md`.
 
 ## 6. Caveats — read these before quoting any number
 
-1. **ReAct gets more compute than the baseline.** The baseline gets one call of
+1. **A harness fallback flattered ReAct, and is corrected in the starred
+   columns only.** `run_react` grades the last tool-compiled snippet when the
+   closing message has no code; no tool-less configuration can do this. It was
+   worth 0 passes to qwen and 3–8 passes per cell to gemma, and removing it
+   flips gemma's generation result from +2.6pp to −3.9pp. Unstarred columns
+   still contain the bias. A clean replication should drop the fallback and
+   re-run the eight ReAct cells; that was not done here.
+   [`details/harness_fallback_bias.md`](details/harness_fallback_bias.md)
+2. **ReAct gets more compute than the baseline.** The baseline gets one call of
    ≤8192 tokens; ReAct gets up to ten. This is inherent to the method and
    matches the paper, but it means the accuracy tables must be read next to the
    cost table. ReAct is not winning for free.
-2. **The completion budget deviates from the paper.** RTLFixer used 2048 with
+3. **The completion budget deviates from the paper.** RTLFixer used 2048 with
    GPT-3.5. At 2048, qwen returned empty content on ~10% of problems — pure
    truncation artefacts that would have been scored as model failures. We use
    8192 and report `truncated` as its own outcome. Truncation is still the
    largest failure category, so *every* cell is partly budget-limited.
-3. **Single sample, temperature 0.4.** Differences of a few problems are noise.
+4. **Single sample, temperature 0.4.** Differences of a few problems are noise.
    Treat +0.6pp and +1.9pp as zero; the ≥8pp effects are the ones that carry.
-4. **`reasoning_tokens` is unavailable for gemma.** llama.cpp does not report it,
+5. **`reasoning_tokens` is unavailable for gemma.** llama.cpp does not report it,
    so the "of which reasoning" column is 0 for gemma — that means *not measured*,
    not *no reasoning*.
-5. **The two serving stacks differ** (vLLM+NVFP4 vs llama.cpp+Q4_K_XL, 24 vs 8
+6. **The two serving stacks differ** (vLLM+NVFP4 vs llama.cpp+Q4_K_XL, 24 vs 8
    slots). Cross-model *accuracy* is comparable; cross-model *throughput* is not.
-6. **The repair benchmark is filtered by our own toolchain.** 16 of RTLFixer's
+7. **The repair benchmark is filtered by our own toolchain.** 16 of RTLFixer's
    174 rows compile cleanly under this iverilog (they carry Quartus-only errors)
    and are excluded, so our 158-row fix rates are not directly comparable to the
    paper's 212-row or 174-row numbers.
