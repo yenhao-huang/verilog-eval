@@ -33,7 +33,14 @@ esac
 BASE_URL="${BASE_URL:-$DEFAULT_URL}"
 MODEL_NAME="${MODEL_NAME:-$DEFAULT_MODEL}"
 JOBS="${JOBS:-4}"
-OUT_DIR="${OUT_DIR:-$EXP_DIR/results/$MODEL_LABEL/$CONFIG}"
+
+# Pick the results tree from the configuration name, so a repair cell cannot
+# land in the generation tree and corrupt an aggregate. Override with OUT_DIR.
+case "$CONFIG" in
+  fix_*) DEFAULT_TREE="results_repair" ;;
+  *)     DEFAULT_TREE="results" ;;
+esac
+OUT_DIR="${OUT_DIR:-$EXP_DIR/$DEFAULT_TREE/$MODEL_LABEL/$CONFIG}"
 
 exec python3 "$EXP_DIR/src/rtlfix/runner.py" \
   --repo-root "$REPO_ROOT" \

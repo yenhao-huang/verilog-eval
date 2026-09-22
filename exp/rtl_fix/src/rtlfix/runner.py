@@ -281,6 +281,20 @@ def main(argv: list[str] | None = None) -> int:
     args.out_dir.mkdir(parents=True, exist_ok=True)
     summary_path = args.out_dir / "summary.json"
 
+    # A partial run without --resume would rewrite summary.json with only the
+    # problems just run, silently destroying a completed cell. Refuse instead.
+    if summary_path.is_file() and not args.resume:
+        previous = json.loads(summary_path.read_text())
+        if len(previous.get("results", [])) > len(problems):
+            print(
+                f"error: {summary_path} already holds "
+                f"{len(previous['results'])} problem(s) and this run covers only "
+                f"{len(problems)}. Pass --resume to merge, or --out-dir to write "
+                f"somewhere else.",
+                file=sys.stderr,
+            )
+            return 2
+
     done: dict[str, dict] = {}
     if args.resume and summary_path.is_file():
         previous = json.loads(summary_path.read_text())
