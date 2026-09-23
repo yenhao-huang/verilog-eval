@@ -23,25 +23,40 @@ Re-running **all six** qwen3.8-next cells at `max_tokens=30000` settles it.
 
 ### VerilogEval-v2 (spec-to-rtl generation, 156 problems)
 
-| configuration | budget | pass@1 | syntax OK | truncated | compile err | completion tok | compute |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| baseline (no tools) | 8192 | 118/156 (75.6%) | 79.5% | 27 | 5 | 444k | 15.74 h |
-| ReAct + compiler | 8192 | 131/156 (84.0%) | 89.1% | 14 | 3 | 361k | 10.87 h |
-| ReAct + compiler + RAG | 8192 | 127/156 (81.4%) | 88.5% | 14 | 4 | 351k | 10.31 h |
-| baseline (no tools) | **30000** | 135/156 (86.5%) | 92.3% | 5 | 7 | 780k | 21.03 h |
-| **ReAct + compiler** | **30000** | **143/156 (91.7%)** | **98.1%** | **0** | 3 | 520k | **14.97 h** |
-| ReAct + compiler + RAG | **30000** | 138/156 (88.5%) | 96.8% | 1 | 4 | 486k | 13.82 h |
+| model | configuration | budget | pass@1 | syntax OK | truncated | compile err | completion tok | compute |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| qwen3.8-next | baseline (no tools) | 8192 | 118/156 (75.6%) | 79.5% | 27 | 5 | 444k | 15.74 h |
+| qwen3.8-next | ReAct + compiler | 8192 | 131/156 (84.0%) | 89.1% | 14 | 3 | 361k | 10.87 h |
+| qwen3.8-next | ReAct + compiler + RAG | 8192 | 127/156 (81.4%) | 88.5% | 14 | 4 | 351k | 10.31 h |
+| gemma-4-26B-A4B | baseline (no tools) | 8192 | 115/156 (73.7%) | 79.5% | 30 | 2 | 529k | 9.29 h |
+| gemma-4-26B-A4B | ReAct + compiler | 8192 | 118/156 (75.6%) | 82.1% † | 23 | 5 | 693k | 11.72 h |
+| gemma-4-26B-A4B | ReAct + compiler + RAG | 8192 | 117/156 (75.0%) | 81.4% † | 24 | 5 | 714k | 11.87 h |
+| qwen3.8-next | baseline (no tools) | **30000** | 135/156 (86.5%) | 92.3% | 5 | 7 | 780k | 21.03 h |
+| qwen3.8-next | **ReAct + compiler** | **30000** | **143/156 (91.7%)** | **98.1%** | **0** | 3 | 520k | **14.97 h** |
+| qwen3.8-next | ReAct + compiler + RAG | **30000** | 138/156 (88.5%) | 96.8% | 1 | 4 | 486k | 13.82 h |
 
 ### VerilogEval-syntax (repair, 158 problems)
 
-| configuration | budget | functional pass | fix rate | truncated | compile err | completion tok | compute | RAG calls |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| one-shot fix | 8192 | 122/158 (77.2%) | 81.6% | 28 | 1 | 505k | 14.10 h | 0 |
-| ReAct + compiler | 8192 | 140/158 (88.6%) | 97.5% | 2 | 2 | 355k | 10.04 h | 0 |
-| ReAct + compiler + RAG | 8192 | 144/158 (91.1%) | 98.1% | 2 | 1 | 312k | 9.19 h | 11 |
-| one-shot fix | **30000** | 140/158 (88.6%) | 97.5% | 3 | 1 | 700k | 18.93 h | 0 |
-| ReAct + compiler | **30000** | 143/158 (90.5%) | 98.1% | 2 | 1 | 397k | 11.15 h | 0 |
-| **ReAct + compiler + RAG** | **30000** | **144/158 (91.1%)** | **98.7%** | **0** | 1 | 386k | 10.89 h | 21 |
+| model | configuration | budget | functional pass | fix rate | truncated | compile err | completion tok | compute | RAG calls |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| qwen3.8-next | one-shot fix | 8192 | 122/158 (77.2%) | 81.6% | 28 | 1 | 505k | 14.10 h | 0 |
+| qwen3.8-next | ReAct + compiler | 8192 | 140/158 (88.6%) | 97.5% | 2 | 2 | 355k | 10.04 h | 0 |
+| qwen3.8-next | ReAct + compiler + RAG | 8192 | 144/158 (91.1%) | 98.1% | 2 | 1 | 312k | 9.19 h | 11 |
+| gemma-4-26B-A4B | one-shot fix | 8192 | 112/158 (70.9%) | 77.8% | 34 | 1 | 685k | 11.25 h | 0 |
+| gemma-4-26B-A4B | ReAct + compiler | 8192 | 126/158 (79.7%) | 87.3% † | 17 | 3 | 639k | 10.80 h | 0 |
+| gemma-4-26B-A4B | ReAct + compiler + RAG | 8192 | 118/158 (74.7%) | 83.5% † | 23 | 3 | 771k | 13.16 h | 26 |
+| qwen3.8-next | one-shot fix | **30000** | 140/158 (88.6%) | 97.5% | 3 | 1 | 700k | 18.93 h | 0 |
+| qwen3.8-next | ReAct + compiler | **30000** | 143/158 (90.5%) | 98.1% | 2 | 1 | 397k | 11.15 h | 0 |
+| qwen3.8-next | **ReAct + compiler + RAG** | **30000** | **144/158 (91.1%)** | **98.7%** | **0** | 1 | 386k | 10.89 h | 21 |
+
+**gemma has no 30000 row.** It was not re-run, so the budget share measured for
+qwen below is *not* known to transfer to it — every gemma figure here still
+mixes the tool's effect with the budget's.
+
+**† marks cells inflated by a harness fallback** that only tool-using
+configurations can use (`details/harness_fallback_bias.md`). Removing it takes
+gemma's generation syntax to 75.6% / 73.1% — *below* its own baseline — and its
+repair fix rate to 81.6% / 77.8%. qwen's cells are unaffected (0–2 problems).
 
 ### What the two budgets say
 
@@ -69,6 +84,21 @@ gemma was not re-run at 30000, so its cells below carry the same budget
 confound quantified above. Read every Δ in this section as *at a fixed 8192
 budget*.
 
+### VerilogEval-v2 (spec-to-rtl generation, 156 problems)
+
+| model | configuration | pass@1 | Δpp | syntax OK | syntax OK* | Δpp* | compute (problem-h) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| qwen3.8-next | baseline (no tools) | 75.6% | — | 79.5% | 79.5% | — | 15.74 |
+| qwen3.8-next | ReAct + compiler | **84.0%** | **+8.3** | 89.1% | 89.1% | **+9.6** | 10.87 |
+| qwen3.8-next | ReAct + compiler + RAG | 81.4% | +5.8 | 88.5% | 88.5% | +9.0 | 10.31 |
+| gemma-4-26B-A4B | baseline (no tools) | 73.7% | — | 79.5% | 79.5% | — | 9.29 |
+| gemma-4-26B-A4B | ReAct + compiler | 75.6% | +1.9 | 82.1% | 75.6% | **−3.9** | 11.72 |
+| gemma-4-26B-A4B | ReAct + compiler + RAG | 75.0% | +1.3 | 81.4% | 73.1% | **−6.4** | 11.87 |
+
+\* Same correction as above. **With the fallback removed, ReAct does not help
+gemma generate Verilog — it hurts.**
+
+
 ### VerilogEval-syntax (repair, 158 problems) — the paper's own setting
 
 | model | configuration | fix rate | fix rate* | Δpp* | functional pass | compute (problem-h) |
@@ -85,20 +115,6 @@ closing message has no code. Only ReAct configurations can use it, so it
 flatters them. The starred columns remove it. It costs qwen almost nothing and
 gemma a great deal — see
 [`details/harness_fallback_bias.md`](details/harness_fallback_bias.md).
-
-### VerilogEval-v2 (spec-to-rtl generation, 156 problems)
-
-| model | configuration | pass@1 | Δpp | syntax OK | syntax OK* | Δpp* | compute (problem-h) |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| qwen3.8-next | baseline (no tools) | 75.6% | — | 79.5% | 79.5% | — | 15.74 |
-| qwen3.8-next | ReAct + compiler | **84.0%** | **+8.3** | 89.1% | 89.1% | **+9.6** | 10.87 |
-| qwen3.8-next | ReAct + compiler + RAG | 81.4% | +5.8 | 88.5% | 88.5% | +9.0 | 10.31 |
-| gemma-4-26B-A4B | baseline (no tools) | 73.7% | — | 79.5% | 79.5% | — | 9.29 |
-| gemma-4-26B-A4B | ReAct + compiler | 75.6% | +1.9 | 82.1% | 75.6% | **−3.9** | 11.72 |
-| gemma-4-26B-A4B | ReAct + compiler + RAG | 75.0% | +1.3 | 81.4% | 73.1% | **−6.4** | 11.87 |
-
-\* Same correction as above. **With the fallback removed, ReAct does not help
-gemma generate Verilog — it hurts.**
 
 ---
 
