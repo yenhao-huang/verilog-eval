@@ -254,72 +254,14 @@ reasoning outweigh the tokens it adds in tool round-trips.
 > `summary.json`'s `wall_seconds_total` measures only from the last `--resume`
 > and understates any interrupted cell, so it is not comparable across cells.
 
----
-
-## 6. qwen3.8-next: ReAct spends fewer tokens
-
-ReAct issues about twice as many LLM calls, yet its **completion** token count
-is consistently lower. Matched on problems that passed in *both* configurations,
-so truncated and failed attempts cannot distort the comparison:
-
-| | baseline completion | ReAct completion | ratio | of which reasoning |
-| --- | --- | --- | --- | --- |
-| generation @8192 (114 problems) | 170,729 | 122,677 | 72% | **51%** |
-| generation @30000 (132 problems) | 436,964 | 304,169 | 70% | **59%** |
-| repair @30000 (135 problems) | 422,604 | 234,641 | 56% | **40%** |
-
-The saving is almost entirely **reasoning** tokens, not emitted code — the
-reasoning ratio falls further than the total in every row.
-
-### Case studies
-
-Three problems from `results_budget30k/`, chosen as the largest reasoning gaps
-among problems both configurations solved:
-
-| problem | baseline reasoning | ReAct reasoning | change | baseline output | ReAct output |
-| --- | --- | --- | --- | --- | --- |
-| `Prob144_conwaylife` | 22,488 tok | **2,436 tok** | −89% | 1,313 chars | 2,284 chars |
-| `Prob068_countbcd` | 9,501 tok | **2,135 tok** | −78% | 1,210 chars | 1,313 chars |
-| `Prob124_rule110` | 8,295 tok | **2,653 tok** | −68% | 1,071 chars | 1,491 chars |
-
-**ReAct thinks less and writes more.** Its visible output is longer in all three
-— the multi-turn transcript repeats the module — while its reasoning collapses
-by 68–89%.
-
-All three ReAct transcripts open identically:
-
-```
-[2] assistant   content = 0 chars   tool_calls = ['verilog_compiler']
-[3] tool        "The code has no compile error. I should give this
-                 implementation to the user."
-[4] assistant   <the final module>
-```
-
-The first turn carries **no prose at all**. The model spends ~2,400 reasoning
-tokens producing code, hands it straight to the compiler, and is told it
-compiles on the first attempt. Only then does it write its answer.
-
-### What this does and does not show
-
-Established, from the recorded token counts: ReAct reaches the same answers on
-the same problems using 40–59% of the baseline's reasoning tokens.
-
-An interpretation, **not measured**: the likely mechanism is not that the
-compiler supplies information the model lacked — it almost never reports an
-error (2 of 156 problems on qwen). It is that a cheap retry changes how much
-certainty the model demands before committing. One-shot has to be right first
-time, so it deliberates for 22,488 tokens; with a compiler behind it, the model
-commits after 2,436 and lets the tool decide.
-
-That reading cannot be confirmed from these runs: `transcript.json` stores the
-assistant `content` but not the `reasoning` field, so there is no way to check
-whether the baseline's 22,488 tokens were self-verification or genuine
-derivation. Confirming it means re-running with the reasoning text captured,
-which was not done.
+ReAct issues about twice as many LLM calls yet spends fewer *completion*
+tokens — 40–59% of the baseline's reasoning tokens on matched problems. Three
+worked cases with the full per-problem token breakdown and source paths:
+[`details/token_efficiency.md`](details/token_efficiency.md).
 
 ---
 
-## 7. Experimental setup
+## 6. Experimental setup
 
 | | |
 | --- | --- |
@@ -346,7 +288,7 @@ the reference implementation) is documented in `prompts/SOURCES.md`.
 
 ---
 
-## 8. Caveats — read these before quoting any number
+## 7. Caveats — read these before quoting any number
 
 1. **A harness fallback flattered ReAct, and is corrected in the starred
    columns only.** `run_react` grades the last tool-compiled snippet when the
@@ -386,7 +328,7 @@ the reference implementation) is documented in `prompts/SOURCES.md`.
 
 ---
 
-## 9. Settled, and what is still open
+## 8. Settled, and what is still open
 
 The open question — whether ReAct's gain survives once truncation is removed —
 is answered by the six-cell ablation in §1. It survives, reduced:
@@ -410,7 +352,7 @@ Still open:
   behaves the same way on a weaker model — which is precisely the regime the
   paper targets.
 
-## 10. Reproducing
+## 9. Reproducing
 
 Step-by-step: [`reproduce.md`](reproduce.md). Raw per-cell metrics, per-problem
 rows and generated tables: [`details/`](details/).
