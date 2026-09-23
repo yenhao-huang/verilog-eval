@@ -257,7 +257,7 @@ reasoning outweigh the tokens it adds in tool round-trips.
 ReAct issues about twice as many LLM calls yet spends fewer *completion*
 tokens — 40–59% of the baseline's reasoning tokens on matched problems. Three
 worked cases with the full per-problem token breakdown and source paths:
-[`details/token_efficiency.md`](details/token_efficiency.md).
+[`token_efficiency.md`](token_efficiency.md).
 
 ---
 
