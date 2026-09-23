@@ -25,81 +25,211 @@ further than the total in every row.
 ## Case studies
 
 The three largest reasoning gaps among problems both configurations solved.
-Every field below is copied from the two `record.json` files named above each
-table.
+Every token figure is read from the two `record.json` files named in each
+case; every listing is the **complete, unedited** source as recorded.
 
-### Case 1 — `Prob144_conwaylife`
-
-```
-results_budget30k/qwen38_next/baseline/problems/Prob144_conwaylife/record.json
-results_budget30k/qwen38_next/react_compiler/problems/Prob144_conwaylife/record.json
-```
-
-| field | baseline | ReAct + compiler | change |
-| --- | --- | --- | --- |
-| `llm_calls` | 1 | 2 | ×2 |
-| `prompt_tokens` | 524 | 2,597 | ×4.96 |
-| `completion_tokens` | 23,005 | 3,747 | **−84%** |
-| ` └ reasoning_tokens` | 22,488 | 2,436 | **−89%** |
-| ` └ visible output` | 517 | 1,311 | ×2.54 |
-| `total_tokens` | 23,529 | 6,344 | **−73%** |
-| `compile_calls` | 0 | 1 | |
-| `wall_seconds` | 2,326.7 | 388.5 | **−83%** |
-| `outcome` | pass | pass | |
-
-Reasoning is **97.8%** of the baseline's completion (22,488 of 23,005) and
-**65.0%** of ReAct's (2,436 of 3,747).
-
-### Case 2 — `Prob068_countbcd`
+### `Prob144_conwaylife`
 
 ```
-results_budget30k/qwen38_next/baseline/problems/Prob068_countbcd/record.json
-results_budget30k/qwen38_next/react_compiler/problems/Prob068_countbcd/record.json
+results_budget30k/qwen38_next/baseline/problems/Prob144_conwaylife/
+results_budget30k/qwen38_next/react_compiler/problems/Prob144_conwaylife/
 ```
 
 | field | baseline | ReAct + compiler | change |
 | --- | --- | --- | --- |
-| `llm_calls` | 1 | 2 | ×2 |
-| `prompt_tokens` | 240 | 1,955 | ×8.15 |
-| `completion_tokens` | 9,955 | 3,079 | **−69%** |
-| ` └ reasoning_tokens` | 9,501 | 2,135 | **−78%** |
-| ` └ visible output` | 454 | 944 | ×2.08 |
-| `total_tokens` | 10,195 | 5,034 | **−51%** |
-| `compile_calls` | 0 | 1 | |
-| `wall_seconds` | 992.7 | 314.7 | **−68%** |
+| `llm_calls` | 1 | 2 | x2 |
+| `prompt_tokens` | 524 | 2,597 | x4.96 |
+| `completion_tokens` | 23,005 | 3,747 | -84% |
+| `reasoning_tokens` | 22,488 | 2,436 | -89% |
+| visible output (`completion − reasoning`) | 517 | 1,311 | x2.54 |
+| `total_tokens` | 23,529 | 6,344 | -73% |
+| `wall_seconds` | 2,326.7 | 388.5 | -83% |
 | `outcome` | pass | pass | |
 
-### Case 3 — `Prob124_rule110`
+#### baseline — the one and only message
+
+`transcript.json[2]`, `role=assistant`. The 22,488 reasoning tokens that
+produced it are not recorded.
+
+```verilog
+module TopModule (
+    input clk,
+    input load,
+    input [255:0] data,
+    output reg [255:0] q
+);
+
+    reg [255:0] next_q;
+    integer r, c, idx;
+    integer n;
+
+    // Optional simulation initialization.
+    initial begin
+        q = 256'd0;
+        next_q = 256'd0;
+    end
+
+    // Synchronous state update.
+    always @(posedge clk) begin
+        if (load)
+            q <= data;
+        else
+            q <= next_q;
+    end
+
+    // Combinational next-state calculation.
+    always @(*) begin
+        for (r = 0; r < 16; r = r + 1) begin
+            for (c = 0; c < 16; c = c + 1) begin
+                idx = r * 16 + c;
+
+                // Count the 8 toroidal neighbors.
+                n = q[(((r + 15) % 16) * 16) + ((c + 15) % 16)] +
+                    q[(((r + 15) % 16) * 16) + c] +
+                    q[(((r + 15) % 16) * 16) + ((c + 1) % 16)] +
+                    q[(r * 16) + ((c + 15) % 16)] +
+                    q[(r * 16) + ((c + 1) % 16)] +
+                    q[(((r + 1) % 16) * 16) + ((c + 15) % 16)] +
+                    q[(((r + 1) % 16) * 16) + c] +
+                    q[(((r + 1) % 16) * 16) + ((c + 1) % 16)];
+
+                // Game of Life rules.
+                next_q[idx] = (n == 3) || (q[idx] && (n == 2));
+            end
+        end
+    end
+
+endmodule
+```
+
+#### ReAct turn 1 — `transcript.json[2]`, `content=""`, `tool_calls=[verilog_compiler]`
+
+The argument `code_completion`, verbatim:
+
+```verilog
+module TopModule (
+    input        clk,
+    input        load,
+    input  [255:0] data,
+    output [255:0] q
+);
+
+    reg [255:0] q;
+    reg [255:0] next_q;
+    integer r, c;
+    integer count;
+
+    always @* begin
+        for (r = 0; r < 16; r = r + 1) begin
+            for (c = 0; c < 16; c = c + 1) begin
+                count = 0;
+                count = count + q[((r + 15) % 16) * 16 + ((c + 15) % 16)];
+                count = count + q[((r + 15) % 16) * 16 + c];
+                count = count + q[((r + 15) % 16) * 16 + ((c + 1) % 16)];
+                count = count + q[r * 16 + ((c + 15) % 16)];
+                count = count + q[r * 16 + ((c + 1) % 16)];
+                count = count + q[((r + 1) % 16) * 16 + ((c + 15) % 16)];
+                count = count + q[((r + 1) % 16) * 16 + c];
+                count = count + q[((r + 1) % 16) * 16 + ((c + 1) % 16)];
+
+                if (count == 3)
+                    next_q[r * 16 + c] = 1'b1;
+                else if (count == 2)
+                    next_q[r * 16 + c] = q[r * 16 + c];
+                else
+                    next_q[r * 16 + c] = 1'b0;
+            end
+        end
+    end
+
+    always @(posedge clk) begin
+        if (load)
+            q <= data;
+        else
+            q <= next_q;
+    end
+
+endmodule
+```
+
+#### ReAct turn 1 observation — `transcript.json[3]`
 
 ```
-results_budget30k/qwen38_next/baseline/problems/Prob124_rule110/record.json
-results_budget30k/qwen38_next/react_compiler/problems/Prob124_rule110/record.json
+The code has no compile error. I should give this implementation to the user.
+```
+
+#### ReAct turn 2 — `transcript.json[4]`, the graded answer
+
+```verilog
+module TopModule (
+    input        clk,
+    input        load,
+    input  [255:0] data,
+    output [255:0] q
+);
+
+    reg [255:0] q;
+    reg [255:0] next_q;
+    integer r, c;
+    integer count;
+
+    // Combinational next-state computation (Conway's Game of Life on a 16x16 torus)
+    always @* begin
+        for (r = 0; r < 16; r = r + 1) begin
+            for (c = 0; c < 16; c = c + 1) begin
+                count = 0;
+                count = count + q[((r + 15) % 16) * 16 + ((c + 15) % 16)]; // up-left
+                count = count + q[((r + 15) % 16) * 16 + c];               // up
+                count = count + q[((r + 15) % 16) * 16 + ((c + 1) % 16)];  // up-right
+                count = count + q[r * 16 + ((c + 15) % 16)];               // left
+                count = count + q[r * 16 + ((c + 1) % 16)];                // right
+                count = count + q[((r + 1) % 16) * 16 + ((c + 15) % 16)];  // down-left
+                count = count + q[((r + 1) % 16) * 16 + c];                // down
+                count = count + q[((r + 1) % 16) * 16 + ((c + 1) % 16)];   // down-right
+
+                if (count == 3)
+                    next_q[r * 16 + c] = 1'b1;
+                else if (count == 2)
+                    next_q[r * 16 + c] = q[r * 16 + c];
+                else
+                    next_q[r * 16 + c] = 1'b0;
+            end
+        end
+    end
+
+    // Sequential state update with synchronous active-high load
+    always @(posedge clk) begin
+        if (load)
+            q <= data;
+        else
+            q <= next_q;
+    end
+
+endmodule
+```
+
+### `Prob068_countbcd`
+
+```
+results_budget30k/qwen38_next/baseline/problems/Prob068_countbcd/
+results_budget30k/qwen38_next/react_compiler/problems/Prob068_countbcd/
 ```
 
 | field | baseline | ReAct + compiler | change |
 | --- | --- | --- | --- |
-| `llm_calls` | 1 | 2 | ×2 |
-| `prompt_tokens` | 475 | 2,224 | ×4.68 |
-| `completion_tokens` | 8,679 | 3,483 | **−60%** |
-| ` └ reasoning_tokens` | 8,295 | 2,653 | **−68%** |
-| ` └ visible output` | 384 | 830 | ×2.16 |
-| `total_tokens` | 9,154 | 5,707 | **−38%** |
-| `compile_calls` | 0 | 1 | |
-| `wall_seconds` | 862.6 | 348.9 | **−60%** |
+| `llm_calls` | 1 | 2 | x2 |
+| `prompt_tokens` | 240 | 1,955 | x8.15 |
+| `completion_tokens` | 9,955 | 3,079 | -69% |
+| `reasoning_tokens` | 9,501 | 2,135 | -78% |
+| visible output (`completion − reasoning`) | 454 | 944 | x2.08 |
+| `total_tokens` | 10,195 | 5,034 | -51% |
+| `wall_seconds` | 992.7 | 314.7 | -68% |
 | `outcome` | pass | pass | |
 
-### What each side actually did
+#### baseline — the one and only message
 
-The tables above say how much was spent; these are the transcripts that spent
-it. The baseline's reasoning is **not** among them — `transcript.json` stores
-the assistant `content` only — so what is visible is the single message the
-baseline produced against the two the agent produced.
-
-#### Case 2 process — `Prob068_countbcd`
-
-**baseline.** One call. 240 prompt tokens in, 9,955 completion tokens out, of
-which 9,501 were reasoning that is not recorded. The entire visible output is
-this single message:
+`transcript.json[2]`, `role=assistant`. The 9,501 reasoning tokens that
+produced it are not recorded.
 
 ```verilog
 module TopModule (
@@ -136,16 +266,24 @@ module TopModule (
         end else begin
             ones <= (ones == 4'd9) ? 4'd0 : ones + 4'd1;
 
-            if (ena[0
-    // ... (truncated in this file; full text in the transcript)
+            if (ena[0])
+                tens <= (tens == 4'd9) ? 4'd0 : tens + 4'd1;
+
+            if (ena[1])
+                hundreds <= (hundreds == 4'd9) ? 4'd0 : hundreds + 4'd1;
+
+            if (ena[2])
+                thousands <= (thousands == 4'd9) ? 4'd0 : thousands + 4'd1;
+        end
+    end
+
+endmodule
 ```
 
-**ReAct.** Two calls. Turn 1 carries no prose at all — just the tool call:
+#### ReAct turn 1 — `transcript.json[2]`, `content=""`, `tool_calls=[verilog_compiler]`
 
-```jsonc
-// transcript.json [2]: role=assistant, content="", tool_calls=[verilog_compiler]
-// arguments.code_completion:
-```
+The argument `code_completion`, verbatim:
+
 ```verilog
 module TopModule (
     input  wire        clk,
@@ -182,17 +320,24 @@ module TopModule (
             end
 
             if (ena[2]) begin
-    // ... (truncated in this file; full text in the transcript)
+                if (q[15:12] == 4'd9)
+                    q[15:12] <= 4'd0;
+                else
+                    q[15:12] <= q[15:12] + 4'd1;
+            end
+        end
+    end
+
+endmodule
 ```
 
-Observation returned by the tool:
+#### ReAct turn 1 observation — `transcript.json[3]`
 
 ```
 The code has no compile error. I should give this implementation to the user.
 ```
 
-Turn 2 is the final answer. It is **not byte-identical** to what was compiled —
-see the drift note below.
+#### ReAct turn 2 — `transcript.json[4]`, the graded answer
 
 ```verilog
 module TopModule (
@@ -227,15 +372,47 @@ module TopModule (
 
             // hundreds digit
             if (ena[1]) begin
-    // ... (truncated in this file; full text in the transcript)
+                if (q[11:8] == 4'd9)
+                    q[11:8] <= 4'd0;
+                else
+                    q[11:8] <= q[11:8] + 4'd1;
+            end
+
+            // thousands digit
+            if (ena[2]) begin
+                if (q[15:12] == 4'd9)
+                    q[15:12] <= 4'd0;
+                else
+                    q[15:12] <= q[15:12] + 4'd1;
+            end
+        end
+    end
+
+endmodule
 ```
 
+### `Prob124_rule110`
 
-#### Case 3 process — `Prob124_rule110`
+```
+results_budget30k/qwen38_next/baseline/problems/Prob124_rule110/
+results_budget30k/qwen38_next/react_compiler/problems/Prob124_rule110/
+```
 
-**baseline.** One call. 240 prompt tokens in, 9,955 completion tokens out, of
-which 9,501 were reasoning that is not recorded. The entire visible output is
-this single message:
+| field | baseline | ReAct + compiler | change |
+| --- | --- | --- | --- |
+| `llm_calls` | 1 | 2 | x2 |
+| `prompt_tokens` | 475 | 2,224 | x4.68 |
+| `completion_tokens` | 8,679 | 3,483 | -60% |
+| `reasoning_tokens` | 8,295 | 2,653 | -68% |
+| visible output (`completion − reasoning`) | 384 | 830 | x2.16 |
+| `total_tokens` | 9,154 | 5,707 | -38% |
+| `wall_seconds` | 862.6 | 348.9 | -60% |
+| `outcome` | pass | pass | |
+
+#### baseline — the one and only message
+
+`transcript.json[2]`, `role=assistant`. The 8,295 reasoning tokens that
+produced it are not recorded.
 
 ```verilog
 module TopModule (
@@ -275,16 +452,21 @@ module TopModule (
         end
     endgenerate
 
-    // Synchrono
-    // ... (truncated in this file; full text in the transcript)
+    // Synchronous load and state update
+    always @(posedge clk) begin
+        if (load)
+            q <= data;
+        else
+            q <= next_q;
+    end
+
+endmodule
 ```
 
-**ReAct.** Two calls. Turn 1 carries no prose at all — just the tool call:
+#### ReAct turn 1 — `transcript.json[2]`, `content=""`, `tool_calls=[verilog_compiler]`
 
-```jsonc
-// transcript.json [2]: role=assistant, content="", tool_calls=[verilog_compiler]
-// arguments.code_completion:
-```
+The argument `code_completion`, verbatim:
+
 ```verilog
 module TopModule (
     input        clk,
@@ -316,14 +498,13 @@ module TopModule (
 endmodule
 ```
 
-Observation returned by the tool:
+#### ReAct turn 1 observation — `transcript.json[3]`
 
 ```
 The code has no compile error. I should give this implementation to the user.
 ```
 
-Turn 2 is the final answer. It is **not byte-identical** to what was compiled —
-see the drift note below.
+#### ReAct turn 2 — `transcript.json[4]`, the graded answer
 
 ```verilog
 module TopModule (
@@ -360,13 +541,9 @@ module TopModule (
 endmodule
 ```
 
-The designs are not the same. On `Prob068_countbcd` the baseline builds four
-separate `reg [3:0]` digit counters and concatenates them into `q`; the agent
-declares `q` as `output reg [15:0]` and drives part-selects directly. Both pass.
-The agent is not producing a better-reasoned version of the same answer — it is
-committing to a different one, sooner.
+---
 
-### A drift the harness does not control for
+## A drift the harness does not control for
 
 In all three cases the module in the final message differs from the module that
 was handed to the compiler. Across the whole cell
@@ -392,7 +569,7 @@ re-compile the final message before accepting it. Neither was done here, so the
 `syntax OK` figures for every ReAct cell are a property of the *final message*,
 not of anything the compiler actually approved.
 
-### Reading the three together
+## Reading the three together
 
 | | case 1 | case 2 | case 3 |
 | --- | --- | --- | --- |
