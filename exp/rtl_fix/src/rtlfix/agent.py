@@ -110,7 +110,10 @@ def run_baseline(client: ChatClient, prompt: str, config: str = "baseline") -> A
         )
     content = message.get("content") or ""
     finish_reason = message.get("_finish_reason", "")
-    messages.append({"role": "assistant", "content": content})
+    entry: dict[str, Any] = {"role": "assistant", "content": content}
+    if message.get("_reasoning"):
+        entry["reasoning"] = message["_reasoning"]
+    messages.append(entry)
     return AgentResult(
         code=extract_verilog(content),
         transcript=messages,
@@ -161,6 +164,8 @@ def run_react(
             "role": "assistant",
             "content": message.get("content") or "",
         }
+        if message.get("_reasoning"):
+            assistant["reasoning"] = message["_reasoning"]
         if tool_calls:
             assistant["tool_calls"] = tool_calls
         messages.append(assistant)

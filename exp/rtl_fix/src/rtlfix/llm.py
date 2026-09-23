@@ -69,7 +69,12 @@ class ChatClient:
         """Return the assistant message of one chat completion."""
         payload: dict[str, Any] = {
             "model": self.model,
-            "messages": messages,
+            # The transcript doubles as the wire format, but it also carries
+            # `reasoning` for the record. That is not an API field, so strip it
+            # rather than risk the endpoint rejecting the next turn.
+            "messages": [
+                {k: v for k, v in m.items() if k != "reasoning"} for m in messages
+            ],
             "temperature": self.temperature,
             "top_p": 1,
             "max_tokens": self.max_tokens,
@@ -116,4 +121,8 @@ class ChatClient:
             self.usage.truncated_calls += 1
         message = dict(message)
         message["_finish_reason"] = finish_reason
+        # Reasoning models return their chain of thought in a separate field.
+        # Only its token count reaches `usage`, so keep the text too — without
+        # it a transcript cannot explain where the completion tokens went.
+        message["_reasoning"] = message.get("reasoning") or ""
         return message

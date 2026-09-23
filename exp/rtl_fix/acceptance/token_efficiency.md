@@ -49,7 +49,7 @@ results_budget30k/qwen38_next/react_compiler/problems/Prob144_conwaylife/
 #### baseline — the one and only message
 
 `transcript.json[2]`, `role=assistant`. The 22,488 reasoning tokens that
-produced it are not recorded.
+produced it **were not recorded** — see *The missing reasoning text* below.
 
 ```verilog
 module TopModule (
@@ -229,7 +229,7 @@ results_budget30k/qwen38_next/react_compiler/problems/Prob068_countbcd/
 #### baseline — the one and only message
 
 `transcript.json[2]`, `role=assistant`. The 9,501 reasoning tokens that
-produced it are not recorded.
+produced it **were not recorded** — see *The missing reasoning text* below.
 
 ```verilog
 module TopModule (
@@ -412,7 +412,7 @@ results_budget30k/qwen38_next/react_compiler/problems/Prob124_rule110/
 #### baseline — the one and only message
 
 `transcript.json[2]`, `role=assistant`. The 8,295 reasoning tokens that
-produced it are not recorded.
+produced it **were not recorded** — see *The missing reasoning text* below.
 
 ```verilog
 module TopModule (
@@ -542,6 +542,38 @@ endmodule
 ```
 
 ---
+
+## The missing reasoning text
+
+Every listing above is a message the model *emitted*. None of them is the
+reasoning that produced it, and that reasoning is the subject of this file —
+22,488 tokens on `Prob144_conwaylife` against the agent's 2,436.
+
+**It does not exist on disk.** The harness recorded only the count. `agent.py`
+appended the assistant turn as
+
+```python
+messages.append({"role": "assistant", "content": content})
+```
+
+and the API's separate `reasoning` field was dropped. `usage` carried
+`reasoning_tokens` through to `record.json`, so the size of the deliberation
+survives; its content does not. Nothing in `results*/` can recover it.
+
+Fixed for future runs, in this branch: `ChatClient.complete` now surfaces the
+field, both agent paths write it into the transcript as a `reasoning` key, and
+the client strips that key before sending the transcript back to the endpoint —
+the transcript doubles as the wire format and `reasoning` is not an API field.
+Runs made before that change, which is all eighteen cells here, remain without
+it.
+
+**Recovering it for these three problems would mean re-running them, and that
+was deliberately not done.** Sampling is at temperature 0.4, so a re-run
+produces a *different* deliberation of a different length. Its text could not be
+placed next to the 22,488 figure without implying a correspondence that would
+not exist. The honest record is: the counts are measured, the text is gone.
+
+This is why the interpretation at the end of this file stays an interpretation.
 
 ## A drift the harness does not control for
 
