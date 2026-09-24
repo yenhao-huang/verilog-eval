@@ -1,0 +1,28 @@
+{
+  "problem": "notgate#2",
+  "topic": "combinational",
+  "outcome": "pass",
+  "passed": 1,
+  "compiled": 1,
+  "error_kind": "",
+  "original_error_kind": "port_mismatch",
+  "mismatches": 0,
+  "samples": 239,
+  "iterations": 4,
+  "finished": 1,
+  "tool_calls": 3,
+  "code_from_tool": 0,
+  "agent_error": "",
+  "wall_seconds": 70.408,
+  "compile_calls": 2,
+  "rag_calls": 1,
+  "rag_entries_hit": [
+    "undeclared-identifier"
+  ],
+  "llm_calls": 4,
+  "prompt_tokens": 2832,
+  "completion_tokens": 1097,
+  "reasoning_tokens": 0,
+  "total_tokens": 3929,
+  "truncated_calls": 0
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  areset\n - input  x\n - output z\n\nThe module should implement a one-input one-output serial 2's\ncomplementer Moore state machine. The input (x) is a series of bits (one\nper clock cycle) beginning with the least-significant bit of the number,\nand the output (Z) is the 2's complement of the input. The machine will\naccept input numbers of arbitrary length. The circuit requires a positive\nedge triggered asynchronous reset. The conversion begins when Reset is\nreleased and stops when Reset is asserted. Assume all sequential logic is\ntriggered on the positive edge of the clock.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "\n\n```verilog\nmodule TopModule (\n    input  clk,\n    input  areset,\n    input  x,\n    output z\n);\n\n    // Moore states for serial 2's complement:\n    // S_BEFORE: before the first '1' has been seen, output 0\n    // S_ONE:    after first '1', output 1\n    // S_ZERO:   after first '1', output 0\n    localparam [1:0] S_BEFORE = 2'b00;\n    localparam [1:0] S_ONE    = 2'b01;\n    localparam [1:0] S_ZERO   = 2'b10;\n\n    reg [1:0] state = S_BEFORE;\n    reg [1:0] next_state;\n\n    // State register with positive-edge asynchronous reset\n    always @(posedge clk or posedge areset) begin\n        if (areset)\n            state <= S_BEFORE;\n        else\n            state <= next_state;\n    end\n\n    // Next-state logic\n    always @(*) begin\n        case (state)\n            S_BEFORE: next_state = x ? S_ONE  : S_BEFORE;\n            S_ONE:    next_state = x ? S_ZERO : S_ONE;\n            S_ZERO:   next_state = x ? S_ZERO : S_ONE;\n            default:  next_state = S_BEFORE;\n        endcase\n    end\n\n    // Moore output depends only on state\n    assign z = (state == S_ONE);\n\nendmodule\n```"
+  }
+]

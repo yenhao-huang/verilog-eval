@@ -1,0 +1,7 @@
+VCD info: dumpfile wave.vcd opened for output.
+Hint: Output 'Y1' has no mismatches.
+Hint: Output 'Y3' has 36 mismatches. First mismatch occurred at time 40.
+Hint: Total mismatched samples is 36 out of 600 samples
+
+Simulation finished at 3001 ps
+Mismatches: 36 in 600 samples

@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  areset\n - input  d      (8 bits)\n - output q      (8 bits)\n\nThe module should include 8 D flip-flops with active high asynchronous\nreset. The output should be reset to 0. All DFFs should be triggered by\nthe positive edge of clk.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "\n\n```verilog\nmodule TopModule (\n    input        clk,\n    input        areset,\n    input  [7:0] d,\n    output reg [7:0] q\n);\n\n    always @(posedge clk or posedge areset) begin\n        if (areset)\n            q <= 8'b0;\n        else\n            q <= d;\n    end\n\nendmodule\n```"
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  areset\n - input  in\n - output out\n\nThe module should implement a Moore state machine with the following\nstate transition table with one input, one output, and four states.\nImplement this state machine. Include a positive edge triggered\nasynchronous reset that resets the FSM to state A. Assume all sequential\nlogic is triggered on the positive edge of the clock.\n\n  state | next state in=0, next state in=1 | output\n  A     | A, B                             | 0\n  B     | C, B                             | 0\n  C     | A, D                             | 0\n  D     | C, B                             | 1\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "```verilog\nmodule TopModule (\n    input  clk,\n    input  areset,\n    input  in,\n    output out\n);\n\n    // State encoding\n    localparam A = 2'b00;\n    localparam B = 2'b01;\n    localparam C = 2'b10;\n    localparam D = 2'b11;\n\n    reg [1:0] current_state;\n    reg [1:0] next_state;\n\n    // Sequential logic: State Register\n    // Implements a positive edge triggered asynchronous reset to state A\n    always @(posedge clk or posedge areset) begin\n        if (areset) begin\n            current_state <= A;\n        end else begin\n            current_state <= next_state;\n        end\n    end\n\n    // Combinational logic: Next State Logic\n    // Based on the provided state transition table\n    always @(*) begin\n        case (current_state)\n            A: begin\n                if (in == 1'b1)\n                    next_state = B;\n                else\n                    next_state = A;\n            end\n            B: begin\n                if (in == 1'b1)\n                    next_state = B;\n                else\n                    next_state = C;\n            end\n            C: begin\n                if (in == 1'b1)\n                    next_state = D;\n                else\n                    next_state = A;\n            end\n            D: begin\n                if (in == 1'b1)\n                    next_state = B;\n                else\n                    next_state = C;\n            end\n            default: begin\n                next_state = A;\n            end\n        endcase\n    end\n\n    // Combinational logic: Output Logic\n    // Moore machine: output depends only on the current state\n    // State A: 0, B: 0, C: 0, D: 1\n    assign out = (current_state == D);\n\nendmodule\n```"
+  }
+]

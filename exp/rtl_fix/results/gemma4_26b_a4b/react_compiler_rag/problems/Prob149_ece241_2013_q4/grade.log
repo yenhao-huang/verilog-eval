@@ -1,0 +1,10 @@
+VCD info: dumpfile wave.vcd opened for output.
+Hint: Your reset doesn't seem to be working.
+Hint: Output 'fr2' has 312 mismatches. First mismatch occurred at time 10.
+Hint: Output 'fr1' has 288 mismatches. First mismatch occurred at time 120.
+Hint: Output 'fr0' has 273 mismatches. First mismatch occurred at time 130.
+Hint: Output 'dfr' has 1317 mismatches. First mismatch occurred at time 30.
+Hint: Total mismatched samples is 1470 out of 2040 samples
+
+Simulation finished at 10200 ps
+Mismatches: 1470 in 2040 samples

@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  shift_ena\n - input  count_ena\n - input  data\n - output q (4 bits)\n\nThe module should implement a four-bit shift register that also acts as a\ndown counter. Data is shifted in most-significant-bit first when\nshift_ena is 1. The number currently in the shift register is decremented\nwhen count_ena is 1. Since the full system doesn't ever use shift_ena and\ncount_ena together, it does not matter what your circuit does if both\ncontrol inputs are 1 (this mainly means that it doesn't matter which case\ngets higher priority). Assume all sequential logic is triggered on the\npositive edge of the clock.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "\n\n```verilog\nmodule TopModule (\n    input        clk,\n    input        shift_ena,\n    input        count_ena,\n    input        data,\n    output [3:0] q\n);\n\n    reg [3:0] q_reg;\n\n    always @(posedge clk) begin\n        if (shift_ena) begin\n            // Shift left, inserting data into the LSB.\n            // This stores serial data arriving MSB-first correctly.\n            q_reg <= {q_reg[2:0], data};\n        end else if (count_ena) begin\n            // Decrement the 4-bit value.\n            q_reg <= q_reg - 1'b1;\n        end\n    end\n\n    assign q = q_reg;\n\nendmodule\n```"
+  }
+]

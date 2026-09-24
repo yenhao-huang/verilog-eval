@@ -1,0 +1,9 @@
+/workspace/verilog-eval/exp/rtl_fix/results_repair/gemma4_26b_a4b/fix_react_compiler_rag/problems/m2014_q6c_2/TopModule.sv:8: warning: Constant bit select [0] is before vector y[6:1].
+/workspace/verilog-eval/exp/rtl_fix/results_repair/gemma4_26b_a4b/fix_react_compiler_rag/problems/m2014_q6c_2/TopModule.sv:8:        : Replacing select with a constant 1'bx.
+VCD info: dumpfile wave.vcd opened for output.
+Hint: Output 'Y2' has 297 mismatches. First mismatch occurred at time 25.
+Hint: Output 'Y4' has 222 mismatches. First mismatch occurred at time 10.
+Hint: Total mismatched samples is 519 out of 600 samples
+
+Simulation finished at 3001 ps
+Mismatches: 519 in 600 samples

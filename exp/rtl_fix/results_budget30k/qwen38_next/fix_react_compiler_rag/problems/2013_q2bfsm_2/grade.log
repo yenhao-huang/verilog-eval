@@ -1,0 +1,8 @@
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/fix_react_compiler_rag/problems/2013_q2bfsm_2/TopModule.sv:18: warning: Numeric constant truncated to 3 bits.
+VCD info: dumpfile wave.vcd opened for output.
+Hint: Output 'f' has 14 mismatches. First mismatch occurred at time 80.
+Hint: Output 'g' has 473 mismatches. First mismatch occurred at time 10.
+Hint: Total mismatched samples is 473 out of 1002 samples
+
+Simulation finished at 5011 ps
+Mismatches: 473 in 1002 samples

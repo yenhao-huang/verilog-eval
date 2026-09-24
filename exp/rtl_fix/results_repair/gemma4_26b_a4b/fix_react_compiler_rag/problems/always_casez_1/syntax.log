@@ -1,0 +1,10 @@
+TopModule.sv:3: warning: macro clk undefined (and assumed null) at this point.
+TopModule.sv:3: warning: macro reset undefined (and assumed null) at this point.
+TopModule.sv:3: warning: macro always undefined (and assumed null) at this point.
+TopModule.sv:3: warning: macro always undefined (and assumed null) at this point.
+TopModule.sv:3: warning: macro always undefined (and assumed null) at this point.
+TopModule.sv:4: warning: macro casez undefined (and assumed null) at this point.
+TopModule.sv:5: warning: macro default undefined (and assumed null) at this point.
+TopModule.sv:9: warning: macro verilog undefined (and assumed null) at this point.
+TopModule.sv:1: syntax error
+I give up.

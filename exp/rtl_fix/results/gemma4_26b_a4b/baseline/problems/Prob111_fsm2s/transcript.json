@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  reset\n - input  j\n - input  k\n - output out\n\nThe module should implement a Moore state machine with two states, two\ninputs, and one output according to diagram described below. Reset is an\nactive-high synchronous reset to state OFF.\n\n  OFF (out=0) --j=0--> OFF\n  OFF (out=0) --j=1--> ON\n  ON  (out=1) --k=0--> ON\n  ON  (out=1) --k=1--> OFF\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "```verilog\nmodule TopModule (\n    input clk,\n    input reset,\n    input j,\n    input k,\n    output out\n);\n\n    // State encoding\n    localparam OFF = 1'b0;\n    localparam ON  = 1'b1;\n\n    // State register\n    reg state;\n\n    // State transition logic\n    // This is a synchronous process triggered on the rising edge of the clock.\n    // The reset is active-high and synchronous.\n    always @(posedge clk) begin\n        if (reset) begin\n            state <= OFF;\n        end else begin\n            case (state)\n                OFF: begin\n                    // OFF (out=0) --j=0--> OFF\n                    // OFF (out=0) --j=1--> ON\n                    if (j) begin\n                        state <= ON;\n                    end else begin\n                        state <= OFF;\n                    end\n                end\n                ON: begin\n                    // ON (out=1) --k=0--> ON\n                    // ON (out=1) --k=1--> OFF\n                    if (k) begin\n                        state <= OFF;\n                    end else begin\n                        state <= ON;\n                    end\n                end\n                default: begin\n                    state <= OFF;\n                end\n            endcase\n        end\n    end\n\n    // Output logic\n    // Since this is a Moore machine, the output depends only on the current state.\n    assign out = (state == ON) ? 1'b1 : 1'b0;\n\nendmodule\n```"
+  }
+]

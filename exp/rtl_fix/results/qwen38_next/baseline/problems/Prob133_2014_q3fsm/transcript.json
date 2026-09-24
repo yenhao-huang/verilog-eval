@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  reset\n - input  s\n - input  w\n - output z\n\nThe module should implement a finite state machine with inputs s and w.\nAssume that the FSM begins in a reset state called A, as depicted below.\nThe FSM remains in state A as long as s = 0, and it moves to state B when\ns = 1. Once in state B the FSM examines the value of the input w in the\nnext three clock cycles. If w = 1 in exactly two of these clock cycles,\nthen the FSM has to set an output z to 1 in the following clock cycle.\nOtherwise z has to be 0. The FSM continues checking w for the next three\nclock cycles, and so on. Use as few states as possible. Note that the s\ninput is used only in state A, so you need to consider just the w input.\nAssume reset is active high synchronous. Assume all sequential logic is\ntriggered on the positive edge of the clock.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": ""
+  }
+]

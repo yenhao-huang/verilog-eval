@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  reset\n - input  x\n - output z\n\nThe module should implement a finite-state machine with the\nstate-assigned table shown below. Reset should synchronous active high\nreset the FSM to state 000. Assume all sequential logic is triggered on\nthe positive edge of the clock.\n\n  Present state y[2:0] | Next state y[2:0] x=0, Next state y[2:0] x=1 | Output z\n  000 | 000, 001 | 0\n  001 | 001, 100 | 0\n  010 | 010, 001 | 0\n  011 | 001, 010 | 1\n  100 | 011, 100 | 1\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "```verilog\nmodule TopModule (\n    input clk,\n    input reset,\n    input x,\n    output reg z\n);\n\n    // State register\n    reg [2:0] y;\n    // Next state register\n    reg [2:0] next_y;\n\n    // Sequential logic: State transition\n    // Resets to 000 synchronously on the rising edge of clk\n    always @(posedge clk) begin\n        if (reset) begin\n            y <= 3'b000;\n        end else begin\n            y <= next_y;\n        end\n    end\n\n    // Combinational logic: Next state logic\n    // Determines next_y based on the current state y and input x\n    always @(*) begin\n        case (y)\n            3'b000: begin\n                if (x == 1'b1)\n                    next_y = 3'b001;\n                else\n                    next_y = 3'b000;\n            end\n            3'b001: begin\n                if (x == 1'b1)\n                    next_y = 3'b100;\n                else\n                    next_y = 3'b001;\n            end\n            3'b010: begin\n                if (x == 1'b1)\n                    next_y = 3'b001;\n                else\n                    next_y = 3'b010;\n            end\n            3'b011: begin\n                if (x == 1'b1)\n                    next_y = 3'b010;\n                else\n                    next_y = 3'b001;\n            end\n            3'b100: begin\n                if (x == 1'b1)\n                    next_y = 3'b100;\n                else\n                    next_y = 3'b011;\n            end\n            default: begin\n                next_y = 3'b000;\n            end\n        endcase\n    end\n\n    // Combinational logic: Output logic\n    // Based on the provided table, z is 1 when the present state is 011 or 100\n    always @(*) begin\n        case (y)\n            3'b011:  z = 1'b1;\n            3'b100:  z = 1'b1;\n            default: z = 1'b0;\n        endcase\n    end\n\nendmodule\n```"
+  }
+]

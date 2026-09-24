@@ -1,0 +1,28 @@
+{
+  "problem": "fsm3s#0",
+  "topic": "fsm",
+  "outcome": "pass",
+  "passed": 1,
+  "compiled": 1,
+  "error_kind": "",
+  "original_error_kind": "undeclared_identifier",
+  "mismatches": 0,
+  "samples": 230,
+  "iterations": 3,
+  "finished": 1,
+  "tool_calls": 2,
+  "code_from_tool": 0,
+  "agent_error": "",
+  "wall_seconds": 335.588,
+  "compile_calls": 1,
+  "rag_calls": 1,
+  "rag_entries_hit": [
+    "unable-to-bind"
+  ],
+  "llm_calls": 3,
+  "prompt_tokens": 4353,
+  "completion_tokens": 2921,
+  "reasoning_tokens": 1743,
+  "total_tokens": 7274,
+  "truncated_calls": 0
+}

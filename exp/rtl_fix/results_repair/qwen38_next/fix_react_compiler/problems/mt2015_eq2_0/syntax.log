@@ -1,0 +1,9 @@
+TopModule.sv:1: warning: macro posedge undefined (and assumed null) at this point.
+TopModule.sv:1: warning: macro clk undefined (and assumed null) at this point.
+TopModule.sv:1: warning: macro z undefined (and assumed null) at this point.
+TopModule.sv:1: warning: macro A undefined (and assumed null) at this point.
+TopModule.sv:1: warning: macro z undefined (and assumed null) at this point.
+TopModule.sv:5: warning: macro reg undefined (and assumed null) at this point.
+TopModule.sv:5: warning: macro always undefined (and assumed null) at this point.
+TopModule.sv:1: syntax error
+I give up.

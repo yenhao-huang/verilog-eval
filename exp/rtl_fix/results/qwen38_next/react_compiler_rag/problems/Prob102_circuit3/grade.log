@@ -1,0 +1,6 @@
+VCD info: dumpfile wave.vcd opened for output.
+Hint: Output 'q' has 8 mismatches. First mismatch occurred at time 80.
+Hint: Total mismatched samples is 8 out of 121 samples
+
+Simulation finished at 605 ps
+Mismatches: 8 in 121 samples

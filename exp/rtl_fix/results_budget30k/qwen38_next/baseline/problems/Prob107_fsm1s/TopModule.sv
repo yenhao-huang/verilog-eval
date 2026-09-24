@@ -1,0 +1,27 @@
+module TopModule (
+    input  clk,
+    input  reset,
+    input  in,
+    output out
+);
+
+    localparam A = 1'b0;
+    localparam B = 1'b1;
+
+    reg state = B;
+
+    always @(posedge clk) begin
+        if (reset) begin
+            state <= B;
+        end else begin
+            case (state)
+                A: state <= in ? A : B;
+                B: state <= in ? B : A;
+                default: state <= B;
+            endcase
+        end
+    end
+
+    assign out = (state == B);
+
+endmodule

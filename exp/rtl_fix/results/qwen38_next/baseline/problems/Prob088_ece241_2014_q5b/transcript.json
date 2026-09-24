@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  areset\n - input  x\n - output z\n\nThe module should implement the following Mealy finite-state machine\nwhich is an implementation of the 2's complementer. Implement using a\none-hot encoding. Resets into state A and reset is asynchronous\nactive-high.\n\n  A --x=0 (z=0)--> A\n  A --x=1 (z=1)--> B\n  B --x=0 (z=1)--> B\n  B --x=1 (z=0)--> B\n\nAssume all sequential logic is triggered on the positive edge of the\nclock.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "\n\n```verilog\nmodule TopModule (\n    input  clk,\n    input  areset,\n    input  x,\n    output z\n);\n\n    // One-hot encoding\n    localparam [1:0] A = 2'b01;\n    localparam [1:0] B = 2'b10;\n\n    reg  [1:0] state;\n    wire [1:0] next_state;\n\n    // Sequential state register with asynchronous active-high reset\n    always @(posedge clk or posedge areset) begin\n        if (areset)\n            state <= A;\n        else\n            state <= next_state;\n    end\n\n    // Next-state logic\n    always @(*) begin\n        case (state)\n            A: next_state = x ? B : A;\n            B: next_state = B;\n            default: next_state = A;\n        endcase\n    end\n\n    // Mealy output logic\n    assign z = ((state == A) &&  x) ||\n               ((state == B) && !x);\n\nendmodule\n```"
+  }
+]

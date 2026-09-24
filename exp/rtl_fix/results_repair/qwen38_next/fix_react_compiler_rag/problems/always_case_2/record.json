@@ -1,0 +1,28 @@
+{
+  "problem": "always_case#2",
+  "topic": "combinational",
+  "outcome": "pass",
+  "passed": 1,
+  "compiled": 1,
+  "error_kind": "",
+  "original_error_kind": "undeclared_identifier",
+  "mismatches": 0,
+  "samples": 118,
+  "iterations": 3,
+  "finished": 1,
+  "tool_calls": 3,
+  "code_from_tool": 0,
+  "agent_error": "",
+  "wall_seconds": 238.806,
+  "compile_calls": 1,
+  "rag_calls": 1,
+  "rag_entries_hit": [
+    "unable-to-bind"
+  ],
+  "llm_calls": 3,
+  "prompt_tokens": 4361,
+  "completion_tokens": 2342,
+  "reasoning_tokens": 989,
+  "total_tokens": 6703,
+  "truncated_calls": 0
+}

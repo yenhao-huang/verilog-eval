@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in  (4 bits)\n - output pos (2 bits)\n\nThe module should implement a priority encoder. A priority encoder is a\ncombinational circuit that, when given an input bit vector, outputs the\nposition of the first 1 bit in the vector. For example, a 8-bit priority\nencoder given the input 8'b10010000 would output 3'd4, because bit[4] is\nfirst bit that is high. Build a 4-bit priority encoder. For this problem,\nif none of the input bits are high (i.e., input is zero), output zero.\nNote that a 4-bit number has 16 possible combinations.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "\n\n```verilog\nmodule TopModule (\n    input  [3:0] in,\n    output [1:0] pos\n);\n\n    assign pos = in[0] ? 2'd0 :\n                 in[1] ? 2'd1 :\n                 in[2] ? 2'd2 :\n                 in[3] ? 2'd3 :\n                         2'd0;\n\nendmodule\n```"
+  }
+]

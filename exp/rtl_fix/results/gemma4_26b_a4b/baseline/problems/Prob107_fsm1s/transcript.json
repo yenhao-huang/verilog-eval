@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  reset\n - input  in\n - output out\n\nImplement the following Moore state machine with two states, one input,\nand one output. The reset state is B and reset is active-high\nsynchronous.\n\n  B (out=1) --in=0--> A\n  B (out=1) --in=1--> B\n  A (out=0) --in=0--> B\n  A (out=0) --in=1--> A\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "```verilog\nmodule TopModule (\n    input clk,\n    input reset,\n    input in,\n    output out\n);\n\n    // State encoding\n    // We use 1-bit encoding since there are only two states.\n    localparam STATE_A = 1'b0;\n    localparam STATE_B = 1'b1;\n\n    reg state;\n\n    // State transition logic\n    // This is a Moore machine, so the output depends only on the current state.\n    // The reset is synchronous and active-high.\n    always @(posedge clk) begin\n        if (reset) begin\n            // Reset state is B\n            state <= STATE_B;\n        end else begin\n            case (state)\n                STATE_B: begin\n                    if (in == 1'b0) begin\n                        state <= STATE_A;\n                    end else begin\n                        state <= STATE_B;\n                    end\n                end\n                STATE_A: begin\n                    if (in == 1'b0) begin\n                        state <= STATE_B;\n                    end else begin\n                        state <= STATE_A;\n                    end\n                end\n                default: begin\n                    state <= STATE_B;\n                end\n            endcase\n        end\n    end\n\n    // Output logic\n    // State B has out=1, State A has out=0.\n    assign out = (state == STATE_B);\n\nendmodule\n```"
+  }
+]

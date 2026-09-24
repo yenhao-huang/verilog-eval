@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input clk\n - input d\n - input q\n\nThe module should implement a single D flip-flop. Assume all sequential\nlogic is triggered on the positive edge of the clock.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "```verilog\nmodule TopModule (\n    input clk,\n    input d,\n    output reg q\n);\n\n    // The module implements a single D flip-flop.\n    // On the positive edge of the clock, the value of the input 'd' \n    // is captured and assigned to the output 'q'.\n    always @(posedge clk) begin\n        q <= d;\n    end\n\nendmodule\n```"
+  }
+]

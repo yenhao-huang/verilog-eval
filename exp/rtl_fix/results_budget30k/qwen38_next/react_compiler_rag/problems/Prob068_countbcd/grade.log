@@ -1,0 +1,7 @@
+VCD info: dumpfile wave.vcd opened for output.
+Hint: Output 'ena' has no mismatches.
+Hint: Output 'q' has no mismatches.
+Hint: Total mismatched samples is 0 out of 39805 samples
+
+Simulation finished at 199026 ps
+Mismatches: 0 in 39805 samples

@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  x3\n - input  x2\n - input  x1\n - output f\n\nThe module should implement a combinational circuit for the following\ntruth table:\n\n  x3 | x2 | x1 | f\n  0  | 0  | 0  | 0\n  0  | 0  | 1  | 0\n  0  | 1  | 0  | 1\n  0  | 1  | 1  | 1\n  1  | 0  | 0  | 0\n  1  | 0  | 1  | 1\n  1  | 1  | 0  | 0\n  1  | 1  | 1  | 1\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "\n\n```verilog\nmodule TopModule (\n    input  x3,\n    input  x2,\n    input  x1,\n    output f\n);\n\n    assign f = (~x3 & x2) | (x3 & x1);\n\nendmodule\n```"
+  }
+]

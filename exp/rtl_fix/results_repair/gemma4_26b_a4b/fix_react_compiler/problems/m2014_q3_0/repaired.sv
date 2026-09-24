@@ -1,0 +1,1 @@
+{"code_completion":"module top_module (\n\tinput [4:1] x,\n\toutput logic f\n);\n\nalways_comb begin\n  case(x)\n    4'h0: f = 1'bx;\n    4'h1: f = 1'bx;\n    4'h2: f = 0;\n    4'h3: f = 1'bx;\n    4'h4: f = 1;\n    4'h5: f = 1'bx;\n    4'h6: f = 1;

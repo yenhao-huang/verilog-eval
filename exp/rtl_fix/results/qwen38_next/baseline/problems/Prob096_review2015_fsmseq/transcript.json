@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  reset\n - input  data\n - output start_shifting\n\nThe module should implement a finite-state machine that searches for the\nsequence 1101 in an input bit stream. When the sequence is found, it\nshould set start_shifting to 1, forever, until reset. Reset is active\nhigh synchronous. Assume all sequential logic is triggered on the\npositive edge of the clock.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "\n\n```verilog\nmodule TopModule (\n    input clk,\n    input reset,\n    input data,\n    output start_shifting\n);\n\n    // One-hot state encoding\n    localparam [4:0] S_IDLE   = 5'b00001;\n    localparam [4:0] S_GOT1   = 5'b00010;\n    localparam [4:0] S_GOT11  = 5'b00100;\n    localparam [4:0] S_GOT110 = 5'b01000;\n    localparam [4:0] S_DONE   = 5'b10000;\n\n    reg [4:0] state = S_IDLE;\n\n    always @(posedge clk) begin\n        if (reset) begin\n            state <= S_IDLE;\n        end else begin\n            case (state)\n                S_IDLE:   state <= data ? S_GOT1   : S_IDLE;\n                S_GOT1:   state <= data ? S_GOT11  : S_IDLE;\n                S_GOT11:  state <= data ? S_GOT11  : S_GOT110;\n                S_GOT110: state <= data ? S_DONE   : S_IDLE;\n                S_DONE:   state <= S_DONE;\n                default:  state <= S_IDLE;\n            endcase\n        end\n    end\n\n    assign start_shifting = (state == S_DONE);\n\nendmodule\n```"
+  }
+]

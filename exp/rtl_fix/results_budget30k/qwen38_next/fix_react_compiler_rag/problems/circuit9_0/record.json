@@ -1,0 +1,28 @@
+{
+  "problem": "circuit9#0",
+  "topic": "sequential",
+  "outcome": "pass",
+  "passed": 1,
+  "compiled": 1,
+  "error_kind": "",
+  "original_error_kind": "module_instantiation",
+  "mismatches": 0,
+  "samples": 245,
+  "iterations": 4,
+  "finished": 1,
+  "tool_calls": 3,
+  "code_from_tool": 0,
+  "agent_error": "",
+  "wall_seconds": 618.776,
+  "compile_calls": 2,
+  "rag_calls": 1,
+  "rag_entries_hit": [
+    "invalid-module-instantiation"
+  ],
+  "llm_calls": 4,
+  "prompt_tokens": 5777,
+  "completion_tokens": 5287,
+  "reasoning_tokens": 4392,
+  "total_tokens": 11064,
+  "truncated_calls": 0
+}

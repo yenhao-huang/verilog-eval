@@ -1,0 +1,28 @@
+{
+  "problem": "andgate#0",
+  "topic": "combinational",
+  "outcome": "pass",
+  "passed": 1,
+  "compiled": 1,
+  "error_kind": "",
+  "original_error_kind": "invalid_lvalue",
+  "mismatches": 0,
+  "samples": 219,
+  "iterations": 2,
+  "finished": 1,
+  "tool_calls": 2,
+  "code_from_tool": 0,
+  "agent_error": "",
+  "wall_seconds": 87.167,
+  "compile_calls": 1,
+  "rag_calls": 1,
+  "rag_entries_hit": [
+    "not-a-valid-l-value"
+  ],
+  "llm_calls": 2,
+  "prompt_tokens": 1777,
+  "completion_tokens": 745,
+  "reasoning_tokens": 400,
+  "total_tokens": 2522,
+  "truncated_calls": 0
+}

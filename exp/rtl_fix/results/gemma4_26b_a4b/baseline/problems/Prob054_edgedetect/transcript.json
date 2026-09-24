@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  in    (8 bits)\n - output pedge (8 bits)\n\nThe module should examine each bit in an 8-bit vector and detect when the\ninput signal changes from 0 in one clock cycle to 1 the next (similar to\npositive edge detection). The output bit should be set the cycle after a\n0 to 1 transition occurs.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "```verilog\nmodule TopModule (\n    input clk,\n    input [7:0] in,\n    output reg [7:0] pedge\n);\n\n    // Internal register to store the state of the input from the previous clock cycle\n    reg [7:0] in_prev;\n\n    always @(posedge clk) begin\n        // Store the current input value to be used as 'previous' in the next cycle\n        in_prev <= in;\n\n        // Detect a positive edge: \n        // A bit is 1 in the current cycle (in) AND was 0 in the previous cycle (~in_prev).\n        // Because we use non-blocking assignments, 'pedge' will be updated based on \n        // the values of 'in' and 'in_prev' as they existed at the start of the clock edge.\n        //\n        // Timing Trace:\n        // T=0: in=0, in_prev=0, pedge=0\n        // T=1: in=1 (Transition occurs)\n        //      At edge T=1: in_prev becomes 0 (the old value of in).\n        //      At edge T=2: pedge becomes (in & ~in_prev) -> (1 & ~0) = 1.\n        // This ensures the output is set the cycle after the transition occurs.\n        pedge <= in & ~in_prev;\n    end\n\nendmodule\n```"
+  }
+]

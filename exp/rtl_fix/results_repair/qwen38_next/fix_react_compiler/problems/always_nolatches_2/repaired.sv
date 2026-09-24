@@ -1,0 +1,1 @@
+This circuit is purely combinational: it only maps the current 16-bit `scancode` value to four outputs. Therefore, it should use a combinational `always @*` block with blocking assignments, and the outputs should be fully assigned to avoid inferred latches.

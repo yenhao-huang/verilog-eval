@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  reset\n - input  ena\n - output pm\n - output hh (8 bits)\n - output mm (8 bits)\n - output ss (8 bits)\n\nCreate a set of counters suitable for use as a 12-hour clock (with am/pm\nindicator). Your counters are clocked by a fast-running clk, with a pulse\non ena whenever your clock should increment (i.e., once per second, while\n\"clk\" is much faster than once per second). The signal \"pm\" is asserted\nif the clock is PM, or is otherwise AM. hh, mm, and ss are two BCD\n(Binary- Coded Decimal) digits each for hours (01-12), minutes (00-59),\nand seconds (00-59). Reset is the active high synchronous signal that\nresets the clock to \"12:00 AM.\" Reset has higher priority than enable and\ncan occur even when not enabled. Assume all sequential logic is triggered\non the positive edge of the clock.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": ""
+  }
+]

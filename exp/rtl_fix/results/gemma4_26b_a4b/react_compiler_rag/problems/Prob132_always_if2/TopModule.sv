@@ -1,0 +1,28 @@
+module TopModule (
+    input      cpu_overheated,
+    output reg shut_off_computer,
+    input      arrived,
+    input      gas_tank_empty,
+    output reg keep_driving
+);
+
+    // The original code had a bug where it would infer latches because
+    // the outputs were not assigned a value in all possible execution paths.
+    // In combinational logic (always @(*)), every output must be assigned
+    // a value in every branch to avoid latch inference.
+
+    always @(*) begin
+        if (cpu_overheated)
+            shut_off_computer = 1'b1;
+        else
+            shut_off_computer = 1'b0;
+    end
+
+    always @(*) begin
+        if (~arrived)
+            keep_driving = ~gas_tank_empty;
+        else
+            keep_driving = 1'b0;
+    end
+
+endmodule

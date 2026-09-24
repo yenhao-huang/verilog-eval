@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in  (8 bits)\n - output pos (3 bits)\n\nThe module should implement a priority encoder for an 8-bit input. Given\nan 8-bit vector, the output should report the first (least significant)\nbit in the vector that is 1. Report zero if the input vector has no bits\nthat are high. For example, the input 8'b10010000 should output 3'd4,\nbecause bit[4] is first bit that is high.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "\n\n```verilog\nmodule TopModule (\n    input  [7:0] in,\n    output reg [2:0] pos\n);\n\n    always @(*) begin\n        casez (in)\n            8'b???????1: pos = 3'd0;\n            8'b??????10: pos = 3'd1;\n            8'b?????100: pos = 3'd2;\n            8'b????1000: pos = 3'd3;\n            8'b???10000: pos = 3'd4;\n            8'b??100000: pos = 3'd5;\n            8'b?1000000: pos = 3'd6;\n            8'b10000000: pos = 3'd7;\n            default:     pos = 3'd0;\n        endcase\n    end\n\nendmodule\n```"
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in\n - output out\n\nThe module should implement a NOT gate.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "```verilog\nmodule TopModule (\n    input in,\n    output out\n);\n\n    // Implement a NOT gate using the bitwise NOT operator (~)\n    assign out = ~in;\n\nendmodule\n```"
+  }
+]

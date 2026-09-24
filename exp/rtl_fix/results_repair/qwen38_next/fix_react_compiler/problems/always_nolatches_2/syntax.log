@@ -1,0 +1,4 @@
+TopModule.sv:1: warning: macro scancode undefined (and assumed null) at this point.
+TopModule.sv:1: warning: macro always undefined (and assumed null) at this point.
+TopModule.sv:1: syntax error
+I give up.

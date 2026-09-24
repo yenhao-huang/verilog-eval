@@ -1,0 +1,2 @@
+TopModule.sv:8: warning: Constant bit select [0] is before vector y[6:1].
+TopModule.sv:8:        : Replacing select with a constant 1'bx.

@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  a (8 bits)\n - input  b (8 bits)\n - output s (8 bits)\n - output overflow\n\nAssume that you have two 8-bit 2's complement numbers, a[7:0] and b[7:0].\nThe module should add these numbers to produce s[7:0]. Also compute\nwhether a (signed) overflow has occurred.\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "```verilog\nmodule TopModule (\n    input  [7:0] a,\n    input  [7:0] b,\n    output [7:0] s,\n    output       overflow\n);\n\n    // Perform 8-bit addition\n    assign s = a + b;\n\n    /* \n     * Signed overflow detection logic:\n     * In 2's complement addition, overflow occurs if:\n     * 1. Two positive numbers are added and the result is negative.\n     * 2. Two negative numbers are added and the result is positive.\n     * \n     * This can be expressed as:\n     * (a[7] == b[7]) AND (s[7] != a[7])\n     * \n     * Where index [7] is the sign bit.\n     */\n    assign overflow = (a[7] == b[7]) && (s[7] != a[7]);\n\nendmodule\n```"
+  }
+]

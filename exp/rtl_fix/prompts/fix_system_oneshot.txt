@@ -1,0 +1,5 @@
+Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated.
+
+Correct the syntax error in the code.
+
+Reply with the complete corrected module in a ```verilog code block.

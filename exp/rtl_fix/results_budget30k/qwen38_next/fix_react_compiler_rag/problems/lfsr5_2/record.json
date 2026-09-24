@@ -1,0 +1,28 @@
+{
+  "problem": "lfsr5#2",
+  "topic": "sequential",
+  "outcome": "pass",
+  "passed": 1,
+  "compiled": 1,
+  "error_kind": "",
+  "original_error_kind": "undeclared_identifier",
+  "mismatches": 0,
+  "samples": 4443,
+  "iterations": 2,
+  "finished": 1,
+  "tool_calls": 2,
+  "code_from_tool": 0,
+  "agent_error": "",
+  "wall_seconds": 2075.053,
+  "compile_calls": 1,
+  "rag_calls": 1,
+  "rag_entries_hit": [
+    "unable-to-bind"
+  ],
+  "llm_calls": 2,
+  "prompt_tokens": 2522,
+  "completion_tokens": 24540,
+  "reasoning_tokens": 23668,
+  "total_tokens": 27062,
+  "truncated_calls": 0
+}

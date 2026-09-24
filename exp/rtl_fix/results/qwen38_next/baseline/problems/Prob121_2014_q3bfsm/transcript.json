@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  reset\n - input  x\n - output z\n\nThe module should implement a finite-state machine with the\nstate-assigned table shown below. Reset should synchronous active high\nreset the FSM to state 000. Assume all sequential logic is triggered on\nthe positive edge of the clock.\n\n  Present state y[2:0] | Next state y[2:0] x=0, Next state y[2:0] x=1 | Output z\n  000 | 000, 001 | 0\n  001 | 001, 100 | 0\n  010 | 010, 001 | 0\n  011 | 001, 010 | 1\n  100 | 011, 100 | 1\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "\n\n```verilog\nmodule TopModule (\n    input  clk,\n    input  reset,\n    input  x,\n    output z\n);\n\n    reg [2:0] state;\n    reg [2:0] next_state;\n\n    // Synchronous state register\n    always @(posedge clk) begin\n        if (reset)\n            state <= 3'b000;\n        else\n            state <= next_state;\n    end\n\n    // Next-state logic\n    always @(*) begin\n        case (state)\n            3'b000: next_state = x ? 3'b001 : 3'b000;\n            3'b001: next_state = x ? 3'b100 : 3'b001;\n            3'b010: next_state = x ? 3'b001 : 3'b010;\n            3'b011: next_state = x ? 3'b010 : 3'b001;\n            3'b100: next_state = x ? 3'b100 : 3'b011;\n            default: next_state = 3'b000;\n        endcase\n    end\n\n    // Moore output logic\n    assign z = (state == 3'b011) || (state == 3'b100);\n\nendmodule\n```"
+  }
+]

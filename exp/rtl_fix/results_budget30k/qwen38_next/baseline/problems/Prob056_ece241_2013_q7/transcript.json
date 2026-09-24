@@ -1,0 +1,14 @@
+[
+  {
+    "role": "system",
+    "content": "Implement the Verilog module based on the following description. Assume that signals are positive clock/clk edge triggered unless otherwise stated."
+  },
+  {
+    "role": "user",
+    "content": "\nI would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  j\n - input  k\n - output Q\n\nThe module should implement a JK flip-flop with the following truth\ntable. Note: Qold is the output of the flip-flop before the positive\nclock edge.\n\n  J | K | Q\n  0 | 0 | Qold\n  0 | 1 | 0\n  1 | 0 | 1\n  1 | 1 | ~Qold\n\n"
+  },
+  {
+    "role": "assistant",
+    "content": "\n\n```verilog\nmodule TopModule (\n    input clk,\n    input j,\n    input k,\n    output reg Q\n);\n\n    always @(posedge clk) begin\n        case ({j, k})\n            2'b00: Q <= Q;       // Hold\n            2'b01: Q <= 1'b0;    // Reset\n            2'b10: Q <= 1'b1;    // Set\n            2'b11: Q <= ~Q;      // Toggle\n            default: Q <= Q;\n        endcase\n    end\n\nendmodule\n```"
+  }
+]

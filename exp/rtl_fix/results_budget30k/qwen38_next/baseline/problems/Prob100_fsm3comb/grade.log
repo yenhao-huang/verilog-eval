@@ -1,0 +1,21 @@
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob100_fsm3comb/TopModule.sv:11: error: next_state is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob100_fsm3comb/TopModule.sv:4:      : next_state is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob100_fsm3comb/TopModule.sv:12: error: out is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob100_fsm3comb/TopModule.sv:5:      : out is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob100_fsm3comb/TopModule.sv:16: error: next_state is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob100_fsm3comb/TopModule.sv:4:      : next_state is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob100_fsm3comb/TopModule.sv:17: error: out is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob100_fsm3comb/TopModule.sv:5:      : out is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob100_fsm3comb/TopModule.sv:21: error: next_state is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob100_fsm3comb/TopModule.sv:4:      : next_state is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob100_fsm3comb/TopModule.sv:22: error: out is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob100_fsm3comb/TopModule.sv:5:      : out is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob100_fsm3comb/TopModule.sv:26: error: next_state is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob100_fsm3comb/TopModule.sv:4:      : next_state is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob100_fsm3comb/TopModule.sv:27: error: out is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob100_fsm3comb/TopModule.sv:5:      : out is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob100_fsm3comb/TopModule.sv:31: error: next_state is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob100_fsm3comb/TopModule.sv:4:      : next_state is declared here as wire.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob100_fsm3comb/TopModule.sv:32: error: out is not a valid l-value in tb.top_module1.
+/workspace/verilog-eval/exp/rtl_fix/results_budget30k/qwen38_next/baseline/problems/Prob100_fsm3comb/TopModule.sv:5:      : out is declared here as wire.
+10 error(s) during elaboration.
